@@ -10,6 +10,7 @@ _build/
 .claude/
 .kilocode/
 .opencode/
+.agent/
 # OS
 .DS_Store
 Thumbs.db
