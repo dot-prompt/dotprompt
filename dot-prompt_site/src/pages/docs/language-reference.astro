@@ -1,5 +1,6 @@
 ---
 import DocsLayout from '../../layouts/DocsLayout.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
 
 const initBlockCode = `init do
   @version: 1.0
@@ -62,7 +63,7 @@ end @greeting`;
     Every .prompt file starts with an <code>init</code> block that declares metadata, parameters, and fragments:
   </p>
 
-  <pre><code>{initBlockCode}</code></pre>
+  <CodeBlock code={initBlockCode} language="dotprompt" />
 
   <h3>Fields</h3>
   <table>
@@ -184,7 +185,7 @@ end @greeting`;
   </table>
 
   <h2>Example</h2>
-  <pre><code>{exampleCode}</code></pre>
+  <CodeBlock code={exampleCode} language="dotprompt" />
 
   <h2>Next Steps</h2>
   <ul>

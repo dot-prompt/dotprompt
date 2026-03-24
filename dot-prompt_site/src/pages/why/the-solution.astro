@@ -75,7 +75,7 @@ Respond with this JSON:
         <p class="text-[var(--color-text-muted)] mb-6">
           Define your prompts with all the branching, conditions, and variations you need. Put the logic where it belongs—in the prompt file, visible to everyone.
         </p>
-        <CodeBlock code={promptExample} title="teacher.prompt" />
+        <CodeBlock code={promptExample} title="teacher.prompt" language="dotprompt" />
       </div>
     </div>
   </section>
@@ -87,7 +87,7 @@ Respond with this JSON:
         <p class="text-[var(--color-text-muted)] mb-6">
           When you call the prompt with specific parameters, the compiler resolves all branching and sends only the relevant content to the LLM.
         </p>
-        <CodeBlock code={compiledOutput} title="LLM receives" />
+        <CodeBlock code={compiledOutput} title="LLM receives" language="dotprompt" />
       </div>
     </div>
   </section>

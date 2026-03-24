@@ -1,40 +1,24 @@
 ---
 import DocsLayout from '../../layouts/DocsLayout.astro';
----
+import CodeBlock from '../../components/CodeBlock.astro';
 
-<DocsLayout 
-  title="Response Contracts" 
-  activeSlug="/docs/response-contracts"
-  description="Output schema definition in .prompt"
->
-  <h1>Response Contracts</h1>
-  <p>
-    Response contracts define the expected output structure from your LLM. They version together with your prompt and are derived automatically from JSON blocks.
-  </p>
-
-  <h2>Basic Response Contract</h2>
-  <pre><code>{`response do
+const basicResponseCode = `response do
   {
     "response_type": "greeting",
     "content": "..."
   }
-end response`}</code></pre>
+end response`;
 
-  <p>
-    The compiler derives the schema from the JSON structure:
-  </p>
-
-  <pre><code>{`{
+const schemaCode = `{
   "type": "object",
   "properties": {
     "response_type": { "type": "string", "enum": ["greeting"] },
     "content": { "type": "string" }
   },
   "required": ["response_type", "content"]
-}`}</code></pre>
+}`;
 
-  <h2>Nested Objects</h2>
-  <pre><code>{`response do
+const nestedResponseCode = `response do
   {
     "user": {
       "name": "...",
@@ -43,14 +27,9 @@ end response`}</code></pre>
       }
     }
   }
-end response`}</code></pre>
+end response`;
 
-  <h2>Multiple Response Blocks</h2>
-  <p>
-    You can have multiple response blocks in different branches. The compiler validates compatibility:
-  </p>
-
-  <pre><code>{`if @is_premium is true do
+const compatibilityCode = `if @is_premium is true do
 Premium content here.
 
 response do
@@ -69,7 +48,56 @@ response do
   }
 end response
 
-end @is_premium`}</code></pre>
+end @is_premium`;
+
+const variablesInResponseCode = `response do
+  {
+    "response_type": "teaching",
+    "step": @current_step,
+    "next_step": @current_step + 1
+  }
+end response`;
+
+const validationCode = `{
+  "prompt": "...",
+  "response_contract": {
+    "type": "object",
+    "properties": {
+      "response_type": { "type": "string" },
+      "content": { "type": "string" }
+    }
+  }
+}`;
+---
+
+<DocsLayout 
+  title="Response Contracts" 
+  activeSlug="/docs/response-contracts"
+  description="Output schema definition in .prompt"
+>
+  <h1>Response Contracts</h1>
+  <p>
+    Response contracts define the expected output structure from your LLM. They version together with your prompt and are derived automatically from JSON blocks.
+  </p>
+
+  <h2>Basic Response Contract</h2>
+  <CodeBlock code={basicResponseCode} language="dotprompt" />
+
+  <p>
+    The compiler derives the schema from the JSON structure:
+  </p>
+
+  <CodeBlock code={schemaCode} language="json" />
+
+  <h2>Nested Objects</h2>
+  <CodeBlock code={nestedResponseCode} language="dotprompt" />
+
+  <h2>Multiple Response Blocks</h2>
+  <p>
+    You can have multiple response blocks in different branches. The compiler validates compatibility:
+  </p>
+
+  <CodeBlock code={compatibilityCode} language="dotprompt" />
 
   <h3>Compatibility Rules</h3>
   <ul>
@@ -83,29 +111,14 @@ end @is_premium`}</code></pre>
     Reference variables in response contracts:
   </p>
 
-  <pre><code>{`response do
-  {
-    "response_type": "teaching",
-    "step": @current_step,
-    "next_step": @current_step + 1
-  }
-end response`}</code></pre>
+  <CodeBlock code={variablesInResponseCode} language="dotprompt" />
 
   <h2>Contract Validation</h2>
   <p>
     The derived schema is returned with every compiled prompt. Your application can validate LLM responses against the contract:
   </p>
 
-  <pre><code>{`{
-  "prompt": "...",
-  "response_contract": {
-    "type": "object",
-    "properties": {
-      "response_type": { "type": "string" },
-      "content": { "type": "string" }
-    }
-  }
-}`}</code></pre>
+  <CodeBlock code={validationCode} language="json" />
 
   <h2>Benefits</h2>
   <ul>

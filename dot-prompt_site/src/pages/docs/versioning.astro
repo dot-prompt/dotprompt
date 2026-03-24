@@ -1,5 +1,6 @@
 ---
 import DocsLayout from '../../layouts/DocsLayout.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
 
 const versionFieldsCode = `init do
   @major: 1      # Stability version — callers pin to this
@@ -35,7 +36,7 @@ const callersCode = `client.render(
   </p>
 
   <h2>Version Fields</h2>
-  <pre><code>{versionFieldsCode}</code></pre>
+  <CodeBlock code={versionFieldsCode} language="dotprompt" />
 
   <table>
     <thead>
@@ -101,14 +102,16 @@ const callersCode = `client.render(
   </ol>
 
   <h2>Folder Structure</h2>
-  <pre><code>{folderStructureCode}</code></pre>
+  <CodeBlock code={folderStructureCode} language="markdown" />
 
   <h2>For Callers</h2>
   <p>
     Pin to a major version to receive non-breaking updates automatically:
   </p>
 
-  <pre><code>{callersCode}</code></pre>
+  <CodeBlock code={callersCode} language="python" />
+
+  <h2>Breaking Change Detection</h2>
 
   <h2>Breaking Change Detection</h2>
   <p>

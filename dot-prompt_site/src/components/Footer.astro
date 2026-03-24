@@ -9,78 +9,32 @@ const footerLinks = {
   ],
   community: [
     { href: 'https://github.com/dot-prompt/dot-prompt', label: 'GitHub' },
-    { href: 'https://discord.gg/dot-prompt', label: 'Discord' },
   ],
   resources: [
     { href: '/docs/getting-started', label: 'Getting Started' },
     { href: '/docs/language-reference', label: 'Language Reference' },
-    { href: '/docs/api-reference', label: 'API Reference' },
   ],
 };
 ---
 
-<footer class="border-t border-[var(--color-border)] bg-[var(--color-surface)]">
-  <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-2 gap-8 md:grid-cols-4">
-      <div>
-        <h3 class="text-sm font-semibold text-[var(--color-text)]">Product</h3>
-        <ul class="mt-4 space-y-3">
-          {footerLinks.product.map((link) => (
-            <li>
-              <a href={link.href} class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div>
-        <h3 class="text-sm font-semibold text-[var(--color-text)]">Community</h3>
-        <ul class="mt-4 space-y-3">
-          {footerLinks.community.map((link) => (
-            <li>
-              <a href={link.href} target="_blank" rel="noopener noreferrer" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div>
-        <h3 class="text-sm font-semibold text-[var(--color-text)]">Resources</h3>
-        <ul class="mt-4 space-y-3">
-          {footerLinks.resources.map((link) => (
-            <li>
-              <a href={link.href} class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div>
-        <h3 class="text-sm font-semibold text-[var(--color-text)]">Connect</h3>
-        <ul class="mt-4 space-y-3">
-          <li>
-            <a href="mailto:hello@prompt.so" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">
-              hello@prompt.so
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-[var(--color-border)] pt-8 md:flex-row">
-      <p class="text-sm text-[var(--color-text-muted)]">
-        &copy; {currentYear} dot-prompt. All rights reserved.
-      </p>
+<footer class="border-t border-[var(--color-border)]">
+  <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
       <div class="flex items-center gap-6">
-        <a href="/privacy" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">
-          Privacy
-        </a>
-        <a href="/terms" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">
-          Terms
-        </a>
+        {footerLinks.product.map((link) => (
+          <a href={link.href} class="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">
+            {link.label}
+          </a>
+        ))}
+        {footerLinks.community.map((link) => (
+          <a href={link.href} target="_blank" rel="noopener noreferrer" class="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">
+            {link.label}
+          </a>
+        ))}
       </div>
+      <p class="text-xs text-[var(--color-text-muted)]">
+        &copy; {currentYear} dot-prompt
+      </p>
     </div>
   </div>
 </footer>

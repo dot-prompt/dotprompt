@@ -1,5 +1,64 @@
 ---
 import DocsLayout from '../../layouts/DocsLayout.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+
+const baseUrlCode = `http://localhost:4041`;
+
+const renderRequestCode = `{
+  "prompt": "hello",
+  "params": {
+    "variation": "analogy"
+  },
+  "runtime": {
+    "user_input": "What is recursion?"
+  },
+  "seed": 42
+}`;
+
+const renderResponseCode = `{
+  "prompt": "...",
+  "response_contract": {...}
+}`;
+
+const compileRequestCode = `{
+  "prompt": "hello",
+  "params": {...}
+}`;
+
+const injectRequestCode = `{
+  "template": "Hello, @name!",
+  "runtime": { "name": "World" }
+}`;
+
+const versionActionCode = `{
+  "prompt": "hello",
+  "action": "bump_major"
+}`;
+
+const pythonClientCode = `from dot_prompt import Client
+
+client = Client("http://localhost:4041")
+
+result = client.render(
+    "concept_explanation",
+    params={
+        "pattern_step": 2,
+        "variation": "recognition"
+    },
+    runtime={
+        "user_input": "Can you give me an example?"
+    },
+    seed=42
+)
+
+result["prompt"]             # compiled string
+result["response_contract"]  # derived schema`;
+
+const errorResponseCode = `{
+  "error": "validation_error",
+  "message": "Parameter 'age' must be an integer",
+  "details": {...}
+}`;
 ---
 
 <DocsLayout 
@@ -13,7 +72,7 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
   </p>
 
   <h2>Base URL</h2>
-  <pre><code>{`http://localhost:4041`}</code></pre>
+  <CodeBlock code={baseUrlCode} language="bash" />
 
   <h2>Endpoints</h2>
 
@@ -21,40 +80,22 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
   <p>
     <code>POST /api/render</code> — Compile and inject in one call
   </p>
-  <pre><code>{`{
-  "prompt": "hello",
-  "params": {
-    "variation": "analogy"
-  },
-  "runtime": {
-    "user_input": "What is recursion?"
-  },
-  "seed": 42
-}`}</code></pre>
+  <CodeBlock code={renderRequestCode} language="json" />
 
   <h4>Response</h4>
-  <pre><code>{`{
-  "prompt": "...",
-  "response_contract": {...}
-}`}</code></pre>
+  <CodeBlock code={renderResponseCode} language="json" />
 
   <h3>Compile</h3>
   <p>
     <code>POST /api/compile</code> — Resolve control flow, return template
   </p>
-  <pre><code>{`{
-  "prompt": "hello",
-  "params": {...}
-}`}</code></pre>
+  <CodeBlock code={compileRequestCode} language="json" />
 
   <h3>Inject</h3>
   <p>
     <code>POST /api/inject</code> — Fill runtime variables into template
   </p>
-  <pre><code>{`{
-  "template": "Hello, @name!",
-  "runtime": { "name": "World" }
-}`}</code></pre>
+  <CodeBlock code={injectRequestCode} language="json" />
 
   <h3>Get Schema</h3>
   <p>
@@ -83,10 +124,7 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
   <p>
     <code>POST /api/version</code> — Trigger version action
   </p>
-  <pre><code>{`{
-  "prompt": "hello",
-  "action": "bump_major"
-}`}</code></pre>
+  <CodeBlock code={versionActionCode} language="json" />
 
   <h3>Webhooks</h3>
   <p>
@@ -94,31 +132,10 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
   </p>
 
   <h2>Python Client</h2>
-  <pre><code>{`from dot_prompt import Client
-
-client = Client("http://localhost:4041")
-
-result = client.render(
-    "concept_explanation",
-    params={
-        "pattern_step": 2,
-        "variation": "recognition"
-    },
-    runtime={
-        "user_input": "Can you give me an example?"
-    },
-    seed=42
-)
-
-result["prompt"]             # compiled string
-result["response_contract"]  # derived schema`}</code></pre>
+  <CodeBlock code={pythonClientCode} language="python" />
 
   <h2>Error Responses</h2>
-  <pre><code>{`{
-  "error": "validation_error",
-  "message": "Parameter 'age' must be an integer",
-  "details": {...}
-}`}</code></pre>
+  <CodeBlock code={errorResponseCode} language="json" />
 
   <h2>Next Steps</h2>
   <ul>

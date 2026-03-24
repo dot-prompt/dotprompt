@@ -1,7 +1,7 @@
 <button
   id="theme-toggle"
   type="button"
-  class="rounded-lg p-2 text-[var(--color-text-muted)] hover:bg-[var(--color-surface)] focus:outline-none focus:ring-2 focus:ring-primary-500 transition-colors"
+  class="rounded p-2 text-[var(--color-text-muted)] hover:bg-[var(--color-surface)] transition-colors"
   aria-label="Toggle theme"
 >
   <svg id="sun-icon" class="hidden h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -13,23 +13,25 @@
 </button>
 
 <script is:inline>
-  const theme = (() => {
-    if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-      return localStorage.getItem('theme');
+  (() => {
+    const theme = (() => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+        return localStorage.getItem('theme');
+      }
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return 'dark';
+      }
+      return 'light';
+    })();
+
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
     }
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return 'dark';
-    }
-    return 'light';
+
+    window.localStorage.setItem('theme', theme);
   })();
-
-  if (theme === 'dark') {
-    document.documentElement.classList.add('dark');
-  } else {
-    document.documentElement.classList.remove('dark');
-  }
-
-  window.localStorage.setItem('theme', theme);
 </script>
 
 <script>
@@ -59,11 +61,19 @@
     updateIcons();
   };
 
-  document.addEventListener('DOMContentLoaded', () => {
+  const setupThemeToggle = () => {
     updateIcons();
     const themeToggle = document.getElementById('theme-toggle');
     if (themeToggle) {
+      // Avoid adding multiple listeners if setup runs multiple times
+      themeToggle.removeEventListener('click', handleToggleClick);
       themeToggle.addEventListener('click', handleToggleClick);
     }
-  });
+  };
+
+  // Run immediately (modules run after the DOM is ready)
+  setupThemeToggle();
+
+  // Also support view transitions if added later
+  document.addEventListener('astro:page-load', setupThemeToggle);
 </script>

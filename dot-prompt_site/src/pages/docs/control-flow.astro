@@ -1,5 +1,51 @@
 ---
 import DocsLayout from '../../layouts/DocsLayout.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+
+const ifElseCode = `if @is_premium is true do
+This is premium content.
+You get extra details.
+else
+This is free content.
+Upgrade to premium for more!
+end @is_premium`;
+
+const chainedCode = `if @age below 18 do
+You must be 18+ to use this.
+elif @age below 21 do
+Some features restricted.
+else
+Full access granted.
+end @age`;
+
+const caseCode = `case @tier do
+free: Basic support only.
+pro: Priority support during business hours.
+enterprise: 24/7 dedicated support.
+end @tier`;
+
+const caseIntCode = `case @step do
+1: Start with the basics.
+2: Build on step 1.
+3: Add more complexity.
+4: Refine your approach.
+5: Complete the process.
+end @step`;
+
+const varyCode = `vary @variation do
+version_a: Try this approach first.
+version_b: Try this alternative.
+version_c: Here is another way.
+end @variation`;
+
+const compileCode = `# Input: tier=pro, is_premium=true
+case @tier do
+free: Basic support.
+pro: Priority support during business hours.
+enterprise: 24/7 dedicated support.
+end @tier`;
+
+const compiledOutput = `Priority support during business hours.`;
 ---
 
 <DocsLayout 
@@ -17,13 +63,7 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
     Use <code>if</code> for conditional content:
   </p>
 
-  <pre><code>if @is_premium is true do
-This is premium content.
-You get extra details.
-else
-This is free content.
-Upgrade to premium for more!
-end @is_premium</code></pre>
+  <CodeBlock code={ifElseCode} language="dotprompt" />
 
   <h3>Operators</h3>
   <table>
@@ -66,44 +106,24 @@ end @is_premium</code></pre>
   </table>
 
   <h3>Chained Conditions</h3>
-  <pre><code>if @age below 18 do
-You must be 18+ to use this.
-elif @age below 21 do
-Some features restricted.
-else
-Full access granted.
-end @age</code></pre>
+  <CodeBlock code={chainedCode} language="dotprompt" />
 
   <h2>Case</h2>
   <p>
     Use <code>case</code> for deterministic branch selection based on enum values:
   </p>
 
-  <pre><code>case @tier do
-free: Basic support only.
-pro: Priority support during business hours.
-enterprise: 24/7 dedicated support.
-end @tier</code></pre>
+  <CodeBlock code={caseCode} language="dotprompt" />
 
   <h3>With Bounded Integers</h3>
-  <pre><code>case @step do
-1: Start with the basics.
-2: Build on step 1.
-3: Add more complexity.
-4: Refine your approach.
-5: Complete the process.
-end @step</code></pre>
+  <CodeBlock code={caseIntCode} language="dotprompt" />
 
   <h2>Vary</h2>
   <p>
     Use <code>vary</code> for random or seeded variation. Perfect for A/B testing or adding variety:
   </p>
 
-  <pre><code>vary @variation do
-version_a: Try this approach first.
-version_b: Try this alternative.
-version_c: Here is another way.
-end @variation</code></pre>
+  <CodeBlock code={varyCode} language="dotprompt" />
 
   <p>
     Pass a <code>seed</code> parameter to get deterministic results. Without seed, each call selects randomly.
@@ -114,18 +134,13 @@ end @variation</code></pre>
     All control flow resolves at compile time. The LLM receives only the selected branch:
   </p>
 
-  <pre><code># Input: tier=pro, is_premium=true
-case @tier do
-free: Basic support.
-pro: Priority support during business hours.
-enterprise: 24/7 dedicated support.
-end @tier</code></pre>
+  <CodeBlock code={compileCode} language="dotprompt" />
 
   <p>
     Compiles to:
   </p>
 
-  <pre><code>Priority support during business hours.</code></pre>
+  <CodeBlock code={compiledOutput} language="dotprompt" />
 
   <h2>Next Steps</h2>
   <ul>

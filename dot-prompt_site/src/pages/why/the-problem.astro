@@ -52,7 +52,7 @@ const chaosExample = `project/
         <p class="text-[var(--color-text-muted)] mb-6">
           Without a dedicated format, prompts end up as f-strings in Python, template literals in JS, or markdown files scattered across the repo. There's no single source of truth.
         </p>
-        <CodeBlock code={chaosExample} title="The typical project structure" />
+        <CodeBlock code={chaosExample} title="The typical project structure" language="text" />
       </div>
     </div>
   </section>
@@ -64,7 +64,7 @@ const chaosExample = `project/
         <p class="text-[var(--color-text-muted)] mb-6">
           Conditional logic lives in your application code, not your prompt. Change a prompt, and you need a developer to update the code. Non-technical team members can't iterate.
         </p>
-        <CodeBlock code={fstringExample} title="prompts.py" />
+        <CodeBlock code={fstringExample} title="prompts.py" language="python" />
       </div>
     </div>
   </section>

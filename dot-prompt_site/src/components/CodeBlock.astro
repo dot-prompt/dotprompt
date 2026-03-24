@@ -10,31 +10,70 @@ interface Props {
 
 const { code, language = 'elixir', title, showLineNumbers = false } = Astro.props;
 
-const html = await codeToHtml(code, {
-  lang: language,
-  themes: {
-    light: 'github-light',
-    dark: 'github-dark',
-  },
-  defaultColor: 'light',
-});
+let html: string;
+
+if (language === 'dotprompt') {
+  const tokens = highlightDotPrompt(code);
+  html = `<pre class="astro-code">${tokens}</pre>`;
+} else {
+  html = await codeToHtml(code, {
+    lang: language,
+    themes: {
+      light: 'github-light',
+      dark: 'github-dark',
+    },
+    defaultColor: 'light',
+  });
+}
+
+function highlightDotPrompt(code: string): string {
+  const lines = code.split('\n');
+  return lines.map(line => {
+    let highlighted = escapeHtml(line);
+    
+    // Keywords: case, end, init, response, def, params, vary, if, do
+    highlighted = highlighted.replace(/\b(case|end|init|response|def|params|vary|if|do)\b/g, '<span class="token-keyword">$1</span>');
+    
+    // Case labels: word before colon (e.g., "analogy:" "recognition:")
+    highlighted = highlighted.replace(/^(\s*)(\w+)(:)/gm, '$1<span class="token-label">$2</span>$3');
+    
+    highlighted = highlighted.replace(/(@\w+)/g, '<span class="token-variable">$1</span>');
+    
+    highlighted = highlighted.replace(/\b(true|false)\b/g, '<span class="token-boolean">$1</span>');
+    
+    highlighted = highlighted.replace(/(#.*)$/g, '<span class="token-comment">$1</span>');
+    
+    highlighted = highlighted.replace(/(\{\{[^}]+\}\})/g, '<span class="token-interpolation">$1</span>');
+    
+    highlighted = highlighted.replace(/(\{[^}]+\})/g, '<span class="token-braces">$1</span>');
+    
+    return `<code>${highlighted}</code>`;
+  }).join('\n');
+}
+
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
 ---
 
-<div class="group relative my-4">
+<div class="group relative my-6">
   {title && (
-    <div class="rounded-t-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2 text-sm font-mono text-[var(--color-text-muted)]">
+    <div class="border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2 text-xs font-mono text-[var(--color-text-muted)] uppercase tracking-wide">
       {title}
     </div>
   )}
   <div class="relative">
     <div class:list={[
-      'overflow-x-auto rounded-lg border border-[var(--color-border)] [&>pre]:p-4 [&>pre]:m-0 [&>pre]:overflow-x-auto [&>pre]:text-sm [&>pre]:font-mono',
-      title ? '[&>div]:rounded-t-none [&>div]:border-t-0' : '[&>div]:rounded-lg'
+      'overflow-x-auto border border-t-0 border-[var(--color-border)] [&>pre]:m-0 [&>pre]:overflow-x-auto [&>pre]:text-sm [&>pre]:font-mono',
+      title ? '' : '[&>div]:rounded-none'
     ]}>
       <div set:html={html} />
     </div>
     <button
-      class="copy-button absolute right-2 top-2 rounded bg-[var(--color-surface)] px-2 py-1 text-xs text-[var(--color-text-muted)] opacity-0 transition-opacity hover:bg-[var(--color-border)] group-hover:opacity-100"
+      class="copy-button absolute right-2 top-2 bg-[var(--color-surface)] px-2 py-1 text-xs text-[var(--color-text-muted)] opacity-0 transition-opacity hover:bg-[var(--color-border)] group-hover:opacity-100"
       aria-label="Copy code"
     >
       Copy
@@ -58,25 +97,94 @@ const html = await codeToHtml(code, {
 </script>
 
 <style is:global>
-  .astro-code,
-  .astro-code > pre,
-  .astro-code > pre > code {
-    background-color: #f8fafc !important;
-  }
-  :root.dark .astro-code,
-  :root.dark .astro-code > pre,
-  :root.dark .astro-code > pre > code {
-    background-color: #1e293b !important;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not(.light) .astro-code,
-    :root:not(.light) .astro-code > pre,
-    :root:not(.light) .astro-code > pre > code {
-      background-color: #1e293b !important;
-    }
-  }
-  /* Allow Shiki to set colors but ensure pre doesn't lose indentation */
+  /* Shiki / Astro Code Theme Management */
+  .shiki,
   .astro-code {
+    background-color: var(--shiki-light-bg) !important;
+    color: var(--shiki-light) !important;
+  }
+  
+  /* In dark mode, swap to shiki-dark variables */
+  .dark .shiki,
+  .dark .astro-code {
+    background-color: var(--shiki-dark-bg) !important;
+    color: var(--shiki-dark) !important;
+  }
+
+  /* Specific token overrides for dark mode */
+  .dark .shiki span,
+  .dark .astro-code span {
+    color: var(--shiki-dark) !important;
+    /* Inherit font styles unless shiki-dark-font-style is defined */
+    font-style: var(--shiki-dark-font-style, inherit) !important;
+    font-weight: var(--shiki-dark-font-weight, inherit) !important;
+    text-decoration: var(--shiki-dark-text-decoration, inherit) !important;
+  }
+
+  /* Ensure pre doesn't lose indentation and has correct display */
+  pre.shiki,
+  pre.astro-code {
     white-space: pre !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 1.25rem 2rem !important;
+  }
+
+  /* DotPrompt base text color */
+  pre.astro-code > code {
+    color: #24292e !important;
+  }
+  .dark pre.astro-code > code {
+    color: #e1e4e8 !important;
+  }
+
+  /* DotPrompt custom highlighting */
+  .token-keyword {
+    color: #7c3aed;
+    font-weight: 600;
+  }
+  .token-label {
+    color: #0891b2;
+    font-weight: 500;
+  }
+  .token-variable {
+    color: #c2410c;
+    font-weight: 500;
+  }
+  .token-boolean {
+    color: #047857;
+  }
+  .token-comment {
+    color: #737373;
+    font-style: normal;
+  }
+  .token-interpolation {
+    color: #be123c;
+    font-weight: 500;
+  }
+  .token-braces {
+    color: #0f766e;
+  }
+
+  html.dark .token-keyword {
+    color: #a78bfa !important;
+  }
+  html.dark .token-label {
+    color: #22d3ee !important;
+  }
+  html.dark .token-variable {
+    color: #fb923c !important;
+  }
+  html.dark .token-boolean {
+    color: #34d399 !important;
+  }
+  html.dark .token-comment {
+    color: #a3a3a3 !important;
+  }
+  html.dark .token-interpolation {
+    color: #fb7185 !important;
+  }
+  html.dark .token-braces {
+    color: #2dd4bf !important;
   }
 </style>

@@ -1,5 +1,40 @@
 ---
 import DocsLayout from '../../layouts/DocsLayout.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+
+const dockerCommand = `docker run -v ./prompts:/app/priv/prompts \\
+  -p 4040:4040 -p 4041:4041 \\
+  dotprompt/server`;
+
+const firstPromptCode = `init do
+  @version: 1.0
+  @major: 1
+
+  def:
+    mode: greeting
+    description: A friendly greeting.
+
+  params:
+    @name: str -> The user's name
+
+end init
+
+Hello, @name! Welcome to our app.`;
+
+const curlCommand = `curl -X POST http://localhost:4041/api/render \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "prompt": "hello",
+    "runtime": { "name": "World" }
+  }'`;
+
+const jsonResponse = `{
+  "prompt": "Hello, World! Welcome to our app.",
+  "response_contract": {
+    "type": "object",
+    "properties": {}
+  }
+}`;
 ---
 
 <DocsLayout 
@@ -23,9 +58,7 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
     The fastest way to get started is using our Docker container:
   </p>
 
-  <pre><code>{`docker run -v ./prompts:/app/priv/prompts \
-  -p 4040:4040 -p 4041:4041 \
-  dotprompt/server`}</code></pre>
+  <CodeBlock code={dockerCommand} language="bash" />
 
   <h3>What you get:</h3>
   <ul>
@@ -40,44 +73,20 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
     Create a file called <code>hello.prompt</code> in your prompts folder:
   </p>
 
-  <pre><code>{`init do
-  @version: 1.0
-  @major: 1
-
-  def:
-    mode: greeting
-    description: A friendly greeting.
-
-  params:
-    @name: str -> The user's name
-
-end init
-
-Hello, @name! Welcome to our app.`}</code></pre>
+  <CodeBlock code={firstPromptCode} language="dotprompt" />
 
   <h2>Compile and Render</h2>
   <p>
     Call the API to compile the prompt:
   </p>
 
-  <pre><code>{`curl -X POST http://localhost:4041/api/render \
-  -H "Content-Type: application/json" \
-  -d '{
-    "prompt": "hello",
-    "runtime": { "name": "World" }
-  }'`}</code></pre>
+  <CodeBlock code={curlCommand} language="bash" />
 
   <p>
     Response:
   </p>
 
-  <pre><code>{`{
-  "prompt": "Hello, World! Welcome to our app.",
-  "response_contract": {
-    "type": "object",
-    "properties": {}
-  }
-}`}</code></pre>
+  <CodeBlock code={jsonResponse} language="json" />
 
   <h2>Next Steps</h2>
   <ul>

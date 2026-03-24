@@ -1,5 +1,31 @@
 ---
 import DocsLayout from '../../layouts/DocsLayout.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+
+const stringParamCode = `params:
+  @user_name: str`;
+
+const integerParamCode = `params:
+  @age: int`;
+
+const boundedIntCode = `params:
+  @step: int[1..5]`;
+
+const boolParamCode = `params:
+  @is_premium: bool = false`;
+
+const enumParamCode = `params:
+  @tier: enum[free, pro, enterprise] = free`;
+
+const listParamCode = `params:
+  @skills: list[communication, analysis, creativity]`;
+
+const defaultParamCode = `params:
+  @depth: enum[shallow, medium, deep] = medium`;
+
+const docParamCode = `params:
+  @name: str -> The user's display name
+  @age: int[18..120] -> User's age (must be 18+)`;
 ---
 
 <DocsLayout 
@@ -66,43 +92,34 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
   <h2>Examples</h2>
 
   <h3>String</h3>
-  <pre><code>params:
-  @user_name: str</code></pre>
+  <CodeBlock code={stringParamCode} language="dotprompt" />
 
   <h3>Integer</h3>
-  <pre><code>params:
-  @age: int</code></pre>
+  <CodeBlock code={integerParamCode} language="dotprompt" />
 
   <h3>Bounded Integer (for loop control)</h3>
-  <pre><code>params:
-  @step: int[1..5]</code></pre>
+  <CodeBlock code={boundedIntCode} language="dotprompt" />
 
   <h3>Boolean</h3>
-  <pre><code>params:
-  @is_premium: bool = false</code></pre>
+  <CodeBlock code={boolParamCode} language="dotprompt" />
 
   <h3>Enum</h3>
-  <pre><code>params:
-  @tier: enum[free, pro, enterprise] = free</code></pre>
+  <CodeBlock code={enumParamCode} language="dotprompt" />
 
   <h3>List</h3>
-  <pre><code>params:
-  @skills: list[communication, analysis, creativity]</code></pre>
+  <CodeBlock code={listParamCode} language="dotprompt" />
 
   <h2>Defaults</h2>
   <p>
     Parameters can have default values:
   </p>
-  <pre><code>params:
-  @depth: enum[shallow, medium, deep] = medium</code></pre>
+  <CodeBlock code={defaultParamCode} language="dotprompt" />
 
   <h2>Documentation</h2>
   <p>
     Add documentation with <code>-&gt;</code>:
   </p>
-  <pre><code>params:
-  @name: str -> The user's display name
-  @age: int[18..120] -> User's age (must be 18+)</code></pre>
+  <CodeBlock code={docParamCode} language="dotprompt" />
 
   <h2>Next Steps</h2>
   <ul>
