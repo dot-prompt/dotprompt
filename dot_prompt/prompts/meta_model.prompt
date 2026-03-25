@@ -7,8 +7,7 @@ init do
 
   params:
     @conversation: str -> the conversation or statement to analyze
-    @focus_areas: list[Deleted Information, Generalizations, Distortions, Unspecified Verbs, Nominalizations]
-      -> which meta-model categories to focus on
+    @focus_areas: enum[Deleted Information, Generalizations, Distortions, Unspecified Verbs, Nominalizations] -> which meta-model categories to focus on
 
   docs do
     The Meta-Model is a set of linguistic patterns from NLP that identifies

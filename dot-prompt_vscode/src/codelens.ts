@@ -13,7 +13,7 @@ const codeLensProvider = {
     _token: vscode.CancellationToken
   ): vscode.ProviderResult<vscode.CodeLens[]> {
     // Only provide CodeLens for .prompt files
-    if (document.languageId !== 'prompt') {
+    if (document.languageId !== 'dot-prompt') {
       return [];
     }
 

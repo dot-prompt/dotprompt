@@ -74,7 +74,7 @@ async function compileCommand(document) {
         vscode.window.showErrorMessage('No .prompt file open');
         return;
     }
-    if (activeDoc.languageId !== 'prompt') {
+    if (activeDoc.languageId !== 'dot-prompt') {
         vscode.window.showErrorMessage('Not a .prompt file');
         return;
     }
@@ -119,7 +119,7 @@ async function openCompiledViewCommand(document) {
         vscode.window.showErrorMessage('No .prompt file open');
         return;
     }
-    if (activeDoc.languageId !== 'prompt') {
+    if (activeDoc.languageId !== 'dot-prompt') {
         vscode.window.showErrorMessage('Not a .prompt file');
         return;
     }
@@ -159,10 +159,12 @@ function registerCommands(context) {
  * Set up auto-compile on save
  */
 function setupAutoCompile(context) {
-    context.subscriptions.push(vscode.workspace.onDidSaveTextDocument((document) => {
-        if (document.languageId !== 'prompt') {
+    context.subscriptions.push(vscode.workspace.onDidSaveTextDocument(async (document) => {
+        if (document.languageId !== 'dot-prompt') {
             return;
         }
+        // Check if formatting is needed (already handled by VS Code formatOnSave,
+        // but we wait a tiny bit to ensure it finished or trigger it if needed)
         const config = vscode.workspace.getConfiguration('dotPrompt');
         const autoCompile = config.get('autoCompile');
         if (autoCompile && exports.diagnosticsProvider) {

@@ -4,6 +4,7 @@
   "description": "VS Code extension for .prompt files with server-backed compilation and compiled view webview",
   "version": "0.1.0",
   "publisher": "dot-prompt",
+  "icon": "./icons/prompt-icon.png",
   "engines": {
     "vscode": "^1.75.0"
   },
@@ -11,23 +12,42 @@
     "Other",
     "Programming Languages"
   ],
-  "activationEvents": [
-    "onLanguage:prompt",
-    "onCommand:dot-prompt.compile",
-    "onCommand:dot-prompt.openCompiledView"
-  ],
   "main": "./out/extension.js",
   "contributes": {
     "languages": [
       {
-        "id": "prompt",
+        "id": "dot-prompt",
         "aliases": [
+          "dot-prompt",
+          "DotPrompt",
           "Prompt",
           "prompt"
         ],
         "extensions": [
           ".prompt"
-        ]
+        ],
+        "firstLine": "^init\\s+do",
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./icons/prompt-icon.png",
+          "dark": "./icons/prompt-icon.png"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "dot-prompt",
+        "scopeName": "source.prompt",
+        "path": "./syntaxes/prompt.tmLanguage.json"
+      }
+    ],
+    "themeSemanticHighlighting": true,
+    "semanticHighlighting": true,
+    "themes": [
+      {
+        "label": "dot-prompt",
+        "path": "./themes/prompt-color-theme.json",
+        "uiTheme": "vs-dark"
       }
     ],
     "commands": [
@@ -59,6 +79,15 @@
           "description": "Delay in milliseconds before auto-compile"
         }
       }
+    },
+    "configurationDefaults": {
+      "[dot-prompt]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "dot-prompt.dot-prompt"
+      },
+      "files.associations": {
+        "*.prompt": "dot-prompt"
+      }
     }
   },
   "scripts": {
@@ -74,6 +103,5 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "vscode": "^1.1.37"
   }
 }

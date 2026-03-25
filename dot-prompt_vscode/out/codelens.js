@@ -41,7 +41,7 @@ const vscode = __importStar(require("vscode"));
 const codeLensProvider = {
     provideCodeLenses(document, _token) {
         // Only provide CodeLens for .prompt files
-        if (document.languageId !== 'prompt') {
+        if (document.languageId !== 'dot-prompt') {
             return [];
         }
         const codeLenses = [];

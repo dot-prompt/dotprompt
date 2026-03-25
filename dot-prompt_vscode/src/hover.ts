@@ -18,7 +18,7 @@ export class HoverProvider {
     position: vscode.Position
   ): Promise<vscode.Hover | null> {
     // Only provide hover for .prompt files
-    if (document.languageId !== 'prompt') {
+    if (document.languageId !== 'dot-prompt') {
       return null;
     }
 

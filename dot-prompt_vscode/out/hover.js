@@ -49,7 +49,7 @@ class HoverProvider {
      */
     async provideHover(document, position) {
         // Only provide hover for .prompt files
-        if (document.languageId !== 'prompt') {
+        if (document.languageId !== 'dot-prompt') {
             return null;
         }
         const prompt = document.getText();

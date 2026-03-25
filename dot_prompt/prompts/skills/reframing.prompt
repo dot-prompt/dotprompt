@@ -2,18 +2,18 @@ init do
   @version: 1
 
   def:
-    mode: fragment
-    description: Reframing technique for changing perspective on situations
+  mode: fragment
+  description: Reframing technique for changing perspective on situations
     match: Reframing
 
-  docs do
-    Reframing is an NLP technique that changes the meaning or context assigned to
-    a situation without changing the facts. By shifting the frame, the same
-    situation can produce entirely different emotional responses and behaviors.
+    docs do
+      Reframing is an NLP technique that changes the meaning or context assigned to
+      a situation without changing the facts. By shifting the frame, the same
+      situation can produce entirely different emotional responses and behaviors.
 
-    The "Six-Step Reframe" provides a complete process for identifying limiting
-    frames and establishing more empowering alternatives.
-  end docs
+      The "Six-Step Reframe" provides a complete process for identifying limiting
+      frames and establishing more empowering alternatives.
+    end docs
 
 end init
 

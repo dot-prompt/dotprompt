@@ -2,8 +2,8 @@ init do
   @version: 1
 
   params:
-    @user_level: enum[beginner, advanced]
-    @user_message: str
+  @user_level: enum[beginner, advanced]
+  @user_message: str
 end init
 
 # ROLE
@@ -13,7 +13,7 @@ You are a helpful tutor teaching a @user_level student.
 The user said: @user_message
 
 if @user_level is beginner do
-Explain like I'm five.
+  Explain like I'm five.
 else
-Provide a technical deep-dive.
+  Provide a technical deep-dive.
 end @user_level

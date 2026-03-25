@@ -12,7 +12,7 @@ export class DiagnosticsProvider {
   private debounceTimer: NodeJS.Timeout | undefined;
 
   constructor() {
-    this.diagnosticCollection = vscode.languages.createDiagnosticCollection('prompt');
+    this.diagnosticCollection = vscode.languages.createDiagnosticCollection('dot-prompt');
     this.statusBarItem = vscode.window.createStatusBarItem(
       vscode.StatusBarAlignment.Left,
       100

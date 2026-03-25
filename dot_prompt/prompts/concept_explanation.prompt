@@ -2,38 +2,38 @@ init do
   @version: 1
 
   def:
-    mode: explanation
-    description: Teacher mode — explanation phase with dynamic depth control.
+  mode: explanation
+  description: Teacher mode — explanation phase with dynamic depth control.
 
-  params:
+    params:
     @skill_names: list[Milton Model, Meta Model, Anchoring, Reframing]
-      -> skills to load, must match declared skills in skills collection
+    -> skills to load, must match declared skills in skills collection
     @pattern_step: int[1..3] = 1 -> current step in the teaching sequence
     @variation: enum[analogy, recognition, story]
-      -> teaching track selected for the session
+    -> teaching track selected for the session
     @answer_depth: enum[shallow, medium, deep] = medium -> depth of question answers
     @if_input_mode_question: bool = false -> true when user has asked a question
     @user_message: str -> the user's current message
     @user_level: enum[beginner, intermediate, advanced] = intermediate -> user experience level
     @intro_style: enum[formal, curious]
-      -> opening variation selected by runtime
+    -> opening variation selected by runtime
     @closing_style: enum[exercise, reflection]
-      -> closing variation selected by runtime
+    -> closing variation selected by runtime
 
-  fragments:
+    fragments:
     {skill_context}: static from: skills
-      match: @skill_names
-      -> loads and composites all matching skill definitions
+    match: @skill_names
+    -> loads and composites all matching skill definitions
     {{user_history}}: dynamic
-      -> recent conversation history for context
+    -> recent conversation history for context
 
-  docs do
-    Teaches NLP skills using a structured multi-turn pattern.
-    Variation track is selected once per session and held constant.
-    Increment @pattern_step each turn.
-    Set @if_input_mode_question true when user asks an off-pattern question.
-    @skill_names must match declared skills in the skills collection.
-  end docs
+    docs do
+      Teaches NLP skills using a structured multi-turn pattern.
+      Variation track is selected once per session and held constant.
+      Increment @pattern_step each turn.
+      Set @if_input_mode_question true when user asks an off-pattern question.
+      @skill_names must match declared skills in the skills collection.
+    end docs
 
 end init
 
@@ -47,72 +47,72 @@ User history:
 
 if @if_input_mode_question is true do
 
-STOP TEACHING FLOW. Answer the user's question directly.
+  STOP TEACHING FLOW. Answer the user's question directly.
 
-The user asked: @user_message
+  The user asked: @user_message
 
-HOW TO ANSWER:
-case @answer_depth do
-shallow: Shallow Answer
-1-2 sentences answering exactly what they asked.
+  HOW TO ANSWER:
+  case @answer_depth do
+    shallow: Shallow Answer
+      1-2 sentences answering exactly what they asked.
 
-medium: Medium Answer
-Explanation + 1 relevant example from the context.
+    medium: Medium Answer
+      Explanation + 1 relevant example from the context.
 
-deep: Deep Answer
-Full explanation with multiple examples from the context.
-end @answer_depth
+    deep: Deep Answer
+      Full explanation with multiple examples from the context.
+  end @answer_depth
 
-Rules:
-- Do not continue the teaching pattern.
-- Answer naturally, acknowledging their question.
+  Rules:
+    - Do not continue the teaching pattern.
+    - Answer naturally, acknowledging their question.
 
 else
 
-vary @intro_style do
-formal: Begin by grounding the user in what they are about to learn.
-curious: Begin with a question that creates productive curiosity.
-end @intro_style
+  vary @intro_style do
+    formal: Begin by grounding the user in what they are about to learn.
+    curious: Begin with a question that creates productive curiosity.
+  end @intro_style
 
-case @variation do
-analogy: #Analogy Track
-case @pattern_step do
-1: Opening Anchor
-Introduce @skill_names with a single real-world analogy.
-Do not define it formally yet. Let the analogy do the work.
-2: Deepening the Frame
-Build on the analogy from step 1. Layer in the formal definition.
-3: Concrete Examples
-Give 2 examples of @skill_names. First obvious, second subtle.
-end @pattern_step
+  case @variation do
+    analogy: #Analogy Track
+      case @pattern_step do
+        1: Opening Anchor
+          Introduce @skill_names with a single real-world analogy.
+          Do not define it formally yet. Let the analogy do the work.
+        2: Deepening the Frame
+          Build on the analogy from step 1. Layer in the formal definition.
+        3: Concrete Examples
+          Give 2 examples of @skill_names. First obvious, second subtle.
+      end @pattern_step
 
-recognition: #Recognition Track
-case @pattern_step do
-1: Opening Anchor
-Open with a question that makes the user realise they already use @skill_names.
-2: Deepening the Frame
-Return to the user's own recognition. Use their words to introduce the formal framing.
-3: Concrete Examples
-Ask the user to generate their own example first. Then offer one refinement.
-end @pattern_step
+      recognition: #Recognition Track
+        case @pattern_step do
+          1: Opening Anchor
+            Open with a question that makes the user realise they already use @skill_names.
+          2: Deepening the Frame
+            Return to the user's own recognition. Use their words to introduce the formal framing.
+          3: Concrete Examples
+            Ask the user to generate their own example first. Then offer one refinement.
+        end @pattern_step
 
-story: #Story Track
-case @pattern_step do
-1: Opening Anchor
-Start with a brief story where @skill_names changed the outcome of a conversation.
-2: Deepening the Frame
-Extend the story. Show how @skill_names was operating beneath the surface.
-3: Concrete Examples
-Show @skill_names being used poorly then well. Ask what changed.
-end @pattern_step
+        story: #Story Track
+          case @pattern_step do
+            1: Opening Anchor
+              Start with a brief story where @skill_names changed the outcome of a conversation.
+            2: Deepening the Frame
+              Extend the story. Show how @skill_names was operating beneath the surface.
+            3: Concrete Examples
+              Show @skill_names being used poorly then well. Ask what changed.
+          end @pattern_step
 
-end @variation
+        end @variation
 
-@user_message
+        @user_message
 
-vary @closing_style do
-exercise: End with a practical exercise for the user to try.
-reflection: End with a reflective question that deepens the learning.
-end @closing_style
+        vary @closing_style do
+          exercise: End with a practical exercise for the user to try.
+          reflection: End with a reflective question that deepens the learning.
+        end @closing_style
 
-end @if_input_mode_question
+      end @if_input_mode_question

@@ -17,6 +17,7 @@ import {
   codeLensProvider
 } from './commands';
 import { CompiledViewPanel } from './webview/compiledView';
+import { DotPromptFormattingProvider } from './formatter';
 
 /**
  * Called when the extension is activated
@@ -36,6 +37,20 @@ export function activate(context: vscode.ExtensionContext): void {
   // Register language providers
   registerLanguageProviders(context);
 
+  // Register formatting provider
+  const formattingProvider = new DotPromptFormattingProvider();
+  const formattingProviderRegistration = vscode.languages.registerDocumentFormattingEditProvider(
+    { language: 'dot-prompt', scheme: 'file' },
+    formattingProvider
+  );
+  context.subscriptions.push(formattingProviderRegistration);
+
+  const rangeFormattingProviderRegistration = vscode.languages.registerDocumentRangeFormattingEditProvider(
+    { language: 'dot-prompt', scheme: 'file' },
+    formattingProvider
+  );
+  context.subscriptions.push(rangeFormattingProviderRegistration);
+
   // Check server connection on startup
   checkServerConnection();
 
@@ -48,14 +63,14 @@ export function activate(context: vscode.ExtensionContext): void {
 function registerLanguageProviders(context: vscode.ExtensionContext): void {
   // Register HoverProvider
   const hoverProviderRegistration = vscode.languages.registerHoverProvider(
-    { language: 'prompt', scheme: 'file' },
+    { language: 'dot-prompt', scheme: 'file' },
     hoverProvider
   );
   context.subscriptions.push(hoverProviderRegistration);
 
   // Register CodeLensProvider
   const codeLensProviderRegistration = vscode.languages.registerCodeLensProvider(
-    { language: 'prompt', scheme: 'file' },
+    { language: 'dot-prompt', scheme: 'file' },
     codeLensProvider
   );
   context.subscriptions.push(codeLensProviderRegistration);
@@ -63,7 +78,7 @@ function registerLanguageProviders(context: vscode.ExtensionContext): void {
   // Register document open/switch handlers for diagnostics
   context.subscriptions.push(
     vscode.workspace.onDidOpenTextDocument((document) => {
-      if (document.languageId === 'prompt' && diagnosticsProvider) {
+      if (document.languageId === 'dot-prompt' && diagnosticsProvider) {
         diagnosticsProvider.triggerUpdate(document);
       }
     })
@@ -72,7 +87,7 @@ function registerLanguageProviders(context: vscode.ExtensionContext): void {
   // Register active editor change handler
   context.subscriptions.push(
     vscode.window.onDidChangeActiveTextEditor((editor) => {
-      if (editor && editor.document.languageId === 'prompt' && diagnosticsProvider) {
+      if (editor && editor.document.languageId === 'dot-prompt' && diagnosticsProvider) {
         diagnosticsProvider.triggerUpdate(editor.document);
       }
     })

@@ -41,7 +41,7 @@ const vscode = __importStar(require("vscode"));
 const api = __importStar(require("./api/client"));
 class DiagnosticsProvider {
     constructor() {
-        this.diagnosticCollection = vscode.languages.createDiagnosticCollection('prompt');
+        this.diagnosticCollection = vscode.languages.createDiagnosticCollection('dot-prompt');
         this.statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
         this.statusBarItem.text = 'dot-prompt: Ready';
         this.statusBarItem.show();

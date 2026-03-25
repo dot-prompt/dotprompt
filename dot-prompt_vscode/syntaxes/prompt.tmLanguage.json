@@ -1,0 +1,341 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "dot-prompt",
+  "scopeName": "source.prompt",
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#init-block"
+    },
+    {
+      "include": "#control-flow"
+    },
+    {
+      "include": "#fragments"
+    },
+    {
+      "include": "#variables"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#operators"
+    }
+  ],
+  "repository": {
+    "keywords": {
+      "patterns": [
+        {
+          "match": "\\b(init|do|end|if|elif|else|case|vary|def|params|fragments|docs|select|from|match|matchRe|limit|order|ascending|descending|all)\\b",
+          "name": "keyword.control.prompt"
+        }
+      ]
+    },
+    "comments": {
+      "match": "#.*$",
+      "name": "comment.line.number-sign.prompt"
+    },
+    "init-block": {
+      "begin": "\\b(init)\\s+(do)\\b",
+      "end": "\\b(end)\\s+(init)\\b",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.init.prompt"
+        },
+        "2": {
+          "name": "keyword.control.do.prompt"
+        }
+      },
+      "endCaptures": {
+        "1": {
+          "name": "keyword.control.end.prompt"
+        },
+        "2": {
+          "name": "keyword.control.init.prompt"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "match": "\\b(def|params|fragments|select)\\b:",
+          "name": "keyword.other.init.section.prompt"
+        },
+        {
+          "include": "#docs-block"
+        },
+        {
+          "include": "#param-declaration"
+        },
+        {
+          "include": "#fragment-declaration"
+        },
+        {
+          "include": "#variables"
+        },
+        {
+          "match": "@version:\\s*\\d+",
+          "name": "meta.version.prompt"
+        }
+      ]
+    },
+    "docs-block": {
+      "begin": "\\b(docs)\\s+(do)\\b",
+      "end": "\\b(end)\\s+(docs)\\b",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.docs.prompt"
+        },
+        "2": {
+          "name": "keyword.control.do.prompt"
+        }
+      },
+      "endCaptures": {
+        "1": {
+          "name": "keyword.control.end.prompt"
+        },
+        "2": {
+          "name": "keyword.control.docs.prompt"
+        }
+      },
+      "name": "comment.block.documentation.prompt"
+    },
+    "param-declaration": {
+      "patterns": [
+        {
+          "match": "\\s*(@\\w+)(:)\\s*([\\w\\s,.\\[\\]]+?)(\\s*(=)\\s*([^->\\n#]+))?(\\s*(->)\\s*([^#\\n]*))?(\\s*#.*)?$",
+          "captures": {
+            "1": {
+              "name": "variable.parameter.prompt"
+            },
+            "2": {
+              "name": "punctuation.separator.key-value.prompt"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "match": "\\b(str|int|bool|enum|list)\\b",
+                  "name": "storage.type.prompt"
+                },
+                {
+                  "match": "\\[|\\]",
+                  "name": "punctuation.bracket.prompt"
+                }
+              ]
+            },
+            "5": {
+              "name": "keyword.operator.assignment.prompt"
+            },
+            "6": {
+              "name": "string.unquoted.prompt"
+            },
+            "8": {
+              "name": "punctuation.definition.comment.prompt"
+            },
+            "9": {
+              "name": "comment.line.documentation.prompt"
+            }
+          }
+        }
+      ]
+    },
+    "fragment-declaration": {
+      "patterns": [
+        {
+          "match": "\\s*(\\{\\w+\\})(:)\\s*(static|dynamic)?\\s*(from):\\s*([\\w/-]+)(\\s*->\\s*.*)?(\\s*#.*)?$",
+          "captures": {
+            "1": {
+              "name": "variable.other.fragment.static.prompt"
+            },
+            "2": {
+              "name": "punctuation.separator.key-value.prompt"
+            },
+            "3": {
+              "name": "storage.modifier.prompt"
+            },
+            "4": {
+              "name": "keyword.other.fragment.from.prompt"
+            },
+            "5": {
+              "name": "string.other.path.prompt"
+            }
+          }
+        },
+        {
+          "match": "\\s*(\\{\\{\\w+\\}\\})(:)\\s*(static|dynamic)?\\s*(->\\s*.*)?(\\s*#.*)?$",
+          "captures": {
+            "1": {
+              "name": "variable.other.fragment.dynamic.prompt"
+            },
+            "2": {
+              "name": "punctuation.separator.key-value.prompt"
+            },
+            "3": {
+              "name": "storage.modifier.prompt"
+            }
+          }
+        },
+        {
+          "match": "\\b(match|matchRe|limit|order|ascending|descending|all)\\b:",
+          "name": "keyword.other.fragment.option.prompt"
+        }
+      ]
+    },
+    "control-flow": {
+      "patterns": [
+        {
+          "begin": "\\b(if)\\s+((@\\w+).*?)\\s+(do)\\b",
+          "end": "\\b(end)\\s+(\\3)\\b",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.conditional.prompt"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#variables"
+                },
+                {
+                  "include": "#operators"
+                }
+              ]
+            },
+            "4": {
+              "name": "keyword.control.do.prompt"
+            }
+          },
+          "endCaptures": {
+            "1": {
+              "name": "keyword.control.end.prompt"
+            },
+            "2": {
+              "name": "variable.other.prompt"
+            }
+          },
+          "patterns": [
+            {
+              "match": "\\b(elif)\\s+((@\\w+).*?)\\s+(do)\\b",
+              "captures": {
+                "1": {
+                  "name": "keyword.control.conditional.prompt"
+                },
+                "2": {
+                  "patterns": [
+                    {
+                      "include": "#variables"
+                    },
+                    {
+                      "include": "#operators"
+                    }
+                  ]
+                },
+                "4": {
+                  "name": "keyword.control.do.prompt"
+                }
+              }
+            },
+            {
+              "match": "\\belse\\b",
+              "name": "keyword.control.conditional.prompt"
+            },
+            {
+              "include": "#comments"
+            },
+            {
+              "include": "#control-flow"
+            },
+            {
+              "include": "#fragments"
+            },
+            {
+              "include": "#variables"
+            }
+          ]
+        },
+        {
+          "begin": "\\b(case|vary)\\s+(@\\w+)\\s+(do)\\b",
+          "end": "\\b(end)\\s+(\\2)\\b",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.block.prompt"
+            },
+            "2": {
+              "name": "variable.other.prompt"
+            },
+            "3": {
+              "name": "keyword.control.do.prompt"
+            }
+          },
+          "endCaptures": {
+            "1": {
+              "name": "keyword.control.end.prompt"
+            },
+            "2": {
+              "name": "variable.other.prompt"
+            }
+          },
+          "patterns": [
+            {
+              "match": "^\\s*([^:\\s]+):\\s*(#.*)$",
+              "captures": {
+                "1": {
+                  "name": "keyword.other.case.branch.prompt"
+                },
+                "2": {
+                  "name": "comment.line.number-sign.prompt"
+                }
+              }
+            },
+            {
+              "match": "^\\s*([^:\\s]+):\\s*(.*)$",
+              "captures": {
+                "1": {
+                  "name": "keyword.other.case.branch.prompt"
+                },
+                "2": {
+                  "name": "string.unquoted.label.prompt"
+                }
+              }
+            },
+            {
+              "include": "#comments"
+            },
+            {
+              "include": "#control-flow"
+            },
+            {
+              "include": "#fragments"
+            },
+            {
+              "include": "#variables"
+            }
+          ]
+        }
+      ]
+    },
+    "variables": {
+      "match": "@\\w+",
+      "name": "variable.other.prompt"
+    },
+    "fragments": {
+      "patterns": [
+        {
+          "match": "\\{\\{\\w+\\}\\}",
+          "name": "variable.other.fragment.dynamic.prompt"
+        },
+        {
+          "match": "\\{\\w+\\}",
+          "name": "variable.other.fragment.static.prompt"
+        }
+      ]
+    },
+    "operators": {
+      "match": "\\b(is|not|above|below|min|max|between|and)\\b",
+      "name": "keyword.operator.logical.prompt"
+    }
+  }
+}

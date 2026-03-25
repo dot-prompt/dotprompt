@@ -45,6 +45,7 @@ exports.activate = activate;
 exports.deactivate = deactivate;
 const vscode = __importStar(require("vscode"));
 const commands_1 = require("./commands");
+const formatter_1 = require("./formatter");
 /**
  * Called when the extension is activated
  */
@@ -58,6 +59,12 @@ function activate(context) {
     (0, commands_1.setupAutoCompile)(context);
     // Register language providers
     registerLanguageProviders(context);
+    // Register formatting provider
+    const formattingProvider = new formatter_1.DotPromptFormattingProvider();
+    const formattingProviderRegistration = vscode.languages.registerDocumentFormattingEditProvider({ language: 'dot-prompt', scheme: 'file' }, formattingProvider);
+    context.subscriptions.push(formattingProviderRegistration);
+    const rangeFormattingProviderRegistration = vscode.languages.registerDocumentRangeFormattingEditProvider({ language: 'dot-prompt', scheme: 'file' }, formattingProvider);
+    context.subscriptions.push(rangeFormattingProviderRegistration);
     // Check server connection on startup
     checkServerConnection();
     console.log('dot-prompt extension activated successfully');
@@ -67,20 +74,20 @@ function activate(context) {
  */
 function registerLanguageProviders(context) {
     // Register HoverProvider
-    const hoverProviderRegistration = vscode.languages.registerHoverProvider({ language: 'prompt', scheme: 'file' }, commands_1.hoverProvider);
+    const hoverProviderRegistration = vscode.languages.registerHoverProvider({ language: 'dot-prompt', scheme: 'file' }, commands_1.hoverProvider);
     context.subscriptions.push(hoverProviderRegistration);
     // Register CodeLensProvider
-    const codeLensProviderRegistration = vscode.languages.registerCodeLensProvider({ language: 'prompt', scheme: 'file' }, commands_1.codeLensProvider);
+    const codeLensProviderRegistration = vscode.languages.registerCodeLensProvider({ language: 'dot-prompt', scheme: 'file' }, commands_1.codeLensProvider);
     context.subscriptions.push(codeLensProviderRegistration);
     // Register document open/switch handlers for diagnostics
     context.subscriptions.push(vscode.workspace.onDidOpenTextDocument((document) => {
-        if (document.languageId === 'prompt' && commands_1.diagnosticsProvider) {
+        if (document.languageId === 'dot-prompt' && commands_1.diagnosticsProvider) {
             commands_1.diagnosticsProvider.triggerUpdate(document);
         }
     }));
     // Register active editor change handler
     context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor((editor) => {
-        if (editor && editor.document.languageId === 'prompt' && commands_1.diagnosticsProvider) {
+        if (editor && editor.document.languageId === 'dot-prompt' && commands_1.diagnosticsProvider) {
             commands_1.diagnosticsProvider.triggerUpdate(editor.document);
         }
     }));
