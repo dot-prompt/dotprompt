@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-  "name": "dot-prompt",
+  "name": ".prompt",
   "scopeName": "source.prompt",
   "patterns": [
     {
@@ -17,12 +17,6 @@
     },
     {
       "include": "#variables"
-    },
-    {
-      "include": "#keywords"
-    },
-    {
-      "include": "#operators"
     }
   ],
   "repository": {
@@ -146,42 +140,41 @@
     "fragment-declaration": {
       "patterns": [
         {
-          "match": "\\s*(\\{\\w+\\})(:)\\s*(static|dynamic)?\\s*(from):\\s*([\\w/-]+)(\\s*->\\s*.*)?(\\s*#.*)?$",
+          "match": "\\s*(\\{)(\\w+)(\\})(:)\\s*(static|dynamic)?\\s*(from):\\s*([\\w/-]+)(\\s*->\\s*.*)?(\\s*#.*)?$",
           "captures": {
-            "1": {
-              "name": "variable.other.fragment.static.prompt"
-            },
-            "2": {
-              "name": "punctuation.separator.key-value.prompt"
-            },
-            "3": {
-              "name": "storage.modifier.prompt"
-            },
-            "4": {
-              "name": "keyword.other.fragment.from.prompt"
-            },
-            "5": {
-              "name": "string.other.path.prompt"
-            }
+            "1": { "name": "punctuation.definition.variable.prompt" },
+            "2": { "name": "variable.other.fragment.static.prompt" },
+            "3": { "name": "punctuation.definition.variable.prompt" },
+            "4": { "name": "punctuation.separator.key-value.prompt" },
+            "5": { "name": "storage.modifier.prompt" },
+            "6": { "name": "keyword.other.fragment.from.prompt" },
+            "7": { "name": "string.other.path.prompt" }
           }
         },
         {
-          "match": "\\s*(\\{\\{\\w+\\}\\})(:)\\s*(static|dynamic)?\\s*(->\\s*.*)?(\\s*#.*)?$",
+          "match": "\\s*(\\{\\{)(\\w+)(\\}\\})(:)\\s*(static|dynamic)?\\s*(->\\s*.*)?(\\s*#.*)?$",
           "captures": {
-            "1": {
-              "name": "variable.other.fragment.dynamic.prompt"
-            },
-            "2": {
-              "name": "punctuation.separator.key-value.prompt"
-            },
-            "3": {
-              "name": "storage.modifier.prompt"
-            }
+            "1": { "name": "punctuation.definition.variable.prompt" },
+            "2": { "name": "variable.other.fragment.dynamic.prompt" },
+            "3": { "name": "punctuation.definition.variable.prompt" },
+            "4": { "name": "punctuation.separator.key-value.prompt" },
+            "5": { "name": "storage.modifier.prompt" }
           }
         },
         {
-          "match": "\\b(match|matchRe|limit|order|ascending|descending|all)\\b:",
+          "match": "\\b(match|matchRe|limit|order|ascending|descending|all)\\b(:)\\s*(.*)?$",
+          "captures": {
+            "1": { "name": "keyword.other.fragment.option.prompt" },
+            "2": { "name": "punctuation.separator.key-value.prompt" },
+            "3": { "name": "string.other.option.prompt" }
+          }
+        },
+        {
+          "match": "\\b(match|matchRe|limit|order|ascending|descending|all)\\b",
           "name": "keyword.other.fragment.option.prompt"
+        },
+        {
+          "include": "#comments"
         }
       ]
     },
@@ -324,12 +317,20 @@
     "fragments": {
       "patterns": [
         {
-          "match": "\\{\\{\\w+\\}\\}",
-          "name": "variable.other.fragment.dynamic.prompt"
+          "match": "(\\{\\{)(\\w+)(\\}\\})",
+          "captures": {
+            "1": { "name": "punctuation.definition.variable.prompt" },
+            "2": { "name": "variable.other.fragment.dynamic.prompt" },
+            "3": { "name": "punctuation.definition.variable.prompt" }
+          }
         },
         {
-          "match": "\\{\\w+\\}",
-          "name": "variable.other.fragment.static.prompt"
+          "match": "(\\{)(\\w+)(\\})",
+          "captures": {
+            "1": { "name": "punctuation.definition.variable.prompt" },
+            "2": { "name": "variable.other.fragment.static.prompt" },
+            "3": { "name": "punctuation.definition.variable.prompt" }
+          }
         }
       ]
     },

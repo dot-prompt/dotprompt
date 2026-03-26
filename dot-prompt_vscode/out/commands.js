@@ -52,6 +52,8 @@ const diagnostics_1 = require("./diagnostics");
 const hover_1 = require("./hover");
 const codelens_1 = __importDefault(require("./codelens"));
 exports.codeLensProvider = codelens_1.default;
+// Add a debounce timer for live updates to the compiled view
+let compileViewDebounceTimer;
 /**
  * Initialize all providers
  */
@@ -60,7 +62,19 @@ function initializeProviders(context) {
     exports.hoverProvider = new hover_1.HoverProvider();
     // Register document change listeners
     context.subscriptions.push(vscode.workspace.onDidChangeTextDocument((event) => {
-        // Could trigger diagnostics on change if needed
+        if (event.document.languageId === 'dot-prompt') {
+            // Handle live updates for the compiled view if it's open
+            if (compiledView_1.CompiledViewPanel.currentPanel) {
+                if (compileViewDebounceTimer) {
+                    clearTimeout(compileViewDebounceTimer);
+                }
+                const config = vscode.workspace.getConfiguration('dotPrompt');
+                const delay = config.get('compileDelay') || 300;
+                compileViewDebounceTimer = setTimeout(() => {
+                    compiledView_1.CompiledViewPanel.updateActivePanel(event.document);
+                }, delay);
+            }
+        }
     }));
     context.subscriptions.push(exports.diagnosticsProvider);
 }
@@ -82,7 +96,7 @@ async function compileCommand(document) {
     const isConnected = await api.checkServerConnection();
     if (!isConnected) {
         const serverUrl = api.getServerUrl();
-        vscode.window.showErrorMessage(`Cannot connect to dot-prompt server at ${serverUrl}. Is the server running?`);
+        vscode.window.showErrorMessage(`Cannot connect to .prompt server at ${serverUrl}. Is the server running?`);
         return;
     }
     const prompt = activeDoc.getText();
@@ -127,7 +141,7 @@ async function openCompiledViewCommand(document) {
     const isConnected = await api.checkServerConnection();
     if (!isConnected) {
         const serverUrl = api.getServerUrl();
-        vscode.window.showErrorMessage(`Cannot connect to dot-prompt server at ${serverUrl}. Is the server running?`);
+        vscode.window.showErrorMessage(`Cannot connect to .prompt server at ${serverUrl}. Is the server running?`);
         return;
     }
     // Get extension URI for webview
@@ -167,8 +181,12 @@ function setupAutoCompile(context) {
         // but we wait a tiny bit to ensure it finished or trigger it if needed)
         const config = vscode.workspace.getConfiguration('dotPrompt');
         const autoCompile = config.get('autoCompile');
-        if (autoCompile && exports.diagnosticsProvider) {
-            exports.diagnosticsProvider.triggerUpdate(document);
+        if (autoCompile) {
+            if (exports.diagnosticsProvider) {
+                exports.diagnosticsProvider.triggerUpdate(document);
+            }
+            // Update compiled view if open
+            compiledView_1.CompiledViewPanel.updateActivePanel(document);
         }
     }));
 }

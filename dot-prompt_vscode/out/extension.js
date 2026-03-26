@@ -41,16 +41,30 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.outputChannel = void 0;
+exports.log = log;
 exports.activate = activate;
 exports.deactivate = deactivate;
 const vscode = __importStar(require("vscode"));
 const commands_1 = require("./commands");
+const compiledView_1 = require("./webview/compiledView");
 const formatter_1 = require("./formatter");
+/**
+ * Log a message to the output channel
+ */
+function log(message) {
+    if (exports.outputChannel) {
+        const time = new Date().toLocaleTimeString();
+        exports.outputChannel.appendLine(`[${time}] ${message}`);
+    }
+}
 /**
  * Called when the extension is activated
  */
 function activate(context) {
-    console.log('dot-prompt extension is now activating...');
+    // Create output channel
+    exports.outputChannel = vscode.window.createOutputChannel('.prompt');
+    log('.prompt extension is now activating...');
     // Initialize providers
     (0, commands_1.initializeProviders)(context);
     // Register commands
@@ -67,7 +81,7 @@ function activate(context) {
     context.subscriptions.push(rangeFormattingProviderRegistration);
     // Check server connection on startup
     checkServerConnection();
-    console.log('dot-prompt extension activated successfully');
+    log('.prompt extension activated successfully');
 }
 /**
  * Register language providers for .prompt files
@@ -87,8 +101,12 @@ function registerLanguageProviders(context) {
     }));
     // Register active editor change handler
     context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor((editor) => {
-        if (editor && editor.document.languageId === 'dot-prompt' && commands_1.diagnosticsProvider) {
-            commands_1.diagnosticsProvider.triggerUpdate(editor.document);
+        if (editor && editor.document.languageId === 'dot-prompt') {
+            if (commands_1.diagnosticsProvider) {
+                commands_1.diagnosticsProvider.triggerUpdate(editor.document);
+            }
+            // Update compiled view if open
+            compiledView_1.CompiledViewPanel.updateActivePanel(editor.document);
         }
     }));
 }
@@ -101,7 +119,7 @@ async function checkServerConnection() {
     const isConnected = await checkServerConnection();
     if (!isConnected) {
         const serverUrl = getServerUrl();
-        vscode.window.showWarningMessage(`dot-prompt: Cannot connect to server at ${serverUrl}. Please ensure the server is running.`, 'Open Settings').then((selection) => {
+        vscode.window.showWarningMessage(`.prompt: Cannot connect to server at ${serverUrl}. Please ensure the server is running.`, 'Open Settings').then((selection) => {
             if (selection === 'Open Settings') {
                 vscode.commands.executeCommand('workbench.action.openSettings', 'dotPrompt.serverUrl');
             }
@@ -112,7 +130,7 @@ async function checkServerConnection() {
  * Called when the extension is deactivated
  */
 function deactivate() {
-    console.log('dot-prompt extension is now deactivating...');
+    log('.prompt extension is now deactivating...');
     // Clean up
     if (commands_1.diagnosticsProvider) {
         commands_1.diagnosticsProvider.clearDiagnostics = () => {

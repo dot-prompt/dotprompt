@@ -133,10 +133,7 @@ defmodule DotPrompt do
                 %{type: spec.type, lifecycle: spec.lifecycle, doc: spec.doc}
                 |> maybe_put(:default, spec[:default])
                 |> maybe_put(:values, spec[:values])
-                |> maybe_put(
-                  :range,
-                  if(spec[:range], do: Tuple.to_list(spec[:range]), else: nil)
-                )
+                |> maybe_put(:range, spec[:range])
 
               {clean_name, spec_map}
             end)
@@ -160,7 +157,7 @@ defmodule DotPrompt do
           result =
             Map.merge(def_block, %{
               name: to_string(prompt_name),
-              major: def_block[:major] || 1,
+              major: major_from_version(def_block[:version]),
               version: def_block[:version] || 1,
               params: schema_params,
               fragments: schema_fragments,
@@ -185,8 +182,18 @@ defmodule DotPrompt do
   def compile(prompt_name_or_content, params, opts \\ []) do
     case compile_to_iodata(prompt_name_or_content, params, opts) do
       {:ok, skeleton_iodata, final_selections, used_vars, cached_files_meta, hit, warnings,
-       response_contract, major, version} ->
+       response_contract, major, version, declarations} ->
         skeleton = IO.iodata_to_binary(skeleton_iodata)
+
+        # Clean @ from parameter keys for the response, but keep @version and @major as meta
+        clean_params =
+          Enum.into(declarations, %{}, fn {k, v} ->
+            if k in ["@version", "@major"] do
+              {k, v}
+            else
+              {String.trim_leading(k, "@"), v}
+            end
+          end)
 
         result = %DotPrompt.Result{
           prompt: skeleton,
@@ -199,7 +206,8 @@ defmodule DotPrompt do
           metadata: %{
             used_vars: used_vars,
             files: cached_files_meta,
-            warnings: warnings
+            warnings: warnings,
+            params: clean_params
           }
         }
 
@@ -215,7 +223,7 @@ defmodule DotPrompt do
   """
   @spec compile_to_iodata(prompt_name() | String.t(), params(), compile_opts()) ::
           {:ok, iodata(), map(), MapSet.t(), map(), boolean(), [String.t()], map() | nil,
-           integer(), integer() | String.t()}
+           integer(), integer() | String.t(), map()}
           | {:error, map()}
   def compile_to_iodata(prompt_name_or_content, params, opts \\ []) do
     annotated = Keyword.get(opts, :annotated, false)
@@ -253,7 +261,7 @@ defmodule DotPrompt do
     cache_key = cache_key_for_compile(prompt_key, params, content, annotated)
 
     case Structural.get(cache_key) do
-      {:ok, {skeleton_iodata, vary_map, used_vars, cached_files_meta, major, version}} ->
+      {:ok, {skeleton_iodata, vary_map, used_vars, cached_files_meta, major, version, declarations}} ->
         if stale?(cached_files_meta) do
           # Stale cache, proceed with fresh compilation
           compile_fresh_with_content(
@@ -306,8 +314,20 @@ defmodule DotPrompt do
             end
 
           {:ok, output_skeleton, final_selections, used_vars, cached_files_meta, true, [],
-           response_contract, major, version}
+           response_contract, major, version, declarations}
         end
+
+      {:ok, {_skeleton_iodata, _vary_map, _used_vars, _cached_files_meta, _major, _version}} ->
+        # Handle legacy cache format without declarations
+        compile_fresh_with_content(
+          prompt_name_or_content,
+          content,
+          files_meta,
+          params,
+          opts,
+          start_time,
+          cache_key
+        )
 
       # Handle legacy cache format or miss
       _ ->
@@ -516,7 +536,7 @@ defmodule DotPrompt do
         seed = opts[:seed]
         def_info = Validator.parse_def_block(ast.init)
         version = def_info[:version] || 1
-        major = def_info[:major] || 1
+        major = major_from_version(version)
 
         skeleton_binary = IO.iodata_to_binary(skeleton_iodata)
 
@@ -533,7 +553,7 @@ defmodule DotPrompt do
 
         Structural.put(
           cache_key,
-          {skeleton_iodata, vary_map, used_vars, total_files_meta, major, version}
+          {skeleton_iodata, vary_map, used_vars, total_files_meta, major, version, declarations}
         )
 
         if first_schema do
@@ -555,7 +575,7 @@ defmodule DotPrompt do
         )
 
         {:ok, output_skeleton, vary_selections, used_vars, total_files_meta, false, warnings,
-         first_schema, major, version}
+         first_schema, major, version, declarations}
     end
   end
 
@@ -1292,7 +1312,8 @@ defmodule DotPrompt do
 
     case Parser.parse(tokens) do
       {:ok, %{init: %{def: def_map}}} ->
-        file_major = def_map[:major] || 1
+        file_version = def_map[:version]
+        file_major = major_from_version(file_version)
 
         if file_major == major do
           {content, mtime, full_path} = path_info
@@ -1368,6 +1389,19 @@ defmodule DotPrompt do
   defp maybe_put(map, _key, nil), do: map
   defp maybe_put(map, key, value), do: Map.put(map, key, value)
 
+  defp major_from_version(nil), do: 1
+  defp major_from_version(version) when is_integer(version), do: version
+
+  defp major_from_version(version) when is_binary(version) do
+    version = String.replace(version, "v", "")
+
+    case Integer.parse(version) do
+      {major, "." <> _} -> major
+      {major, _} -> major
+      _ -> 1
+    end
+  end
+
   defp indent_content(content, indent) when is_binary(content) do
     if indent == "" do
       content
@@ -1400,8 +1434,14 @@ defmodule DotPrompt do
     declarations
     |> Enum.filter(fn {_name, spec} -> Map.has_key?(spec, :default) and spec.default != nil end)
     |> Enum.reduce(params, fn {name, spec}, acc ->
-      clean_name = name |> String.trim_leading("@") |> String.to_atom()
-      Map.put_new(acc, clean_name, spec.default)
+      clean_name = name |> String.trim_leading("@")
+      clean_atom = String.to_atom(clean_name)
+
+      if Map.has_key?(acc, clean_atom) or Map.has_key?(acc, clean_name) do
+        acc
+      else
+        Map.put(acc, clean_atom, spec.default)
+      end
     end)
   end
 

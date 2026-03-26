@@ -8,10 +8,9 @@ defmodule DotPrompt.V12ComprehensiveTest do
     File.mkdir_p!(Path.join(@prompts_dir, "archive"))
     File.mkdir_p!(Path.join([@prompts_dir, "skills", "archive"]))
 
-    # Current version (v2)
+    # Current version (v2) - major derived from version 2.1
     File.write!(Path.join(@prompts_dir, "demo.prompt"), """
     init do
-      @major: 2
       @version: 2.1
       params:
         @name: str
@@ -22,7 +21,6 @@ defmodule DotPrompt.V12ComprehensiveTest do
     # Archived version (v1)
     File.write!(Path.join([@prompts_dir, "archive", "demo_v1.prompt"]), """
     init do
-      @major: 1
       @version: 1.0
       params:
         @user: str
@@ -33,16 +31,14 @@ defmodule DotPrompt.V12ComprehensiveTest do
     # Nested fragment current (v2)
     File.write!(Path.join([@prompts_dir, "skills", "model.prompt"]), """
     init do
-      @major: 2
-      @version: 2.0
+      @version: 2.1
     end init
     V2 Model
     """)
 
-    # Nested fragment archived (v1)
+    # Nested fragment archived (v1) - version 1.1, major derived as 1
     File.write!(Path.join([@prompts_dir, "skills", "archive", "model_v1.prompt"]), """
     init do
-      @major: 1
       @version: 1.1
     end init
     V1 Model

@@ -15,6 +15,9 @@ export let hoverProvider: HoverProvider;
 export let compiledViewPanel: CompiledViewPanel | undefined;
 export { codeLensProvider };
 
+// Add a debounce timer for live updates to the compiled view
+let compileViewDebounceTimer: NodeJS.Timeout | undefined;
+
 /**
  * Initialize all providers
  */
@@ -25,7 +28,21 @@ export function initializeProviders(context: vscode.ExtensionContext): void {
   // Register document change listeners
   context.subscriptions.push(
     vscode.workspace.onDidChangeTextDocument((event) => {
-      // Could trigger diagnostics on change if needed
+      if (event.document.languageId === 'dot-prompt') {
+        // Handle live updates for the compiled view if it's open
+        if (CompiledViewPanel.currentPanel) {
+          if (compileViewDebounceTimer) {
+            clearTimeout(compileViewDebounceTimer);
+          }
+
+          const config = vscode.workspace.getConfiguration('dotPrompt');
+          const delay = config.get<number>('compileDelay') || 300;
+
+          compileViewDebounceTimer = setTimeout(() => {
+            CompiledViewPanel.updateActivePanel(event.document);
+          }, delay);
+        }
+      }
     })
   );
 
@@ -56,7 +73,7 @@ export async function compileCommand(
   if (!isConnected) {
     const serverUrl = api.getServerUrl();
     vscode.window.showErrorMessage(
-      `Cannot connect to dot-prompt server at ${serverUrl}. Is the server running?`
+      `Cannot connect to .prompt server at ${serverUrl}. Is the server running?`
     );
     return;
   }
@@ -114,7 +131,7 @@ export async function openCompiledViewCommand(
   if (!isConnected) {
     const serverUrl = api.getServerUrl();
     vscode.window.showErrorMessage(
-      `Cannot connect to dot-prompt server at ${serverUrl}. Is the server running?`
+      `Cannot connect to .prompt server at ${serverUrl}. Is the server running?`
     );
     return;
   }
@@ -169,8 +186,13 @@ export function setupAutoCompile(context: vscode.ExtensionContext): void {
       const config = vscode.workspace.getConfiguration('dotPrompt');
       const autoCompile = config.get<boolean>('autoCompile');
       
-      if (autoCompile && diagnosticsProvider) {
-        diagnosticsProvider.triggerUpdate(document);
+      if (autoCompile) {
+        if (diagnosticsProvider) {
+          diagnosticsProvider.triggerUpdate(document);
+        }
+        
+        // Update compiled view if open
+        CompiledViewPanel.updateActivePanel(document);
       }
     })
   );

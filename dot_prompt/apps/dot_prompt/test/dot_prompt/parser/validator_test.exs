@@ -85,7 +85,7 @@ defmodule DotPrompt.Parser.ValidatorTest do
 
   describe "validate_params/2" do
     test "validates required compile-time params" do
-      declarations = %{"@age" => %{type: :int, lifecycle: :compile, range: {1, 100}}}
+      declarations = %{"@age" => %{type: :int, lifecycle: :compile, range: [1, 100]}}
       assert :ok = Validator.validate_params(%{age: 25}, declarations)
 
       assert {:error, "missing_param: @age required but not provided"} =
@@ -100,7 +100,7 @@ defmodule DotPrompt.Parser.ValidatorTest do
     end
 
     test "validates integer ranges" do
-      declarations = %{"@age" => %{type: :int, range: {18, 99}}}
+      declarations = %{"@age" => %{type: :int, range: [18, 99]}}
       assert :ok = Validator.validate_params(%{age: 25}, declarations)
       assert :ok = Validator.validate_params(%{age: "25"}, declarations)
 

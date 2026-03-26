@@ -179,15 +179,8 @@ defmodule DotPrompt.Parser.Lexer do
     if Regex.match?(~r/^@[\w\d_]+:\s*(.*)$/, trimmed) do
       [_, name, type_info] = Regex.run(~r/^(@[\w\d_]+):\s*(.*)$/, trimmed)
 
-      if name == "@major" do
-        [
-          %Token{
-            type: :init_item,
-            value: "major",
-            meta: String.trim(type_info),
-            line: line_no
-          }
-        ]
+      if name == "@version" do
+        [%Token{type: :init_item, value: "version", meta: String.trim(type_info), line: line_no}]
       else
         [%Token{type: :param_def, value: name, meta: String.trim(type_info), line: line_no}]
       end

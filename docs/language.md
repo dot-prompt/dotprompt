@@ -33,11 +33,10 @@ The `init` block declares everything about the file — its version, its variabl
 
 ## The Init Block
 
-The `init` block opens with `init do` and closes with `end init`. It contains four sections: version fields, `def:`, `params:`, `fragments:`, and an optional `docs` block.
+The `init` block opens with `init do` and closes with `end init`. It contains four sections: version, `def:`, `params:`, `fragments:`, and an optional `docs` block.
 
 ```
 init do
-  @major: 1
   @version: 1.0
 
   def:
@@ -52,7 +51,7 @@ init do
 
   fragments:
     {skill_context}: static from: skills
-      match: @variation
+      filter: @variation
     {{user_history}}: dynamic -> recent conversation history
 
   docs do
@@ -63,16 +62,15 @@ init do
 end init
 ```
 
-### Version Fields
+### @version
 
-`@major` is the contract version. Callers pin their integration to it. `@version` is `major.minor` and is managed automatically by the container after initial declaration. You set both once when you create the file and never touch them again.
+`@version` is `major.minor` — the first number is the major version (breaking change boundary). The container manages `@version` automatically after initial declaration.
 
 ```
-@major: 1
 @version: 1.0
 ```
 
-`@major` must be ≥ 1. `@major: 0` is invalid.
+Major must be ≥ 1. The first number in `@version` is used as the major version.
 
 ### def:
 
@@ -116,7 +114,7 @@ Fragments are external files or collections that get compiled into the prompt. D
 fragments:
   {rules}: static from: shared/rules.prompt
   {skill_context}: static from: skills
-    match: @skill_names
+    filter: @skill_names
   {{user_history}}: dynamic -> fetched fresh each request
 ```
 
@@ -340,31 +338,31 @@ A folder containing an `_index.prompt` is a collection. The calling prompt decla
 fragments:
   # enum variable — returns one fragment
   {primary_skill}: static from: skills
-    match: @primary_skill
+    filter: @primary_skill
 
   # list variable — returns all matched fragments composited in order
   {skill_context}: static from: skills
-    match: @skill_names
+    filter: @skill_names
 
   # regex match — enum variables only
   {milton_variants}: static from: skills
-    matchRe: Milton.*
+    filterRe: Milton.*
     limit: 3
     order: ascending
 
   # every fragment in the folder
   {all_examples}: static from: examples
-    match: all
+    filter: all
     order: ascending
 ```
 
-Assembly rules (`match`, `matchRe`, `limit`, `order`) are always declared in the calling prompt — never in `_index.prompt`.
+Assembly rules (`filter`, `filterRe`, `filter: all`, `limit`, `order`, `set`) are always declared in the calling prompt — never in `_index.prompt`.
 
-**match vs matchRe:**
+**filter vs filterRe:**
 
-- `match: @variable` — exact string match against each fragment's `def.match` field
-- `matchRe: pattern` — compile-time regex. Supports `@variable` interpolation but the variable must be `enum` type
-- `match: all` — returns every `.prompt` file in the folder except `_index.prompt`
+- `filter: @variable` — exact string match against each fragment's `def.match` field
+- `filterRe: pattern` — compile-time regex. Supports `@variable` interpolation but the variable must be `enum` type
+- `filter: all` — returns every `.prompt` file in the folder except `_index.prompt`
 
 ### Dynamic fragments
 
@@ -380,6 +378,24 @@ Dynamic fragments are referenced in the body the same way as static ones:
 ```
 {{user_history}}
 ```
+
+### Passing variables to fragments
+
+Use `set:` to explicitly pass variables to fragments. The left side is the fragment's parameter name (no `@`), the right side is the parent variable (with `@`).
+
+```
+fragments:
+  {greeting}: dynamic from: fragments/greeting
+    filter: @greeting_type
+    set:
+      name: @user_name
+      level: @user_level
+```
+
+The compiler validates:
+1. Every variable on the right (`@user_name`, `@user_level`) is declared in the parent params
+2. Every variable on the left (`name`, `level`) exists in the fragment's own params
+3. Types match on both sides
 
 ### \_index.prompt
 
@@ -412,7 +428,7 @@ init do
   def:
     mode: fragment
     description: Milton Model skill definition
-    match: Milton Model
+    filter: Milton Model
 
 end init
 
@@ -501,11 +517,10 @@ DotPrompt.validate_output(llm_response, result.response_contract, strict: true)
 
 ### Initial declaration
 
-Set `@major` and `@version` once when you create the file. Never edit them manually again.
+Set `@version` once when you create the file. Never edit it manually again.
 
 ```
 init do
-  @major: 1
   @version: 1.0
   ...
 end init
@@ -520,7 +535,7 @@ The container watches your prompt files. When you save:
 
 On a breaking change notification you have three options:
 
-- **Version it** — the current file is archived as `archive/name_v{current_major}.prompt`. `@major` increments. `@version` resets to `{new_major}.0`.
+- **Version it** — the current file is archived as `archive/name_v{major}.prompt`. `@version` increments (e.g., 1.5 → 2.0).
 - **Not now** — warning persists. You can keep editing.
 - **Ignore always** — suppressed in the viewer until your next git commit, at which point a hard warning fires regardless.
 
@@ -615,7 +630,6 @@ The compiler stops immediately on any error. Errors include file name, line numb
 
 ```
 init do
-  @major: 1
   @version: 1.0
 
   def:
@@ -638,7 +652,7 @@ init do
 
   fragments:
     {skill_context}: static from: skills
-      match: @skill_names
+      filter: @skill_names
     {{user_history}}: dynamic -> recent conversation history
 
   docs do

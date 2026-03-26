@@ -1,0 +1,38 @@
+services:
+  dot-prompt:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: dot-prompt:latest
+    container_name: dot-prompt-server
+    restart: unless-stopped
+    ports:
+      - "${PROMPT_SERVER_PORT:-4000}:4000"
+    volumes:
+      - "${PROMPT_DIR_HOST:-./prompts}:/app/prompts:ro"
+    environment:
+      - PORT=4000
+      - PROMPTS_DIR=/app/prompts
+      - SECRET_KEY_BASE=${SECRET_KEY_BASE}
+      - LIVE_VIEW_SIGNING_SALT=${LIVE_VIEW_SIGNING_SALT}
+      - PHX_HOST=${PHX_HOST:-localhost}
+      # GitHub Polling - Auto-sync prompts from GitHub
+      - GITHUB_REPO_URL=https://github.com/your-org/your-prompts-repo
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - GITHUB_BRANCHES=main,develop
+      - GITHUB_POLL_INTERVAL_SECONDS=60
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "4000"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+# Usage:
+# 1. Copy to docker-compose.yml:
+#    cp docker-compose.example.yml docker-compose.yml
+# 2. Set required environment variables:
+#    export SECRET_KEY_BASE=$(mix phx.gen.secret)
+#    export LIVE_VIEW_SIGNING_SALT=$(mix phx.gen.secret)
+#    export GITHUB_TOKEN=ghp_xxxxxxxxxxxx
+# 3. Optional: Create .env file with your variables
+# 4. Run: docker-compose up -d

@@ -20,10 +20,27 @@ import { CompiledViewPanel } from './webview/compiledView';
 import { DotPromptFormattingProvider } from './formatter';
 
 /**
+ * Output channel for .prompt extension
+ */
+export let outputChannel: vscode.OutputChannel;
+
+/**
+ * Log a message to the output channel
+ */
+export function log(message: string): void {
+  if (outputChannel) {
+    const time = new Date().toLocaleTimeString();
+    outputChannel.appendLine(`[${time}] ${message}`);
+  }
+}
+
+/**
  * Called when the extension is activated
  */
 export function activate(context: vscode.ExtensionContext): void {
-  console.log('dot-prompt extension is now activating...');
+  // Create output channel
+  outputChannel = vscode.window.createOutputChannel('.prompt');
+  log('.prompt extension is now activating...');
 
   // Initialize providers
   initializeProviders(context);
@@ -54,7 +71,7 @@ export function activate(context: vscode.ExtensionContext): void {
   // Check server connection on startup
   checkServerConnection();
 
-  console.log('dot-prompt extension activated successfully');
+  log('.prompt extension activated successfully');
 }
 
 /**
@@ -87,8 +104,13 @@ function registerLanguageProviders(context: vscode.ExtensionContext): void {
   // Register active editor change handler
   context.subscriptions.push(
     vscode.window.onDidChangeActiveTextEditor((editor) => {
-      if (editor && editor.document.languageId === 'dot-prompt' && diagnosticsProvider) {
-        diagnosticsProvider.triggerUpdate(editor.document);
+      if (editor && editor.document.languageId === 'dot-prompt') {
+        if (diagnosticsProvider) {
+          diagnosticsProvider.triggerUpdate(editor.document);
+        }
+        
+        // Update compiled view if open
+        CompiledViewPanel.updateActivePanel(editor.document);
       }
     })
   );
@@ -106,7 +128,7 @@ async function checkServerConnection(): Promise<void> {
   if (!isConnected) {
     const serverUrl = getServerUrl();
     vscode.window.showWarningMessage(
-      `dot-prompt: Cannot connect to server at ${serverUrl}. Please ensure the server is running.`,
+      `.prompt: Cannot connect to server at ${serverUrl}. Please ensure the server is running.`,
       'Open Settings'
     ).then((selection) => {
       if (selection === 'Open Settings') {
@@ -120,7 +142,7 @@ async function checkServerConnection(): Promise<void> {
  * Called when the extension is deactivated
  */
 export function deactivate(): void {
-  console.log('dot-prompt extension is now deactivating...');
+  log('.prompt extension is now deactivating...');
   
   // Clean up
   if (diagnosticsProvider) {

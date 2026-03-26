@@ -56,9 +56,6 @@ defmodule DotPrompt.Parser.Parser do
       :block_end when token.value == "init" ->
         {:ok, acc, rest}
 
-      :init_item when token.value == "major" ->
-        handle_major_token(token, rest, acc)
-
       :init_item when token.value == "version" ->
         handle_version_token(token, rest, acc)
 
@@ -68,9 +65,6 @@ defmodule DotPrompt.Parser.Parser do
 
       :case_label ->
         handle_case_label_token(token, rest, acc)
-
-      :param_def when token.value == "@version" ->
-        handle_version_token(token, rest, acc)
 
       :param_def ->
         handle_param_def_token(token, rest, acc)
@@ -83,17 +77,6 @@ defmodule DotPrompt.Parser.Parser do
 
       _ ->
         parse_init_block(rest, acc)
-    end
-  end
-
-  defp handle_major_token(token, rest, acc) do
-    case Integer.parse(token.meta) do
-      {val, ""} when val >= 1 ->
-        new_def = Map.put(acc.def, :major, val)
-        parse_init_block(rest, %{acc | def: new_def})
-
-      _ ->
-        {:error, "Invalid @major value: #{token.meta} - must be a positive integer"}
     end
   end
 

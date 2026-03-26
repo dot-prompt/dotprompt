@@ -1,0 +1,27 @@
+{
+  "skills": {
+    "skills": {
+      "skill1": {
+        "v1": {
+          "archive_path": "/home/nahar/Documents/code/dot-prompt/dot_prompt/test/fixtures/prompts/skills/archive/skill1_v1.prompt",
+          "branch": "main",
+          "last_accessed": "2026-03-26T13:29:47.907626Z"
+        }
+      },
+      "skill2": {
+        "v1": {
+          "archive_path": "/home/nahar/Documents/code/dot-prompt/dot_prompt/test/fixtures/prompts/skills/archive/skill2_v1.prompt",
+          "branch": "main",
+          "last_accessed": "2026-03-26T13:29:47.908003Z"
+        }
+      },
+      "test_skill": {
+        "v1": {
+          "archive_path": "/home/nahar/Documents/code/dot-prompt/dot_prompt/test/fixtures/prompts/skills/archive/test_skill_v1.prompt",
+          "branch": "main",
+          "last_accessed": "2026-03-26T13:29:47.909284Z"
+        }
+      }
+    }
+  }
+}

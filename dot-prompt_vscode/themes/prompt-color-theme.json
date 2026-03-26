@@ -137,6 +137,12 @@
       }
     },
     {
+      "scope": "punctuation.definition.variable.prompt",
+      "settings": {
+        "foreground": "#d4d4d4"
+      }
+    },
+    {
       "scope": "meta.version.prompt",
       "settings": {
         "foreground": "#b5cea8"

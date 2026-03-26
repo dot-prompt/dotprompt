@@ -3,12 +3,11 @@ defmodule DotPrompt.VersionMajorTest do
 
   alias DotPrompt.Parser.{Lexer, Parser}
 
-  describe "@major version field in init block" do
-    test "parses @major field in init" do
+  describe "major version derivation from @version field in init block" do
+    test "derives major from integer @version" do
       content = """
       init do
-        @major: 1
-        @version: 1
+        @version: 2
       end init
 
       Test prompt.
@@ -16,14 +15,19 @@ defmodule DotPrompt.VersionMajorTest do
 
       tokens = Lexer.tokenize(content)
       assert {:ok, ast} = Parser.parse(tokens)
-      assert ast.init.def.major == 1
-      assert ast.init.def.version == 1
+      # In AST, it's just a map of metadata
+      assert ast.init.def.version == 2
+      
+      # We need to test the extraction logic used in DotPrompt
+      # Since major_from_version is private, we'll verify it via DotPrompt.compile
+      assert {:ok, result} = DotPrompt.compile(content, %{})
+      assert result.major == 2
+      assert result.version == 2
     end
 
-    test "parses @major and @version as major.minor" do
+    test "derives major from float-like @version string" do
       content = """
       init do
-        @major: 2
         @version: 2.3
       end init
 
@@ -32,16 +36,17 @@ defmodule DotPrompt.VersionMajorTest do
 
       tokens = Lexer.tokenize(content)
       assert {:ok, ast} = Parser.parse(tokens)
-
-      assert ast.init.def.major == 2
-      # @version stores major.minor format as string
       assert ast.init.def.version == "2.3"
+      
+      assert {:ok, result} = DotPrompt.compile(content, %{})
+      assert result.major == 2
+      assert result.version == "2.3"
     end
 
-    test "defaults to major: 1 when not specified (backward compat)" do
+    test "handles 'v' prefix in @version" do
       content = """
       init do
-        @version: 1
+        @version: v3.1.2
       end init
 
       Test prompt.
@@ -49,66 +54,50 @@ defmodule DotPrompt.VersionMajorTest do
 
       tokens = Lexer.tokenize(content)
       assert {:ok, ast} = Parser.parse(tokens)
-      # Should default to major: 1 for backward compatibility
-      assert ast.init.def.version == 1
+      assert ast.init.def.version == "v3.1.2"
+      
+      assert {:ok, result} = DotPrompt.compile(content, %{})
+      assert result.major == 3
+      assert result.version == "v3.1.2"
     end
 
-    test "rejects major: 0" do
+    test "defaults to major: 1 when not specified" do
       content = """
       init do
-        @major: 0
-        @version: 1
+        # no version
       end init
 
       Test prompt.
       """
 
       tokens = Lexer.tokenize(content)
-      assert {:error, _} = Parser.parse(tokens)
+      assert {:ok, _ast} = Parser.parse(tokens)
+      
+      assert {:ok, result} = DotPrompt.compile(content, %{})
+      assert result.major == 1
+      assert result.version == 1
     end
-  end
 
-  describe "version format validation" do
-    test "accepts major.minor version" do
+    test "@major is no longer special and doesn't override major derivation" do
       content = """
       init do
-        @major: 1
-        @version: 1.5
+        @major: 5
+        @version: 2.1
       end init
+
+      Test prompt.
       """
 
       tokens = Lexer.tokenize(content)
       assert {:ok, ast} = Parser.parse(tokens)
-
-      assert ast.init.def.version == "1.5"
-    end
-
-    test "accepts major.minor.patch version" do
-      content = """
-      init do
-        @major: 1
-        @version: 1.5.2
-      end init
-      """
-
-      tokens = Lexer.tokenize(content)
-      assert {:ok, ast} = Parser.parse(tokens)
-
-      assert ast.init.def.version == "1.5.2"
-    end
-
-    test "accepts simple integer version" do
-      content = """
-      init do
-        @major: 1
-        @version: 3
-      end init
-      """
-
-      tokens = Lexer.tokenize(content)
-      assert {:ok, ast} = Parser.parse(tokens)
-
-      assert ast.init.def.version == 3
+      # @major is now just another parameter/metadata field
+      assert ast.init.params["@major"].type == "5"
+      assert ast.init.def.version == "2.1"
+      
+      assert {:ok, result} = DotPrompt.compile(content, %{})
+      # Should be 2, not 5
+      assert result.major == 2
+      assert result.version == "2.1"
     end
   end
 end

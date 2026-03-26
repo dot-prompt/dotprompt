@@ -6,9 +6,21 @@ export interface CompileResponse {
   template: string;
   cache_hit: boolean;
   compiled_tokens: number;
-  vary_selections: Record<string, string>;
+  vary_selections: Record<string, string | { id: string; text: string }>;
   response_contract: ResponseContract | null;
   warnings: string[];
+  params?: Record<string, ParamMeta>;
+  major?: number;
+  version?: number | string;
+}
+
+export interface ParamMeta {
+  type: string;
+  default?: any;
+  values?: string[];
+  range?: number[];
+  doc?: string;
+  itemType?: string; // For list types, the type of items in the list
 }
 
 export interface ResponseContract {

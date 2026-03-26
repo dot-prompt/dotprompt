@@ -1,6 +1,6 @@
 {
   "name": "dot-prompt",
-  "displayName": "dot-prompt",
+  "displayName": ".prompt",
   "description": "VS Code extension for .prompt files with server-backed compilation and compiled view webview",
   "version": "0.1.0",
   "publisher": "dot-prompt",
@@ -8,6 +8,11 @@
   "engines": {
     "vscode": "^1.75.0"
   },
+  "activationEvents": [
+    "onLanguage:dot-prompt",
+    "onCommand:dot-prompt.compile",
+    "onCommand:dot-prompt.openCompiledView"
+  ],
   "categories": [
     "Other",
     "Programming Languages"
@@ -18,6 +23,7 @@
       {
         "id": "dot-prompt",
         "aliases": [
+          ".prompt",
           "dot-prompt",
           "DotPrompt",
           "Prompt",
@@ -45,7 +51,7 @@
     "semanticHighlighting": true,
     "themes": [
       {
-        "label": "dot-prompt",
+        "label": ".prompt",
         "path": "./themes/prompt-color-theme.json",
         "uiTheme": "vs-dark"
       }
@@ -53,13 +59,40 @@
     "commands": [
       {
         "command": "dot-prompt.compile",
-        "title": "dot-prompt: Compile"
+        "title": ".prompt: Compile"
       },
       {
         "command": "dot-prompt.openCompiledView",
-        "title": "dot-prompt: Open Compiled View"
+        "title": ".prompt: Open Compiled View",
+        "icon": "$(preview)"
       }
     ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "dot-prompt.openCompiledView",
+          "group": "navigation",
+          "when": "resourceLangId == dot-prompt"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "dot-prompt.openCompiledView",
+          "group": "navigation",
+          "when": "resourceLangId == dot-prompt"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "dot-prompt.compile",
+          "when": "resourceLangId == dot-prompt"
+        },
+        {
+          "command": "dot-prompt.openCompiledView",
+          "when": "resourceLangId == dot-prompt"
+        }
+      ]
+    },
     "configuration": {
       "title": "dot-prompt",
       "properties": {

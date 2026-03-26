@@ -55,7 +55,7 @@ defmodule DotPrompt.Compiler.FragmentExpander.Collection do
 
               case DotPrompt.compile_to_iodata(prompt_path, params, indent: indent) do
                 {:ok, content, _vary, _used, item_files, _, _warnings, _contract, _major,
-                 _version} ->
+                 _version, _decls} ->
                   {:ok, content, item_files, name_only}
 
                 {:error, details} ->

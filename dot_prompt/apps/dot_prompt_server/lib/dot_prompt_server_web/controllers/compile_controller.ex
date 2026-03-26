@@ -15,6 +15,9 @@ defmodule DotPromptServerWeb.CompileController do
           compiled_tokens: result.compiled_tokens,
           vary_selections: result.vary_selections,
           response_contract: result.response_contract,
+          major: result.major,
+          version: result.version,
+          params: result.metadata.params,
           warnings: result.metadata.warnings
         })
 

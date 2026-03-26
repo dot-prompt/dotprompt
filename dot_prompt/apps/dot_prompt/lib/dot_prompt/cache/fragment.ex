@@ -23,16 +23,6 @@ defmodule DotPrompt.Cache.Fragment do
     {:ok, %{}}
   end
 
-  def init do
-    :ets.new(@table, [
-      :set,
-      :public,
-      :named_table,
-      read_concurrency: true,
-      write_concurrency: :auto
-    ])
-  end
-
   def get(key) do
     case :ets.lookup(@table, key) do
       [{^key, value}] -> {:ok, value}

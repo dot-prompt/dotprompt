@@ -17,7 +17,7 @@ export class DiagnosticsProvider {
       vscode.StatusBarAlignment.Left,
       100
     );
-    this.statusBarItem.text = 'dot-prompt: Ready';
+    this.statusBarItem.text = '.prompt: Ready';
     this.statusBarItem.show();
   }
 
@@ -50,11 +50,11 @@ export class DiagnosticsProvider {
     const config = vscode.workspace.getConfiguration('dotPrompt');
     const autoCompile = config.get<boolean>('autoCompile');
     if (!autoCompile) {
-      this.statusBarItem.text = 'dot-prompt: Auto-compile disabled';
+      this.statusBarItem.text = '.prompt: Auto-compile disabled';
       return;
     }
 
-    this.statusBarItem.text = 'dot-prompt: Compiling...';
+    this.statusBarItem.text = '.prompt: Compiling...';
 
     const prompt = document.getText();
     
@@ -91,18 +91,18 @@ export class DiagnosticsProvider {
       
       // Update status bar
       if (result.warnings && result.warnings.length > 0) {
-        this.statusBarItem.text = `dot-prompt: ${result.warnings.length} warning(s)`;
+        this.statusBarItem.text = `.prompt: ${result.warnings.length} warning(s)`;
       } else if (result.cache_hit) {
-        this.statusBarItem.text = 'dot-prompt: ✓ Compiled (cached)';
+        this.statusBarItem.text = '.prompt: ✓ Compiled (cached)';
       } else {
-        this.statusBarItem.text = 'dot-prompt: ✓ Compiled';
+        this.statusBarItem.text = '.prompt: ✓ Compiled';
       }
       
     } catch (error) {
       const compileError = error as CompileError;
       
       // Show error in status bar
-      this.statusBarItem.text = 'dot-prompt: ✗ Compilation error';
+      this.statusBarItem.text = '.prompt: ✗ Compilation error';
       
       // Parse error for line info
       let line = 0;

@@ -9,7 +9,7 @@ defmodule DotPrompt.Compiler.FragmentExpander.Static do
 
     try do
       case DotPrompt.compile_to_iodata(path, params) do
-        {:ok, content, _vary, _used, item_files, _, _warnings, _contract, _major, _version} ->
+        {:ok, content, _vary, _used, item_files, _, _warnings, _contract, _major, _version, _decls} ->
           {:ok, content, item_files}
 
         {:error, reason} ->

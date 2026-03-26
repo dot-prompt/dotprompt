@@ -243,19 +243,27 @@ defmodule DotPrompt.Parser.Validator do
             _ -> str
           end
 
+        {:list, str} when is_binary(str) ->
+          str = str |> String.trim_leading("[") |> String.trim_trailing("]")
+          if str == "" do
+            []
+          else
+            str |> String.split(",") |> Enum.map(&String.trim/1) |> Enum.reject(&(&1 == ""))
+          end
+
         _ ->
           default_val
       end
 
     %{
       type: type,
-      raw: type_spec,
+      raw: raw_spec,
       doc: doc || "",
       lifecycle: life,
-      default: final_default
+      default: final_default,
+      values: constraints[:values],
+      range: constraints[:range]
     }
-    |> maybe_put(:values, constraints[:values])
-    |> maybe_put(:range, constraints[:range])
   end
 
   defp split_type_and_default(raw) do
@@ -294,7 +302,7 @@ defmodule DotPrompt.Parser.Validator do
 
       Regex.match?(~r/^int\s*\[(\d+)\.\.(\d+)\]$/, spec) ->
         [_, min_s, max_s] = Regex.run(~r/^int\s*\[(\d+)\.\.(\d+)\]$/, spec)
-        {:int, %{range: {String.to_integer(min_s), String.to_integer(max_s)}}}
+        {:int, %{range: [String.to_integer(min_s), String.to_integer(max_s)]}}
 
       spec == "int" ->
         {:int, %{}}
@@ -333,13 +341,17 @@ defmodule DotPrompt.Parser.Validator do
 
     missing =
       Enum.filter(compile_params, fn name ->
-        # The name in declarations is "@var", but in params it's usually :var or "var"
         clean_name = String.trim_leading(name, "@")
-        atom_name = String.to_atom(clean_name)
+        atom_name = to_existing_or_nil(clean_name)
         spec = Map.get(declarations, name)
 
-        !Map.has_key?(params, atom_name) and !Map.has_key?(params, clean_name) and
-          !Map.has_key?(params, name) and spec.type != :enum
+        is_provided =
+          (!is_nil(atom_name) and Map.has_key?(params, atom_name)) or
+            Map.has_key?(params, clean_name) or
+            Map.has_key?(params, name) or
+            spec.type == :enum
+
+        not is_provided
       end)
 
     if missing == [] do
@@ -353,8 +365,13 @@ defmodule DotPrompt.Parser.Validator do
     errors =
       Enum.reduce(declarations, [], fn {name, spec}, acc ->
         clean_name = String.trim_leading(name, "@")
-        atom_name = String.to_atom(clean_name)
-        value = Map.get(params, atom_name) || Map.get(params, clean_name) || Map.get(params, name)
+        atom_name = to_existing_or_nil(clean_name)
+
+        value =
+          cond do
+            not is_nil(atom_name) -> Map.get(params, atom_name)
+            true -> Map.get(params, clean_name) || Map.get(params, name)
+          end
 
         case validate_value(value, spec, name) do
           :ok -> acc
@@ -373,7 +390,7 @@ defmodule DotPrompt.Parser.Validator do
   defp validate_value(nil, %{lifecycle: :runtime}, _name), do: :ok
   defp validate_value(_value, %{type: :str}, _name), do: :ok
 
-  defp validate_value(value, %{type: :int, range: {min, max}}, name) do
+  defp validate_value(value, %{type: :int, range: [min, max]}, name) do
     case value do
       n when is_integer(n) ->
         if n >= min and n <= max,
@@ -544,4 +561,16 @@ defmodule DotPrompt.Parser.Validator do
 
     {type, from, rules}
   end
+
+  defp to_existing_or_nil(""), do: nil
+
+  defp to_existing_or_nil(binary) when is_binary(binary) do
+    try do
+      String.to_existing_atom(binary)
+    rescue
+      ArgumentError -> nil
+    end
+  end
+
+  defp to_existing_or_nil(_), do: nil
 end

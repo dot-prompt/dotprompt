@@ -39,9 +39,9 @@ Applied to the already implemented v1.0 codebase:
 23. No trailing `/` on folder paths — compiler resolves file vs folder automatically
 24. `list[...]` and `enum[...]` — members declared inline, no `list[str]` or `list[enum]`
 25. `enum` single value → one fragment, `list` multiple values → composited fragments
-26. `match: @variable` — exact match against fragment `def.match` field
-27. `matchRe: pattern` — compile-time regex, supports `@variable` interpolation (enum variables only)
-28. `match: all` — returns every fragment in folder
+26. `filter: @variable` — exact match against fragment `def.match` field
+27. `filterRe: pattern` — compile-time regex, supports `@variable` interpolation (enum variables only)
+28. `filter: all` — returns every fragment in folder
 29. `limit: n`, `order: ascending / descending` — assembly rules in calling prompt only
 30. `_index.prompt` declares folder metadata and params only — no assembly rules
 
@@ -55,15 +55,15 @@ New features added on top of v1.1:
 2. Response block contains raw JSON shape — compiler derives contract schema
 3. `{response_contract}` reference — injects response JSON into compiled prompt as LLM instruction
 4. Multiple `response` blocks allowed — one per branch
-5. Compiler collects all response blocks and compares shapes across branches — compatible → warning, incompatible → error
-6. `DotPrompt.Result` struct returned instead of plain string from all compile/render calls
-7. `result.prompt` — compiled prompt string, `result.response_contract` — derived schema
-8. `DotPrompt.validate_output/3` — validates LLM JSON response against contract
-9. HTTP API returns both `prompt` and `response_contract` in all responses
-10. `@major` field added to `init` — contract major version, callers pin to this
-11. `@version` becomes `major.minor` — managed automatically by container on commit
-12. Developer never manually edits `@version` or `@major` after initial declaration
-13. Breaking change without major version increment → hard warning at commit
+ 5. Compiler collects all response blocks and compares shapes across branches — compatible → warning, incompatible → error
+ 6. `DotPrompt.Result` struct returned instead of plain string from all compile/render calls
+ 7. `result.prompt` — compiled prompt string, `result.response_contract` — derived schema
+ 8. `DotPrompt.validate_output/3` — validates LLM JSON response against contract
+ 9. HTTP API returns both `prompt` and `response_contract` in all responses
+10. `@version` becomes `major.minor` — managed automatically by container on commit
+11. No separate `@major` field — major derived from first number in `@version`
+12. Developer never manually edits `@version` after initial declaration
+13. Breaking change without minor version increment → hard warning at commit
 14. Non-breaking change → minor auto-bumped on commit silently
 15. Server serves multiple major versions simultaneously
 16. API caller pins to major — served latest minor automatically
@@ -254,11 +254,12 @@ Structural keywords — `init`, `docs`, `if`, `case`, `vary`, `else`, `elif`,
 | `static` | Fixed cacheable fragment |
 | `dynamic` | Live fetched fragment |
 | `from` | Fragment source path — file or folder |
-| `match` | Exact match against fragment `def.match` field |
-| `matchRe` | Compile-time regex match — enum variables only — supports `@variable` interpolation |
+| `filter` | Exact match against fragment `def.match` field |
+| `filterRe` | Compile-time regex match — enum variables only — supports `@variable` interpolation |
 | `all` | Match every fragment in folder |
 | `limit` | Cap number of matched fragments |
 | `order` | `ascending` or `descending` |
+| `set` | Pass variables to fragment — left: fragment param, right: parent variable |
 
 ---
 
@@ -319,15 +320,14 @@ init do
 end init
 ```
 
-### @version and @major
+### @version Only
 
-`@major` is the **contract version**. Callers pin their integration to a major version.
-The container manages `@version` as `major.minor` — developer sets both only on initial
-declaration. Never manually edited after that.
+`@version` is `major.minor` — the first number is the major version.
+The container manages `@version` automatically — developer sets on initial
+declaration and never edits after that.
 
 ```
 init do
-  @major: 1
   @version: 1.0
   ...
 end init
@@ -335,12 +335,11 @@ end init
 
 | Field | Managed by | Meaning |
 |-------|------------|--------|
-| `@major` | Developer (initial) / container (versioning) | Breaking change boundary — callers pin here |
-| `@version` | Container (auto) | `major.minor` — minor auto-bumped on non-breaking commit |
+| `@version` | Container (auto) | `major.minor` — first number is breaking change boundary |
 
 **Rules:**
-- `@major: 0` is invalid — must be ≥ 1
-- After initial declaration, developer never touches either field
+- `@version: 0.x` is invalid — major must be ≥ 1
+- After initial declaration, developer never touches `@version`
 - Container bumps minor on non-breaking commit
 - Container increments major on `Version it` action (breaking change declared)
 - Breaking change without major bump → hard warning at commit
@@ -468,11 +467,12 @@ Assembly rules are declared in the calling prompt — not in `_index.prompt`.
 
 | Rule | Syntax | Requirement |
 |------|--------|-------------|
-| Exact match | `match: @variable` | `enum` or `list` |
-| Regex match | `matchRe: @variable` | `enum` only — compile-time check |
-| All | `match: all` | none |
+| Exact match | `filter: @variable` | `enum` or `list` |
+| Regex match | `filterRe: @variable` | `enum` only — compile-time check |
+| All | `filter: all` | none |
 | Limit | `limit: n` | `integer` |
 | Order | `order: ascending / descending` | — |
+| Set variables | `set: left: @right` | left is fragment param (no @), right is parent var (has @) |
 
 ```
 priv/prompts/skills/
@@ -523,7 +523,7 @@ The Milton Model is a set of language patterns derived from...
 ```
 
 The `match` field in `def:` is what the calling prompt matches against.
-It is a plain string. The calling prompt's `match:` or `matchRe:` finds it.
+It is a plain string. The calling prompt's `filter:` or `filterRe:` finds it.
 
 ---
 
@@ -904,7 +904,10 @@ Every error includes file name, line number, variable name, and message.
 | `out_of_range` | `@pattern_step value 7 out of range int[1..5] — line 12` |
 | `invalid_enum` | `@variation value fast not in enum[analogy, recognition, story] — line 8` |
 | `invalid_list` | `@skill_names value Unknown Skill not in list — line 9` |
-| `invalid_matchre_type`| `matchRe requires enum variable, but @var is str — line 24` |
+| `invalid_filterre_type`| `filterRe requires enum variable, but @var is str — line 24` |
+| `set_type_mismatch` | `set: name: @user_name — type mismatch: parent is str, fragment expects int — line 24` |
+| `set_undeclared_var` | `set: name: @unknown — @unknown not declared in parent params — line 24` |
+| `set_unknown_param` | `set: unknown_param: @name — unknown_param not in fragment params — line 24` |
 | `missing_param` | `@answer_depth required but not provided — no default declared` |
 | `unclosed_block` | `if @if_input_mode_question do opened at line 31 — no matching end` |
 | `mismatched_end` | `end @answer_depth at line 45 — expected end @if_input_mode_question` |
@@ -921,7 +924,7 @@ Every error includes file name, line number, variable name, and message.
 ## Versioning Workflow
 
 The container manages major/minor versioning automatically. The developer only declares
-`@major` and `@version` on initial file creation. After that, the container owns them.
+`@version` on initial file creation. After that, the container owns it.
 
 ### File save — breaking change detection
 
@@ -944,9 +947,8 @@ Container compares saved file to .snapshots/ baseline
 ### On "Version it"
 
 1. Snapshot moved to `archive/concept_explanation_v{current_major}.prompt`
-2. `@major` incremented in the working file
-3. `@version` reset to `{new_major}.0`
-4. New snapshot taken of the versioned file
+2. `@version` incremented (e.g., 1.5 → 2.0, so major changes from 1 to 2)
+3. New snapshot taken of the versioned file
 
 ### On "Ignore always"
 
@@ -1665,7 +1667,7 @@ Structural keywords never use `@`.
 4. `seeds:` removed from API and compile call — only `seed:` singular
 5. Default values — parse `= value` after type declaration in params. String values read to end of line without quotes.
 6. Multiline `->` — continuation lines indented under param declaration
-7. Fragment assembly rules — `match`, `matchRe`, `match: all`, `limit`, `order` parsed from fragment declarations in init
+7. Fragment assembly rules — `filter`, `filterRe`, `filter: all`, `limit`, `order`, `set` parsed from fragment declarations in init
 8. `_index.prompt` — no longer has `skills:` or `select:` blocks — just `init` with `def` and `docs`
 9. Fragment paths — no trailing `/` — compiler checks if path is file or directory
 10. `@version` — top level field in init, not nested under `def:`
@@ -1675,7 +1677,7 @@ Structural keywords never use `@`.
 
 1. `response do / end response` — new block type in prompt body; lexer + parser must handle it
 2. `{response_contract}` — new reserved fragment reference; compiler replaces with derived contract JSON
-3. `@major` field — parse alongside `@version` in init block; validate ≥ 1
+3. No `@major` field — major derived from first number in `@version`
 4. `@version` now `major.minor` string format — parser accepts both `1` and `1.0`
 5. `DotPrompt.Result` struct — all public API functions return struct, not bare tuple
 6. `ResponseCollector` compiler stage — post-case/post-vary collection of response blocks
@@ -1694,8 +1696,8 @@ Branch lookup uses branch name not letter index.
 **Fragment expander update:**
 When path resolves to directory: load `_index.prompt`, read its params,
 then apply assembly rules from the calling prompt's fragment declaration.
-`match: @var` — resolve var value, match against fragment `def.match` fields exactly.
-`matchRe: pattern` — compile regex, interpolate `@var` references (enum variables only), match against `def.match` fields.
-`match: all` — return all `.prompt` files in folder except `_index.prompt`.
+`filter: @var` — resolve var value, match against fragment `def.match` fields exactly.
+`filterRe: pattern` — compile regex, interpolate `@var` references (enum variables only), match against `def.match` fields.
+`filter: all` — return all `.prompt` files in folder except `_index.prompt`.
 Apply `limit` and `order` after matching.
 Composite matched fragments in order — join with double newline.

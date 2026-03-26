@@ -278,7 +278,8 @@ defmodule DotPrompt.TelemetryTest do
       :telemetry.attach(stop_id, [:dot_prompt, :render, :stop], stop_handler, [])
 
       try do
-        {:ok, _iodata, _selections, _vars, _cached, _hit, _warnings, _contract, _major, _version} =
+        {:ok, _iodata, _selections, _vars, _cached, _hit, _warnings, _contract, _major, _version,
+         _decls} =
           DotPrompt.compile_to_iodata("test", %{name: "World"}, [])
 
         # Verify both start and stop events were emitted

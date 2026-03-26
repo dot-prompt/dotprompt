@@ -61,7 +61,7 @@ function createApiError(error, context) {
         if (error.message.includes('ECONNREFUSED') || error.message.includes('connect')) {
             return {
                 error: 'server_unreachable',
-                message: `Cannot connect to dot-prompt server at ${getServerConfig().serverUrl}. Is the server running?`
+                message: `Cannot connect to .prompt server at ${getServerConfig().serverUrl}. Is the server running?`
             };
         }
         if (error.message.includes('timeout')) {
@@ -104,7 +104,9 @@ async function compile(prompt, params = {}, options = {}) {
         clearTimeout(timeoutId);
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || `Server returned ${response.status}`);
+            const error = new Error(errorData.message || `Server returned ${response.status}`);
+            error.apiError = errorData;
+            throw error;
         }
         const data = await response.json();
         return data;

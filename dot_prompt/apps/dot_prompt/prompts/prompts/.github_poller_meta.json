@@ -1,0 +1,34 @@
+{
+  "skills": {
+    "skills": {
+      "my_skill": {
+        "v1": {
+          "archive_path": "prompts/skills/archive/my_skill_v1.prompt",
+          "branch": "main",
+          "last_accessed": "2026-03-25T19:26:13.753109Z"
+        }
+      },
+      "skill1": {
+        "v1": {
+          "archive_path": "prompts/skills/archive/skill1_v1.prompt",
+          "branch": "main",
+          "last_accessed": "2026-03-25T19:31:24.517307Z"
+        }
+      },
+      "skill2": {
+        "v1": {
+          "archive_path": "prompts/skills/archive/skill2_v1.prompt",
+          "branch": "main",
+          "last_accessed": "2026-03-25T19:31:24.568573Z"
+        }
+      },
+      "test_skill": {
+        "v1": {
+          "archive_path": "prompts/skills/archive/test_skill_v1.prompt",
+          "branch": "main",
+          "last_accessed": "2026-03-25T19:31:24.465555Z"
+        }
+      }
+    }
+  }
+}
