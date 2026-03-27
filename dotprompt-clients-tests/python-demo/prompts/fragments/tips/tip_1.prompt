@@ -1,0 +1,13 @@
+init do
+  @version: 1
+
+  def:
+    mode: fragment
+    match: Tip 1
+
+end init
+
+# Tip 1: Stay organized
+- Keep your workspace clean and organized
+- Use folders to categorize your files
+- Review and declutter regularly

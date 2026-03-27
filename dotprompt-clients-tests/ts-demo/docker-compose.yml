@@ -1,0 +1,22 @@
+services:
+  dot-prompt:
+    image: dot-prompt:headless
+    container_name: dot-prompt-ts-demo
+    restart: unless-stopped
+    ports:
+      - "4002:4000"
+    volumes:
+      - ./prompts:/app/prompts:ro
+    environment:
+      - MIX_ENV=prod
+      - PORT=4000
+      - PROMPTS_DIR=/app/prompts
+      - PHX_HOST=localhost
+      - SECRET_KEY_BASE=dEvSeCrEtKeYBaSeFoRTeStInG12345678901234567890
+      - LIVE_VIEW_SIGNING_SALT=DeVSiGnInGsAlT123456789
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/127.0.0.1/4000'"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s

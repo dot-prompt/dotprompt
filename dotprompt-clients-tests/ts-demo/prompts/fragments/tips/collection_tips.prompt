@@ -1,0 +1,19 @@
+init do
+  @version: 1
+
+  def:
+    mode: fragment
+    match: tip 2
+
+  fragments:
+    {tips}: from: .
+
+end init
+
+# Fragment with collection iteration - iterates over all .prompt files in tips folder
+Here are some helpful tips:
+
+{tips}
+
+Each tip provides valuable insights for improving your productivity.
+

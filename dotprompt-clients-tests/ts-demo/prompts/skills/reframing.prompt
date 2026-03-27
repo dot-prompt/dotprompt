@@ -1,0 +1,120 @@
+init do
+  @version: 1
+
+  def:
+  mode: fragment
+  description: Reframing technique for changing perspective on situations
+    match: Reframing
+
+    docs do
+      Reframing is an NLP technique that changes the meaning or context assigned to
+      a situation without changing the facts. By shifting the frame, the same
+      situation can produce entirely different emotional responses and behaviors.
+
+      The "Six-Step Reframe" provides a complete process for identifying limiting
+      frames and establishing more empowering alternatives.
+    end docs
+
+end init
+
+# Reframing Technique
+
+## What is Reframing?
+
+Reframing is the ability to change the way you perceive a situation, which changes
+how you respond to it. The facts remain the same, but the meaning you assign
+to them shifts.
+
+## The Six-Step Reframe
+
+### Step 1: Identify the Unwanted Response
+
+First, recognize what frame you're currently operating under. Ask yourself:
+
+- What is my current interpretation of this situation?
+- What frame is producing an unwanted response?
+- What emotional effect does this frame create?
+- What behavior does it cause me to avoid or pursue?
+
+### Step 2: Separate Intention from Behavior
+
+Every behavior serves some positive intention, even if the behavior itself
+is unwanted. Ask:
+
+- What is the positive purpose of my current response?
+- What am I trying to protect or achieve?
+- What would I lose if I gave up this response entirely?
+
+The intention is always valid; the behavior may need to change.
+
+### Step 3: Create Many Alternatives
+
+Generate at least three different frames for the situation:
+
+| Frame | Interpretation | Emotional Effect |
+|-------|---------------|------------------|
+| Current | [current understanding] | [current feeling] |
+| Alternative 1 | [new perspective 1] | [new feeling 1] |
+| Alternative 2 | [new perspective 2] | [new feeling 2] |
+| Alternative 3 | [new perspective 3] | [new feeling 3] |
+
+### Step 4: Select the Most Empowering Frame
+
+Evaluate each alternative:
+
+- Does this frame serve my highest good?
+- Is it resource-based and achievable?
+- Does it preserve the positive intention identified in Step 2?
+- What evidence supports this new interpretation?
+
+### Step 5: Associate into the New Frame
+
+Fully inhabit the new frame:
+
+- What does this situation mean now?
+- How do I feel with this new understanding?
+- What am I now capable of doing that I wasn't before?
+- What resources do I have access to with this frame?
+
+### Step 6: Ecology Check
+
+Before finalizing the new frame, verify:
+
+- [ ] Does this new frame work for me?
+- [ ] Does it work for those affected by my choices?
+- [ ] Does it work for the larger system I'm part of?
+- [ ] Is there anything I'm giving up that I'll miss?
+
+If all checks are yes, the new frame is ready to install.
+
+## Installation
+
+Write the new frame in your own words:
+
+"This situation now means [new interpretation] to me."
+
+Repeat this statement during calm moments for the next seven days to
+consolidate the new neural pathway.
+
+## Application
+
+When you notice the old frame returning, gently redirect:
+
+1. Notice the old frame arising
+2. Take a breath
+3. Apply the new frame
+4. Notice the shift in your response
+
+## Common Reframes
+
+**From "failure" to "learning opportunity"**
+- Old frame: "I failed the interview"
+- New frame: "The interview revealed areas for growth"
+
+**From "problem" to "challenge"**
+- Old frame: "This is a problem"
+- New frame: "This is a challenge I can overcome"
+
+**From "threat" to "opportunity"**
+- Old frame: "This change is a threat"
+- New frame: "This change brings new possibilities"

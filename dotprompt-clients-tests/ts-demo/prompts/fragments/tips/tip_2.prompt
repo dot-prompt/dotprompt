@@ -1,0 +1,13 @@
+init do
+  @version: 1
+
+  def:
+    mode: fragment
+    match: Tip 2
+
+end init
+
+# Tip 2: Take regular breaks
+- Step away from your work every hour
+- Take a short walk or stretch
+- Rest your eyes from screen time

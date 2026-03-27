@@ -1,0 +1,29 @@
+init do
+  @version: 1
+
+  def:
+    mode: fragment
+    match: Combined Greeting
+
+  params:
+    @is_vip: bool -> whether the user is a VIP member
+    @is_member: bool -> whether the user is a member
+    @name: str -> the user's name
+    @service_name: str -> name of the service
+    @experience: int -> years in business
+    @customer_count: int -> number of customers
+
+  fragments:
+    {simple_greeting}: from: simple_greeting
+    {personalized_greeting}: from: personalized_greeting
+    {conditional_greeting}: from: conditional_greeting
+
+end init
+
+# Fragment that combines other fragments
+{simple_greeting}
+
+{personalized_greeting}
+
+{conditional_greeting}
+

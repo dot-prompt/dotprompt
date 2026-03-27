@@ -1,0 +1,18 @@
+init do
+  @version: 1
+
+  def:
+    mode: fragment
+    match: Personalized Greeting
+
+  params:
+    @name: str -> the user's name
+    @service_name: str -> name of the service
+    @experience: int -> years in business
+    @customer_count: int -> number of customers
+
+end init
+
+# Dynamic fragment with variable interpolation
+Hello @name! Welcome to @service_name.
+We're @experience years in business and have @customer_count customers.

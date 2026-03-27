@@ -1,0 +1,49 @@
+init do
+  @version: 1
+
+  def:
+    description: Demonstrates all fragment types in dot_prompt
+
+  params:
+    @name: str = Guest -> User's name
+    @is_vip: bool = false -> Whether user is a VIP member
+    @is_member: bool = false -> Whether user is a member
+    @service_name: str = our platform -> Name of the service
+    @experience: int = 5 -> Years in business
+    @customer_count: int = 1000 -> Number of customers
+
+  fragments:
+    {simple_greeting}: from: fragments/simple_greeting
+    {personalized_greeting}: from: fragments/personalized_greeting
+    {conditional_greeting}: from: fragments/conditional_greeting
+    {combined_greeting}: from: fragments/combined_greeting
+    {tips}: from: fragments/tips
+
+
+end init
+
+# Fragment Expansion Demo
+# This prompt demonstrates all fragment types available in dot_prompt
+
+## Simple Static Fragment
+{simple_greeting}
+
+## Dynamic Fragment with Variables
+{personalized_greeting}
+
+## Conditional Fragment
+{conditional_greeting}
+
+## Combined Fragment (references other fragments)
+{combined_greeting}
+
+## Collection Iteration
+{tips}
+
+## Direct Fragment References
+You can also reference fragments directly:
+- Static: {simple_greeting}
+- Dynamic with variables: {personalized_greeting}
+- Conditional: {conditional_greeting}
+- Collection: {tips}
+

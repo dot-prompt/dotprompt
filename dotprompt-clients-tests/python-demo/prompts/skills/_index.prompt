@@ -1,0 +1,18 @@
+init do
+  @version: 1
+
+  def:
+    mode: collection
+    description: NLP skills collection
+
+  params:
+    @skill_names: list[Milton Model, Meta Model, Anchoring, Reframing]
+      -> skill names to load
+
+  docs do
+    Each .prompt file in this folder declares its match field in def.
+    Add new skills by dropping a file in with the correct match value.
+    No code changes or registry updates needed.
+  end docs
+
+end init

@@ -1,0 +1,67 @@
+init do
+  @version: 1
+
+  def:
+    mode: fragment
+    description: Anchoring technique from NLP for establishing resource states
+    match: Anchoring
+
+  docs do
+    Anchoring is an NLP technique that associates a specific stimulus (the anchor)
+    with a resourceful emotional or cognitive state. When the anchor is activated,
+    it triggers the associated state instantly.
+
+    Usage: After loading, reference the anchor by its name to activate the state.
+    The anchor becomes more durable with each repetition during installation.
+  end docs
+
+end init
+
+# Anchoring Technique
+
+## What is Anchoring?
+
+Anchoring is an NLP technique that creates a neurological link between a specific
+stimulus (usually a touch gesture) and an emotional or cognitive state. Once
+anchored, the stimulus can instantly evoke the associated state.
+
+## State Installation
+
+To install an anchor:
+
+1. **Recall a peak experience**: Think of a specific time when you experienced
+   the desired state (confidence, calm, focus, etc.).
+
+2. **Fully immerse**: See what you saw, hear what you heard, feel what you felt.
+   Notice the specific qualities of this state — its intensity, its texture,
+   its unique signature.
+
+3. **Apply the anchor**: As you reach the peak of that experience, apply a unique
+   physical gesture. This should be:
+   - **Location**: A distinct point on your body (e.g., thumb and forefinger pinch)
+   - **Pressure**: Consistent intensity each time
+   - **Timing**: Applied precisely at the peak moment
+
+4. **Release**: Let the memory fade while keeping the anchor gesture.
+
+## Activation
+
+To activate an anchor in future situations:
+
+1. Replicate the exact physical gesture of your anchor
+2. The associated state will begin to emerge
+3. Allow it to expand and fill your awareness
+4. You can adjust the intensity by varying the anchor pressure
+
+## Deepening
+
+With use, anchors strengthen. You can install additional instances of the same
+state by finding even more powerful examples and reinforcing the anchor at peak moments.
+Multiple installations of the same anchor create a cumulative effect.
+
+## Applications
+
+- **Confidence before presentations**: Anchor a confident state before public speaking
+- **Calm before difficult conversations**: Install a calm state for stressful meetings
+- **Focus for work**: Create an anchor for deep concentration
+- **Energy when needed**: Anchor an energetic state for afternoon slumps

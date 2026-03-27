@@ -1,0 +1,20 @@
+init do
+  @version: 1
+
+  def:
+    mode: fragment
+    description: Milton Model skill definition
+    match: Milton Model
+
+end init
+
+The Milton Model is a set of language patterns derived from the work of Richard Bandler and John Grinder. Key patterns include:
+
+- **Presuppositions**: Embed assumptions into your sentences. "As you learn more about this..." presupposes learning.
+- **Mind Reading**: "I know you're feeling..." claims to know the other's internal state.
+- **Universal Quantifiers**: "People always..." or "They never..." overgeneralize.
+- **Modal Operators**: "You must...", "You should...", "You have to..." indicate necessity or possibility.
+- **Cause and Effect**: "I made you angry" creates a false causal link.
+- **Complex Equivalence**: Equating two different experiences. "Crying means you're sad."
+- **Lost Performative**: Blame without personal responsibility. "It's wrong to..."
+- **Meta Model**: The linguistic inverse — asking precise questions to challenge vague language.

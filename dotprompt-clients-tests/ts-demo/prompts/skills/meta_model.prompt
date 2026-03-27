@@ -1,0 +1,19 @@
+init do
+  @version: 1
+
+  def:
+    mode: fragment
+    description: Meta Model skill definition
+    match: Meta Model
+
+end init
+
+The Meta Model is a linguistic tool for bringing specificity to vague language. When someone uses a generalization, distortion, or deletion:
+
+- **Deleted Information**: Ask "Who specifically?", "What specifically?", "How specifically?"
+- **Generalizations**: "What would happen if the opposite were true?" Challenge universal quantifiers.
+- **Distortions**: "How did you conclude that?" Challenge cause-effect and mind-reading statements.
+- **Unspecified Verbs**: "What exactly does 'handle' mean?" Make vague actions concrete.
+- **Nominalizations**: "What would you see if you had that commitment?" Turn abstract nouns into verbs and descriptions.
+
+The Meta Model creates precision for decision-making and problem-solving contexts. Use sparingly — excessive questioning can feel interrogative.

@@ -1,0 +1,17 @@
+[project]
+name = "python-demo"
+version = "0.1.0"
+description = "Demo project to test dot-prompt Python client"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0.0"]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

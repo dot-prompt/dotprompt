@@ -1,0 +1,5 @@
+init do
+  @version: 1
+  def:
+    mode: collection
+end init

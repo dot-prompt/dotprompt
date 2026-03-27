@@ -1,0 +1,102 @@
+init do
+  @version: 1
+
+  def:
+    mode: fragment
+    description: Meta-model question patterns for precise communication
+
+  params:
+    @conversation: str -> the conversation or statement to analyze
+    @focus_areas: enum[Deleted Information, Generalizations, Distortions, Unspecified Verbs, Nominalizations] -> which meta-model categories to focus on
+
+  docs do
+    The Meta-Model is a set of linguistic patterns from NLP that identifies
+    how people distort, delete, and generalize their experience. By asking
+    specific questions, you help them restore precision to their communication
+    and access their full sensory experience.
+
+    Use sparingly and with genuine curiosity, not as interrogation.
+  end docs
+
+end init
+
+# Meta-Model Question Patterns
+
+Analyze the following statement using the Meta-Model framework:
+
+> @conversation
+
+## Focus Areas: @focus_areas
+
+---
+
+## Deleted Information
+
+Ask who, what, when, where, how specifically:
+
+if @focus_areas includes "Deleted Information" do
+- **"Who specifically?"** — Who is doing/feeling/thinking this?
+- **"What specifically?"** — What is the actual event, action, or thing?
+- **"When specifically?"** — When does/did this happen? How often?
+- **"Where specifically?"** — Where does this occur?
+- **"How specifically?"** — How do you know? What tells you this?
+
+end @focus_areas
+## Generalizations
+
+Challenge universal quantifiers with the opposite:
+
+if @focus_areas includes "Generalizations" do
+- **"What would happen if the opposite were true?"**
+- **"Can you think of an exception to that?"**
+- **"Always?" / "Never?"** — Challenge absolute terms
+- **"What about the times when...?"**
+- **"How is this one instance representative of all cases?"**
+
+end @focus_areas
+## Distortions
+
+Challenge cause-effect and mind-reading:
+
+if @focus_areas includes "Distortions" do
+- **"How did you conclude that?"** — Challenge cause-effect assumptions
+- **"What evidence tells you what others are thinking?"** — Challenge mind-reading
+- **"What would have to be true for X to cause Y?"**
+- **"Is there another explanation?"**
+- **"How would you verify that?"**
+
+end @focus_areas
+## Unspecified Verbs
+
+Make vague actions concrete:
+
+if @focus_areas includes "Unspecified Verbs" do
+- **"What exactly does '__' mean in this context?"**
+- **"What does that look like? What would you see?"**
+- **"How specifically does that happen?"**
+- **"What would stop you from __?"**
+- **"What would successful __ be?"**
+
+end @focus_areas
+## Nominalizations
+
+Turn abstract nouns into verbs:
+
+if @focus_areas includes "Nominalizations" do
+- **"What would you see if you had that commitment?"** — Transform abstract into concrete
+- **"What would it look like if you achieved that understanding?"**
+- **"How would you know if you had more ___?"**
+- **"What action would demonstrate that ___?"**
+- **"What would have to happen for you to feel that ___?"**
+end @focus_areas
+---
+
+## Suggested Questions
+
+Based on the statement, here are the most impactful questions to ask:
+
+1.
+2.
+3.
+
+## Response Notes

@@ -1,0 +1,11 @@
+init do
+  @version: 1
+
+  def:
+    mode: fragment
+    match: Simple Greeting
+
+end init
+
+# Static fragment with fixed content
+Hello! Welcome to our service.

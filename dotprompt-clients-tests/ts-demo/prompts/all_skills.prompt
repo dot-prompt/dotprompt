@@ -1,0 +1,42 @@
+init do
+  @version: 1
+
+  def:
+    mode: demonstration
+    description: Demonstrates match: all, matchRe, limit, and order features.
+
+  params:
+    @user_message: str = Hello
+
+  fragments:
+    # Match every fragment in the skills folder
+    {all_skills}: static from: skills
+      match: all
+      order: ascending
+      -> loads all available skills
+
+    # Regex match with pattern
+    {filtered_skills}: static from: skills
+      matchRe: M.*
+      limit: 2
+      order: descending
+      -> loads skills matching the pattern
+
+  docs do
+    This prompt demonstrates the advanced collection assembly rules in v1.1.
+    - {all_skills} uses 'match: all' to include everything.
+    - {filtered_skills} uses 'matchRe' with a pattern string.
+  end docs
+
+end init
+
+# ALL SKILLS (Ascending)
+{{all_skills}}
+
+---
+
+# FILTERED SKILLS (Regex: M.*, Limit: 2, Descending)
+{filtered_skills}
+
+# MESSAGE
+@user_message

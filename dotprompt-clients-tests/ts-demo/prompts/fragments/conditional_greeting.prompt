@@ -1,0 +1,25 @@
+init do
+  @version: 1
+
+  def:
+    mode: fragment
+    match: Conditional Greeting
+
+  params:
+    @is_vip: bool -> whether the user is a VIP member
+    @is_member: bool -> whether the user is a member
+    @name: str -> the user's name
+
+end init
+
+# Fragment with conditional logic
+if @is_vip is true do
+  Welcome back, @name! As a VIP member, you get exclusive access to our premium features.
+
+elif @is_member is true do
+  Welcome back, @name! Thanks for being a loyal member.
+
+else
+  Hello @name! Sign up today to become a member and enjoy exclusive benefits.
+
+end @is_vip
