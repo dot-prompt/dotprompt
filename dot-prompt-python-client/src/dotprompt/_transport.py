@@ -1,7 +1,7 @@
 """Private HTTP transport layer for dot-prompt client."""
 
 import logging
-from typing import Any
+from typing import Any, AsyncIterator
 
 import httpx
 
@@ -28,96 +28,97 @@ class _Transport:
         verify_ssl: bool = True,
         api_key: str | None = None,
         max_retries: int = 3,
-    ) -> None:
+    ):
         self.base_url = base_url.rstrip("/")
         self.timeout = timeout
+        self.verify_ssl = verify_ssl
+        self.api_key = api_key
         self.max_retries = max_retries
-
-        headers: dict[str, str] = {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-        }
-        if api_key:
-            headers["Authorization"] = f"Bearer {api_key}"
-
         self._client = httpx.AsyncClient(
             base_url=self.base_url,
-            timeout=httpx.Timeout(timeout),
+            timeout=timeout,
             verify=verify_ssl,
-            headers=headers,
+            headers=self._build_headers(api_key),
         )
+
+    def _build_headers(self, api_key: str | None = None) -> dict[str, str]:
+        headers = {"Content-Type": "application/json"}
+        if api_key:
+            headers["Authorization"] = f"Bearer {api_key}"
+        return headers
 
     async def close(self) -> None:
         """Close the HTTP client."""
         await self._client.aclose()
 
-    async def __aenter__(self) -> "_Transport":
-        return self
+    async def get(self, path: str) -> dict[str, Any]:
+        """Perform GET request."""
+        return await self._do_request("GET", path)
 
-    async def __aexit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
-        await self.close()
+    async def post(self, path: str, body: dict[str, Any]) -> dict[str, Any]:
+        """Perform POST request."""
+        return await self._do_request("POST", path, body=body)
+
+    async def _do_request(
+        self, method: str, path: str, **kwargs: Any
+    ) -> dict[str, Any]:
+        """Execute HTTP request with retry logic."""
+        last_error = None
+
+        for attempt in range(self.max_retries):
+            try:
+                response = await self._client.request(
+                    method, path, **kwargs
+                )
+
+                if response.status_code >= 400:
+                    self._handle_error(response)
+
+                return response.json()
+
+            except httpx.TimeoutException as e:
+                last_error = e
+                if attempt == self.max_retries - 1:
+                    raise TimeoutError(f"Request to {path} timed out") from e
+
+            except httpx.ConnectError as e:
+                last_error = e
+                if attempt == self.max_retries - 1:
+                    raise ConnectionError(
+                        f"Could not connect to dot-prompt server at {self.base_url}"
+                    ) from e
+
+        raise ServerError(f"Request failed after {self.max_retries} attempts") from last_error
 
     def _handle_error(self, response: httpx.Response) -> None:
-        """Convert HTTP error responses to custom exceptions."""
+        """Handle HTTP error responses."""
         status = response.status_code
-        data: dict | None = None
         try:
-            data = response.json()
-            message = data.get("message", data.get("error", "Unknown error"))
+            error_data = response.json()
+            error_type = error_data.get("error", "server_error")
+            message = error_data.get("message", "Unknown error")
         except Exception:
+            error_type = "server_error"
             message = response.text or "Unknown error"
 
-        if status == 404:
-            raise PromptNotFoundError(message)
-        elif status == 422:
-            error_type = data.get("error", "")
-            if error_type == "missing_required_params":
-                raise MissingRequiredParamsError(message)
-            elif error_type == "validation_error":
-                raise ValidationError(message)
-            else:
-                raise APIClientError(status, message)
-        elif status >= 500:
-            raise ServerError(status, message)
-        else:
-            raise APIClientError(status, message)
+        error_mapping = {
+            400: ValidationError,
+            404: PromptNotFoundError,
+            422: MissingRequiredParamsError,
+            500: ServerError,
+            502: ServerError,
+            503: ServerError,
+        }
 
-    async def get(self, path: str) -> dict[str, Any]:
-        """Make a GET request."""
-        try:
-            response = await self._client.get(path)
-        except httpx.ConnectError as e:
-            logger.error(f"Connection error: {e}")
-            raise ConnectionError() from e
-        except httpx.TimeoutException as e:
-            logger.error(f"Timeout error: {e}")
-            raise TimeoutError() from e
+        error_class = error_mapping.get(status, APIClientError)
+        raise error_class(message)
 
-        if response.status_code >= 400:
-            self._handle_error(response)
+    import contextlib
 
-        return response.json()
-
-    async def post(self, path: str, json: dict[str, Any]) -> dict[str, Any]:
-        """Make a POST request."""
-        try:
-            response = await self._client.post(path, json=json)
-        except httpx.ConnectError as e:
-            logger.error(f"Connection error: {e}")
-            raise ConnectionError() from e
-        except httpx.TimeoutException as e:
-            logger.error(f"Timeout error: {e}")
-            raise TimeoutError() from e
-
-        if response.status_code >= 400:
-            self._handle_error(response)
-
-        return response.json()
-
-    async def stream_events(self) -> httpx.Response:
-        """Stream SSE events from the container.
-
-        Returns:
-            Response object with streaming enabled for SSE events.
-        """
-        return await self._client.request("GET", "/api/events", stream=True)
+    @contextlib.asynccontextmanager
+    async def stream(self, method: str, path: str, **kwargs: Any) -> AsyncIterator[httpx.Response]:
+        """Context manager for streaming requests."""
+        async with self._client.stream(method, path, **kwargs) as response:
+            if response.status_code >= 400:
+                self._handle_error(response)
+            yield response

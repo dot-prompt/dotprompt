@@ -2,8 +2,8 @@ services:
   dot-prompt:
     build:
       context: .
-      dockerfile: Dockerfile
-    image: dot-prompt:production
+      dockerfile: Dockerfile.headless
+    image: dot-prompt:headless
     container_name: dot-prompt-server
     restart: unless-stopped
     ports:
@@ -11,17 +11,17 @@ services:
     volumes:
       - "${PROMPT_DIR_HOST:-./prompts}:/app/prompts:ro"
     environment:
-      - MIX_ENV=dev
+      - MIX_ENV=prod
       - PORT=4000
       - PROMPTS_DIR=/app/prompts
-      - PHX_HOST=${PHX_HOST:-localhost}
-      # In dev, Phoenix uses defaults from config/dev.exs
-      # but we keep these as optional overrides
-      - SECRET_KEY_BASE=${SECRET_KEY_BASE:-}
-      - LIVE_VIEW_SIGNING_SALT=${LIVE_VIEW_SIGNING_SALT:-}
+      - PHX_HOST=localhost
+      - SECRET_KEY_BASE=dEvSeCrEtKeYBaSeFoRTeStInG12345678901234567890
+      - LIVE_VIEW_SIGNING_SALT=DeVSiGnInGsAlT123456789
+      # Remove DISABLE_UI to enable API endpoint
+      # - DISABLE_UI=true
     healthcheck:
-      test: ["CMD", "nc", "-z", "localhost", "4000"]
+      test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/127.0.0.1/4000'"]
       interval: 30s
       timeout: 10s
-      retries: 3
-      start_period: 40s
+      retries: 5
+      start_period: 30s

@@ -21,6 +21,9 @@ defmodule DotPromptServerWeb.SchemaControllerTest do
         @age: int[1..100]
     end init
     Hello @user
+    response do
+      {"message": "string", "count": "number"}
+    end response
     """)
 
     on_exit(fn ->
@@ -41,6 +44,8 @@ defmodule DotPromptServerWeb.SchemaControllerTest do
     assert schema["params"]["user"]["default"] == "Alice"
     assert schema["params"]["age"]["type"] == "int"
     assert schema["params"]["age"]["range"] == [1, 100]
+    assert schema["response_contract"]["properties"]["message"]["type"] == "string"
+    assert schema["response_contract"]["properties"]["count"]["type"] == "number"
   end
 
   describe "error handling" do

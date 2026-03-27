@@ -49,7 +49,8 @@ COPY --from=build_app --chown=elixir:elixir /app/_build/prod/rel/dot_prompt_umbr
 
 # Runtime Environment Variables
 ENV PORT=4000
-ENV DISABLE_UI=true
+# Remove DISABLE_UI to enable Phoenix endpoint
+# ENV DISABLE_UI=true
 EXPOSE 4000
 
 # Set entrypoint to the service bin

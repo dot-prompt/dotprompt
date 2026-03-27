@@ -38,6 +38,8 @@ defmodule DotPromptServer.FileWatcher do
         Logger.info("dot-prompt: invalidating cache for #{prompt_name} due to file change")
         DotPrompt.invalidate_cache(prompt_name)
         Fragment.invalidate_path(prompt_name)
+
+        Phoenix.PubSub.broadcast(DotPromptServer.PubSub, "events", {:file_change, prompt_name})
       end
     end
 

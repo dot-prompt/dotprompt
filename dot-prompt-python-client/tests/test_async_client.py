@@ -95,7 +95,7 @@ async def test_validate_response(client):
 @pytest.mark.asyncio
 async def test_validate_response_invalid(client):
     contract = {
-        "fields": {
+        "properties": {
             "answer": {"type": "string"},
         }
     }

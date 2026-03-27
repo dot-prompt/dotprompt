@@ -116,6 +116,7 @@ defmodule DotPromptServer.MCP.Server do
           result: %{
             template: result.prompt,
             vary_selections: result.vary_selections,
+            response_contract: result.response_contract,
             warnings: result.metadata.warnings
           }
         }

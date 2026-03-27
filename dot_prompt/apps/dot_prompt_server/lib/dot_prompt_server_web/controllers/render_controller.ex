@@ -5,7 +5,6 @@ defmodule DotPromptServerWeb.RenderController do
     opts =
       []
       |> maybe_put(:seed, body["seed"])
-      |> maybe_put(:seeds, body["seeds"])
       |> maybe_put(:major, body["major"])
 
     case DotPrompt.render(prompt, params, runtime, opts) do

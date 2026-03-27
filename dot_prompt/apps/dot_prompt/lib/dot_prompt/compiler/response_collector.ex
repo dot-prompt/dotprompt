@@ -59,7 +59,18 @@ defmodule DotPrompt.Compiler.ResponseCollector do
     end)
   end
 
-  defp schema_for_value(v) when is_binary(v), do: %{"type" => "string", "required" => true}
+  defp schema_for_value(v) when is_binary(v) do
+    case v do
+      "string" -> %{"type" => "string", "required" => true}
+      "number" -> %{"type" => "number", "required" => true}
+      "integer" -> %{"type" => "integer", "required" => true}
+      "boolean" -> %{"type" => "boolean", "required" => true}
+      "array" -> %{"type" => "array", "required" => true}
+      "object" -> %{"type" => "object", "required" => true}
+      _ -> %{"type" => "string", "required" => true}
+    end
+  end
+
   defp schema_for_value(v) when is_integer(v), do: %{"type" => "integer", "required" => true}
   defp schema_for_value(v) when is_float(v), do: %{"type" => "number", "required" => true}
   defp schema_for_value(v) when is_boolean(v), do: %{"type" => "boolean", "required" => true}

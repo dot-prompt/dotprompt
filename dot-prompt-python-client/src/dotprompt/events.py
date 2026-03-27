@@ -7,5 +7,6 @@ class Event(BaseModel):
     """Represents an event from the container SSE stream."""
 
     type: str
-    timestamp: float
-    payload: dict
+    prompt: str | None = None
+    timestamp: float | None = None
+    payload: dict | None = None

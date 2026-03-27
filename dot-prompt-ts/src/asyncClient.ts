@@ -57,12 +57,12 @@ export class DotPromptAsyncClient {
    * Retrieves the schema for a specific prompt.
    * 
    * @param prompt - The name of the prompt.
-   * @param version - Optional version number.
+   * @param major - Optional major version number.
    * @returns Promise<PromptSchema> - The validated prompt schema.
    */
-  public async getSchema(prompt: string, version?: number): Promise<PromptSchema> {
-    const path = version 
-      ? `/api/schema/${prompt}/${version}` 
+  public async getSchema(prompt: string, major?: number): Promise<PromptSchema> {
+    const path = major 
+      ? `/api/schema/${prompt}/${major}` 
       : `/api/schema/${prompt}`;
     
     const data = await this.transport.request(path);
@@ -74,21 +74,21 @@ export class DotPromptAsyncClient {
    * 
    * @param prompt - The name of the prompt.
    * @param params - The input data for compilation.
-   * @param options - Optional seed and version filters.
+   * @param options - Optional seed and major version filters.
    * @returns Promise<CompileResult> - The compilation result.
    */
   public async compile(
     prompt: string,
     params: Record<string, any>,
-    options: { seed?: number; version?: number } = {}
+    options: { seed?: number; major?: number } = {}
   ): Promise<CompileResult> {
     const data = await this.transport.request("/api/compile", {
       method: "POST",
       body: { 
-        prompt_name: prompt, 
+        prompt: prompt, 
         params, 
         seed: options.seed, 
-        version: options.version 
+        major: options.major 
       },
     });
     return CompileResult.parse(data);
@@ -100,23 +100,23 @@ export class DotPromptAsyncClient {
    * @param prompt - The name of the prompt.
    * @param params - The input data for compilation.
    * @param runtime - The runtime data for rendering.
-   * @param options - Optional seed and version filters.
+   * @param options - Optional seed and major version filters.
    * @returns Promise<RenderResult> - The rendering result.
    */
   public async render(
     prompt: string,
     params: Record<string, any>,
     runtime: Record<string, any>,
-    options: { seed?: number; version?: number } = {}
+    options: { seed?: number; major?: number } = {}
   ): Promise<RenderResult> {
     const data = await this.transport.request("/api/render", {
       method: "POST",
       body: { 
-        prompt_name: prompt, 
+        prompt: prompt, 
         params, 
         runtime, 
         seed: options.seed, 
-        version: options.version 
+        major: options.major 
       },
     });
     return RenderResult.parse(data);

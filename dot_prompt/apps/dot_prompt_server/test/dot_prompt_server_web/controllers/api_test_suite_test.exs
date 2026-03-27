@@ -26,7 +26,7 @@ defmodule DotPromptServerWeb.ApiTestSuiteTest do
           @p_str: str = "default"
           @p_list: list[a, b, c] = [a]
       end init
-      
+
       Content: @p_str
       """
 
@@ -46,46 +46,46 @@ defmodule DotPromptServerWeb.ApiTestSuiteTest do
       # Check parameter metadata
       params = response["params"]
       assert is_map(params)
-      
+
       assert params["p_enum"] == %{
-        "type" => "enum",
-        "values" => ["opt1", "opt2", "opt3"],
-        "default" => nil,
-        "doc" => "Primary selection",
-        "range" => nil,
-        "lifecycle" => "compile",
-        "raw" => "enum[opt1, opt2, opt3]"
-      }
+               "type" => "enum",
+               "values" => ["opt1", "opt2", "opt3"],
+               "default" => nil,
+               "doc" => "Primary selection",
+               "range" => nil,
+               "lifecycle" => "compile",
+               "raw" => "enum[opt1, opt2, opt3]"
+             }
 
       assert params["p_bool"] == %{
-        "type" => "bool",
-        "values" => nil,
-        "default" => true,
-        "doc" => "Feature flag",
-        "range" => nil,
-        "lifecycle" => "compile",
-        "raw" => "bool = true"
-      }
+               "type" => "bool",
+               "values" => nil,
+               "default" => true,
+               "doc" => "Feature flag",
+               "range" => nil,
+               "lifecycle" => "compile",
+               "raw" => "bool = true"
+             }
 
       assert params["p_int_range"] == %{
-        "type" => "int",
-        "values" => nil,
-        "default" => 5,
-        "doc" => "User weight",
-        "range" => [0, 10],
-        "lifecycle" => "compile",
-        "raw" => "int[0..10] = 5"
-      }
+               "type" => "int",
+               "values" => nil,
+               "default" => 5,
+               "doc" => "User weight",
+               "range" => [0, 10],
+               "lifecycle" => "compile",
+               "raw" => "int[0..10] = 5"
+             }
 
       assert params["p_list"] == %{
-        "type" => "list",
-        "values" => ["a", "b", "c"],
-        "default" => ["a"],
-        "doc" => "",
-        "range" => nil,
-        "lifecycle" => "compile",
-        "raw" => "list[a, b, c] = [a]"
-      }
+               "type" => "list",
+               "values" => ["a", "b", "c"],
+               "default" => ["a"],
+               "doc" => "",
+               "range" => nil,
+               "lifecycle" => "compile",
+               "raw" => "list[a, b, c] = [a]"
+             }
     end
 
     test "extracts metadata even if DotPrompt.compile fails (validation error)", %{conn: conn} do
@@ -119,7 +119,7 @@ defmodule DotPromptServerWeb.ApiTestSuiteTest do
         params:
           @name: str
       # Missing end init
-      
+
       Hello @name
       """
 
@@ -140,7 +140,7 @@ defmodule DotPromptServerWeb.ApiTestSuiteTest do
         params:
           @style: enum[casual, formal]
       end init
-      
+
       vary @style do
       casual: Hey there!
       formal: Good day to you.
@@ -169,9 +169,9 @@ defmodule DotPromptServerWeb.ApiTestSuiteTest do
         params:
           @name: str
       end init
-      
+
       Hello @name
-      
+
       response do
         {
           "greeting": "string",
@@ -193,7 +193,7 @@ defmodule DotPromptServerWeb.ApiTestSuiteTest do
       assert contract["type"] == "object"
       assert is_map(contract["properties"])
       assert contract["properties"]["greeting"]["type"] == "string"
-      assert contract["properties"]["tokens"]["type"] == "string" # Curiously, "number" was parsed as "string" or just kept as is
+      assert contract["properties"]["tokens"]["type"] == "number"
     end
   end
 end

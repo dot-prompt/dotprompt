@@ -27,6 +27,7 @@ defmodule DotPrompt.Compiler.FragmentExpander.Collection do
 
       all_files =
         File.ls!(full_path)
+        |> Enum.reject(&(&1 == "." or &1 == ".."))
         |> Enum.filter(fn file ->
           f_path = Path.join(full_path, file)
           String.ends_with?(file, ".prompt") or File.dir?(f_path)

@@ -52,10 +52,10 @@ describe('DotPromptAsyncClient', () => {
         expect.objectContaining({
             method: 'POST',
             body: JSON.stringify({
-                prompt_name: 'test_prompt',
+                prompt: 'test_prompt',
                 params: { name: 'World' },
                 seed: undefined,
-                version: undefined
+                major: undefined
             })
         })
     );

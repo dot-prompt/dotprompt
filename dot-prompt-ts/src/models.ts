@@ -1,43 +1,24 @@
 import { z } from "zod";
 
 /**
- * Zod schema for parameter specification.
- */
-export const ParamSpec = z.object({
-  type: z.string(),
-  lifecycle: z.string().optional(),
-  doc: z.string().optional(),
-  default: z.any().optional(),
-  values: z.array(z.any()).optional(),
-  range: z.tuple([z.any(), z.any()]).optional(),
-});
-export type ParamSpec = z.infer<typeof ParamSpec>;
-
-/**
- * Zod schema for fragment specification.
- */
-export const FragmentSpec = z.object({
-  type: z.string(),
-  doc: z.string().optional(),
-  from_path: z.string().optional(),
-});
-export type FragmentSpec = z.infer<typeof FragmentSpec>;
-
-/**
- * Zod schema for a single field in a response contract.
+ * Field specification in a response contract.
  */
 export const ContractField = z.object({
   type: z.string(),
-  doc: z.string().optional(),
+  required: z.boolean().optional(),
+  default: z.any().optional(),
 });
 export type ContractField = z.infer<typeof ContractField>;
 
 /**
  * Zod schema for a response contract.
+ * Note: Elixir returns "properties" not "fields"
  */
 export const ResponseContract = z.object({
-  fields: z.record(ContractField),
-  compatible: z.boolean(),
+  type: z.string().optional(),
+  properties: z.record(ContractField).optional(),
+  fields: z.record(ContractField).optional(),
+  compatible: z.boolean().optional(),
 });
 export type ResponseContract = z.infer<typeof ResponseContract>;
 
@@ -50,22 +31,25 @@ export const PromptSchema = z.object({
   description: z.string().optional(),
   mode: z.string().optional(),
   docs: z.string().optional(),
-  params: z.record(ParamSpec),
-  fragments: z.record(FragmentSpec),
+  params: z.record(z.any()),
+  fragments: z.record(z.any()),
   contract: ResponseContract.optional(),
 });
 export type PromptSchema = z.infer<typeof PromptSchema>;
 
 /**
  * Zod schema for compilation result.
+ * Note: response_contract can be null when no response block is defined
  */
 export const CompileResult = z.object({
   template: z.string(),
   cache_hit: z.boolean(),
   compiled_tokens: z.number(),
   vary_selections: z.record(z.any()).optional(),
-  response_contract: z.record(z.any()).optional(),
-  version: z.number(),
+  response_contract: z.union([ResponseContract, z.null()]).optional(),
+  version: z.number().optional(),
+  major: z.number().optional(),
+  params: z.record(z.any()).optional(),
   warnings: z.array(z.string()).default([]),
 });
 export type CompileResult = z.infer<typeof CompileResult>;
@@ -75,7 +59,7 @@ export type CompileResult = z.infer<typeof CompileResult>;
  */
 export const RenderResult = z.object({
   prompt: z.string(),
-  response_contract: z.record(z.any()).optional(),
+  response_contract: z.union([ResponseContract, z.null()]).optional(),
   cache_hit: z.boolean(),
   compiled_tokens: z.number(),
   injected_tokens: z.number(),
@@ -99,5 +83,7 @@ export const DotPromptEvent = z.discriminatedUnion("type", [
   z.object({ type: z.literal("breaking_change"), timestamp: z.number(), payload: z.any() }),
   z.object({ type: z.literal("versioned"), timestamp: z.number(), payload: z.any() }),
   z.object({ type: z.literal("committed"), timestamp: z.number(), payload: z.any() }),
+  z.object({ type: z.literal("file_change"), prompt: z.string() }),
+  z.object({ type: z.literal("connected") }),
 ]);
 export type DotPromptEvent = z.infer<typeof DotPromptEvent>;

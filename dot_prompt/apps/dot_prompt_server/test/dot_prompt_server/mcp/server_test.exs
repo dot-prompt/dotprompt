@@ -54,6 +54,9 @@ defmodule DotPromptServer.MCP.ServerTest do
         @user_level: enum[beginner, advanced]
     end init
     You are a tutor teaching @user_level students.
+    response do
+      {"message": "string"}
+    end response
     """
 
     request = %{
@@ -67,6 +70,7 @@ defmodule DotPromptServer.MCP.ServerTest do
     assert response.id == 3
     assert is_binary(response.result.template)
     assert response.result.template =~ "advanced"
+    assert response.result.response_contract["properties"]["message"]["type"] == "string"
   end
 
   test "handles prompt_compile syntax error" do

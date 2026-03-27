@@ -153,7 +153,8 @@ defmodule DotPrompt do
               {clean_name, spec_map}
             end)
 
-          # Merge def_block to ensure Match/MatchRe and other metadata are present
+          response_contract = extract_response_contract(ast.body)
+
           result =
             Map.merge(def_block, %{
               name: to_string(prompt_name),
@@ -161,7 +162,8 @@ defmodule DotPrompt do
               version: def_block[:version] || 1,
               params: schema_params,
               fragments: schema_fragments,
-              docs: docs
+              docs: docs,
+              response_contract: response_contract
             })
 
           Fragment.put({:schema, to_string(prompt_name), major, mtime}, result)
@@ -789,7 +791,12 @@ defmodule DotPrompt do
     |> wrap_result()
   end
 
-  defp handle_text_node(text, indent, context, {acc_text, acc_vary, acc_vars, acc_files, acc_count}) do
+  defp handle_text_node(
+         text,
+         indent,
+         context,
+         {acc_text, acc_vary, acc_vars, acc_files, acc_count}
+       ) do
     vars_in_text = Regex.scan(~r/@(\w+)/, text, capture: :all_but_first) |> List.flatten()
     new_vars = Enum.reduce(vars_in_text, acc_vars, &MapSet.put(&2, &1))
 
@@ -1079,7 +1086,8 @@ defmodule DotPrompt do
         )
 
       _ ->
-        {:halt, {:error, "fragment_not_declared: #{path} was used but not declared in init block"}}
+        {:halt,
+         {:error, "fragment_not_declared: #{path} was used but not declared in init block"}}
     end
   end
 
@@ -1133,7 +1141,11 @@ defmodule DotPrompt do
     end
   end
 
-  defp expand_fragment_by_path(path, context, {acc_text, acc_vary, acc_vars, acc_files, acc_count}) do
+  defp expand_fragment_by_path(
+         path,
+         context,
+         {acc_text, acc_vary, acc_vars, acc_files, acc_count}
+       ) do
     indent = String.duplicate("  ", context.indent_level)
 
     if is_collection?(path, context.current_dir) do
@@ -1178,7 +1190,8 @@ defmodule DotPrompt do
         clean = String.slice(path, 2..-1//1)
         File.dir?(Path.join([p_dir, current_dir, clean]))
 
-      current_dir != "" and current_dir != "." and File.dir?(Path.join([p_dir, current_dir, path])) ->
+      current_dir != "" and current_dir != "." and
+          File.dir?(Path.join([p_dir, current_dir, path])) ->
         true
 
       true ->
@@ -1195,7 +1208,8 @@ defmodule DotPrompt do
         clean = String.slice(path, 2..-1//1)
         Path.join(current_dir, clean)
 
-      current_dir != "" and current_dir != "." and File.dir?(Path.join([p_dir, current_dir, path])) ->
+      current_dir != "" and current_dir != "." and
+          File.dir?(Path.join([p_dir, current_dir, path])) ->
         Path.join(current_dir, path)
 
       File.dir?(Path.join(p_dir, path)) ->
@@ -1287,22 +1301,33 @@ defmodule DotPrompt do
   end
 
   defp do_resolve(prompts_dir, name_str) do
-    path = Path.join(prompts_dir, name_str)
+    # Prevent directory traversal and absolute path injection
+    safe_name =
+      name_str
+      |> String.trim_leading("/")
+      |> String.replace("../", "")
+      |> String.replace("./", "")
 
-    cond do
-      File.exists?(path) and !File.dir?(path) ->
-        {File.read!(path), File.stat!(path).mtime, path}
+    path = Path.expand(Path.join(prompts_dir, safe_name))
 
-      File.exists?(path <> ".prompt") ->
-        p = path <> ".prompt"
-        {File.read!(p), File.stat!(p).mtime, p}
+    if String.starts_with?(path, prompts_dir) do
+      cond do
+        File.exists?(path) and !File.dir?(path) ->
+          {File.read!(path), File.stat!(path).mtime, path}
 
-      File.dir?(path) and File.exists?(Path.join(path, "_index.prompt")) ->
-        p = Path.join(path, "_index.prompt")
-        {File.read!(p), File.stat!(p).mtime, p}
+        File.exists?(path <> ".prompt") ->
+          p = path <> ".prompt"
+          {File.read!(p), File.stat!(p).mtime, p}
 
-      true ->
-        {nil, nil, nil}
+        File.exists?(Path.join(path, "_index.prompt")) ->
+          p = Path.join(path, "_index.prompt")
+          {File.read!(p), File.stat!(p).mtime, p}
+
+        true ->
+          {nil, nil, nil}
+      end
+    else
+      {nil, nil, nil}
     end
   end
 
@@ -1387,6 +1412,20 @@ defmodule DotPrompt do
 
   defp maybe_put(map, _key, nil), do: map
   defp maybe_put(map, key, value), do: Map.put(map, key, value)
+
+  defp extract_response_contract(body) when is_list(body) do
+    response_blocks = ResponseCollector.collect_response_blocks(body)
+
+    case response_blocks do
+      [] ->
+        nil
+
+      [{content, _line} | _] ->
+        ResponseCollector.derive_schema(content)
+    end
+  end
+
+  defp extract_response_contract(_), do: nil
 
   defp major_from_version(nil), do: 1
   defp major_from_version(version) when is_integer(version), do: version

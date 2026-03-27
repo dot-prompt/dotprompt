@@ -17,7 +17,7 @@ init do
     {personalized_greeting}: from: fragments/personalized_greeting
     {conditional_greeting}: from: fragments/conditional_greeting
     {combined_greeting}: from: fragments/combined_greeting
-    {tips}: from: fragments/tips/
+    {tips}: from: fragments/tips
 
 
 end init

@@ -6,7 +6,7 @@ init do
     match: tip 2
 
   fragments:
-    {tips}: from: ./
+    {tips}: from: .
 
 end init
 

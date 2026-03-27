@@ -24,6 +24,7 @@ defmodule DotPromptServerWeb.Router do
     post("/compile", CompileController, :compile)
     post("/render", RenderController, :render)
     post("/inject", InjectController, :inject)
+    get("/events", EventController, :index)
   end
 
   scope "/", DotPromptServerWeb do

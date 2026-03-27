@@ -12,8 +12,9 @@ if config_env() == :prod do
   config :dot_prompt,
     prompts_dir: System.get_env("PROMPTS_DIR") || "/app/prompts"
 
+  # Use HTTP instead of HTTPS for easier container testing
   config :dot_prompt_server, DotPromptServerWeb.Endpoint,
-    url: [host: System.get_env("PHX_HOST") || "localhost", port: 443, scheme: "https"],
+    url: [host: System.get_env("PHX_HOST") || "localhost", port: 4000, scheme: "http"],
     http: [
       ip: {0, 0, 0, 0},
       port: String.to_integer(System.get_env("PORT") || "4000")
