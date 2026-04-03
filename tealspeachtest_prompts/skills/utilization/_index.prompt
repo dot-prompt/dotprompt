@@ -1,0 +1,45 @@
+init do
+  @version: 1.0
+  @major: 1
+
+  def:
+    mode: collection
+    description: Utilization skill collection
+
+  params:
+    @skill_slug: enum[utilization] = utilization
+
+  fragments:
+    {page}: static from: skills/utilization
+      match: utilization
+    {learn}: static from: skills/utilization
+      match: utilization
+      suffix: _learn
+    {exercise}: static from: skills/utilization
+      match: utilization
+      suffix: _exercise
+    {scoring}: static from: skills/utilization
+      match: utilization
+      suffix: _scoring
+
+  docs do
+    Utilization skill with page, learn, exercise, and scoring content.
+  end docs
+
+end init
+
+# Utilization
+
+{page}
+
+# Learn Content
+
+{learn}
+
+# Practice Exercises
+
+{exercise}
+
+# Scoring Guide
+
+{scoring}

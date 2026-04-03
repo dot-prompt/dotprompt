@@ -1,0 +1,45 @@
+init do
+  @version: 1.0
+  @major: 1
+
+  def:
+    mode: collection
+    description: Punctuation Ambiguity skill collection
+
+  params:
+    @skill_slug: enum[punctuation_ambiguity] = punctuation_ambiguity
+
+  fragments:
+    {page}: static from: skills/punctuation_ambiguity
+      match: punctuation_ambiguity
+    {learn}: static from: skills/punctuation_ambiguity
+      match: punctuation_ambiguity
+      suffix: _learn
+    {exercise}: static from: skills/punctuation_ambiguity
+      match: punctuation_ambiguity
+      suffix: _exercise
+    {scoring}: static from: skills/punctuation_ambiguity
+      match: punctuation_ambiguity
+      suffix: _scoring
+
+  docs do
+    Punctuation Ambiguity skill with page, learn, exercise, and scoring content.
+  end docs
+
+end init
+
+# Punctuation Ambiguity
+
+{page}
+
+# Learn Content
+
+{learn}
+
+# Practice Exercises
+
+{exercise}
+
+# Scoring Guide
+
+{scoring}

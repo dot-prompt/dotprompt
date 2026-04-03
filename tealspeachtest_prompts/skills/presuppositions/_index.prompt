@@ -1,0 +1,45 @@
+init do
+  @version: 1.0
+  @major: 1
+
+  def:
+    mode: collection
+    description: Presuppositions skill collection
+
+  params:
+    @skill_slug: enum[presuppositions] = presuppositions
+
+  fragments:
+    {page}: static from: skills/presuppositions
+      match: presuppositions
+    {learn}: static from: skills/presuppositions
+      match: presuppositions
+      suffix: _learn
+    {exercise}: static from: skills/presuppositions
+      match: presuppositions
+      suffix: _exercise
+    {scoring}: static from: skills/presuppositions
+      match: presuppositions
+      suffix: _scoring
+
+  docs do
+    Presuppositions skill with page, learn, exercise, and scoring content.
+  end docs
+
+end init
+
+# Presuppositions
+
+{page}
+
+# Learn Content
+
+{learn}
+
+# Practice Exercises
+
+{exercise}
+
+# Scoring Guide
+
+{scoring}

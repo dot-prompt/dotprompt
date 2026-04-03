@@ -1,0 +1,10 @@
+init do
+  @version: 1.0
+  def:
+    mode: fragment
+    match: history_section
+end init
+
+## Conversation History
+
+{conversation_history}

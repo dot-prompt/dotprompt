@@ -1,0 +1,45 @@
+init do
+  @version: 1.0
+  @major: 1
+
+  def:
+    mode: collection
+    description: Leading Statements skill collection
+
+  params:
+    @skill_slug: enum[leading_statements] = leading_statements
+
+  fragments:
+    {page}: static from: skills/leading_statements
+      match: leading_statements
+    {learn}: static from: skills/leading_statements
+      match: leading_statements
+      suffix: _learn
+    {exercise}: static from: skills/leading_statements
+      match: leading_statements
+      suffix: _exercise
+    {scoring}: static from: skills/leading_statements
+      match: leading_statements
+      suffix: _scoring
+
+  docs do
+    Leading Statements skill with page, learn, exercise, and scoring content.
+  end docs
+
+end init
+
+# Leading Statements
+
+{page}
+
+# Learn Content
+
+{learn}
+
+# Practice Exercises
+
+{exercise}
+
+# Scoring Guide
+
+{scoring}

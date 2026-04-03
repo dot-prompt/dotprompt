@@ -1,0 +1,18 @@
+init do
+  @version: 1.0
+  def:
+    mode: fragment
+    match: utilization
+    suffix: _learn
+end init
+
+## Understanding Utilization
+
+Utilization means accepting and incorporating everything the client brings into the process:
+
+1. **Resistance** - "It's good that you're skeptical - that means you're thinking carefully."
+2. **Emotions** - "That frustration you're feeling is exactly what we need to work with."
+3. **Behaviors** - "Notice how you just crossed your arms - that's your body telling us something important."
+4. **Language patterns** - Using the client's own words and metaphors back to them.
+
+The key principle: there is no resistance, only feedback. Everything can be utilized.

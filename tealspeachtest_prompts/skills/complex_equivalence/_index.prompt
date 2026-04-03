@@ -1,0 +1,45 @@
+init do
+  @version: 1.0
+  @major: 1
+
+  def:
+    mode: collection
+    description: Complex Equivalence skill collection
+
+  params:
+    @skill_slug: enum[complex_equivalence] = complex_equivalence
+
+  fragments:
+    {page}: static from: skills/complex_equivalence
+      match: complex_equivalence
+    {learn}: static from: skills/complex_equivalence
+      match: complex_equivalence
+      suffix: _learn
+    {exercise}: static from: skills/complex_equivalence
+      match: complex_equivalence
+      suffix: _exercise
+    {scoring}: static from: skills/complex_equivalence
+      match: complex_equivalence
+      suffix: _scoring
+
+  docs do
+    Complex Equivalence skill with page, learn, exercise, and scoring content.
+  end docs
+
+end init
+
+# Complex Equivalence
+
+{page}
+
+# Learn Content
+
+{learn}
+
+# Practice Exercises
+
+{exercise}
+
+# Scoring Guide
+
+{scoring}

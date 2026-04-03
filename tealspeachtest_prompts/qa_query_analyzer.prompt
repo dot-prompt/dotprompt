@@ -1,0 +1,39 @@
+init do
+  @version: 1.0
+  @major: 1
+
+  def:
+    mode: qa_query_analyzer
+    description: QA Mode Query Analyzer - Determines user query type
+
+  params:
+    @user_input: str
+
+  response:
+    query_type: str
+    confidence: float
+    relevant_slug: str
+
+  docs do
+    Analyzes user queries to determine what type of content they're asking about.
+  end docs
+
+end init
+
+# Query Analysis
+
+Analyze and identify if the user is asking about:
+1. The app specifically (e.g. "what can this app do", "are there features", "FAQ") -> "app:slug" [basics, features, faq]
+2. A list of available skills (e.g. "what skills can I learn", "show me all patterns") -> "skill_list"
+3. A specific NLP skill (e.g. "tell me about anchoring") -> "skill:slug"
+4. General NLP knowledge -> "general"
+
+Query: @user_input
+
+response do
+{
+  "query_type": "general",
+  "confidence": 0.95,
+  "relevant_slug": null
+}
+end response

@@ -1,0 +1,17 @@
+init do
+  @version: 1.0
+  def:
+    mode: fragment
+    match: embedded_commands
+    suffix: _learn
+end init
+
+## Understanding Embedded Commands
+
+Embedded commands work by marking out a suggestion within a larger sentence. The key techniques are:
+
+1. **Tone shift** - slightly change your voice when delivering the command
+2. **Pause before and after** - create a subtle boundary around the embedded suggestion
+3. **Analog marking** - use gestures or body language to emphasize the command portion
+
+Example: "And as you sit there, you might **begin to relax**, and that's perfectly natural."

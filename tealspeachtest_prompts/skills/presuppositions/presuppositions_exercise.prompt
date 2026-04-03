@@ -1,0 +1,17 @@
+init do
+  @version: 1.0
+  def:
+    mode: fragment
+    match: presuppositions
+    suffix: _exercise
+end init
+
+## Practice Exercise: Presuppositions
+
+**Exercise 1:** Identify the presupposition in this sentence:
+"Are you going to practice before or after lunch?"
+
+**Exercise 2:** Create a presupposition that assumes the listener wants to learn.
+
+**Exercise 3:** Convert this statement into a presupposition:
+"You will improve your skills."

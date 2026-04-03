@@ -1,0 +1,45 @@
+init do
+  @version: 1.0
+  @major: 1
+
+  def:
+    mode: collection
+    description: Cause Effect skill collection
+
+  params:
+    @skill_slug: enum[cause_effect] = cause_effect
+
+  fragments:
+    {page}: static from: skills/cause_effect
+      match: cause_effect
+    {learn}: static from: skills/cause_effect
+      match: cause_effect
+      suffix: _learn
+    {exercise}: static from: skills/cause_effect
+      match: cause_effect
+      suffix: _exercise
+    {scoring}: static from: skills/cause_effect
+      match: cause_effect
+      suffix: _scoring
+
+  docs do
+    Cause Effect skill with page, learn, exercise, and scoring content.
+  end docs
+
+end init
+
+# Cause Effect
+
+{page}
+
+# Learn Content
+
+{learn}
+
+# Practice Exercises
+
+{exercise}
+
+# Scoring Guide
+
+{scoring}

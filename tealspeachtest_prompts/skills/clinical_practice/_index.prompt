@@ -1,0 +1,45 @@
+init do
+  @version: 1.0
+  @major: 1
+
+  def:
+    mode: collection
+    description: Clinical Practice skill collection
+
+  params:
+    @skill_slug: enum[clinical_practice] = clinical_practice
+
+  fragments:
+    {page}: static from: skills/clinical_practice
+      match: clinical_practice
+    {learn}: static from: skills/clinical_practice
+      match: clinical_practice
+      suffix: _learn
+    {exercise}: static from: skills/clinical_practice
+      match: clinical_practice
+      suffix: _exercise
+    {scoring}: static from: skills/clinical_practice
+      match: clinical_practice
+      suffix: _scoring
+
+  docs do
+    Clinical Practice skill with page, learn, exercise, and scoring content.
+  end docs
+
+end init
+
+# Clinical Practice
+
+{page}
+
+# Learn Content
+
+{learn}
+
+# Practice Exercises
+
+{exercise}
+
+# Scoring Guide
+
+{scoring}

@@ -1,0 +1,45 @@
+init do
+  @version: 1.0
+  @major: 1
+
+  def:
+    mode: collection
+    description: Unspecified Verbs skill collection
+
+  params:
+    @skill_slug: enum[unspecified_verbs] = unspecified_verbs
+
+  fragments:
+    {page}: static from: skills/unspecified_verbs
+      match: unspecified_verbs
+    {learn}: static from: skills/unspecified_verbs
+      match: unspecified_verbs
+      suffix: _learn
+    {exercise}: static from: skills/unspecified_verbs
+      match: unspecified_verbs
+      suffix: _exercise
+    {scoring}: static from: skills/unspecified_verbs
+      match: unspecified_verbs
+      suffix: _scoring
+
+  docs do
+    Unspecified Verbs skill with page, learn, exercise, and scoring content.
+  end docs
+
+end init
+
+# Unspecified Verbs
+
+{page}
+
+# Learn Content
+
+{learn}
+
+# Practice Exercises
+
+{exercise}
+
+# Scoring Guide
+
+{scoring}

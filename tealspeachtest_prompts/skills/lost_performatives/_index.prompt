@@ -1,0 +1,45 @@
+init do
+  @version: 1.0
+  @major: 1
+
+  def:
+    mode: collection
+    description: Lost Performatives skill collection
+
+  params:
+    @skill_slug: enum[lost_performatives] = lost_performatives
+
+  fragments:
+    {page}: static from: skills/lost_performatives
+      match: lost_performatives
+    {learn}: static from: skills/lost_performatives
+      match: lost_performatives
+      suffix: _learn
+    {exercise}: static from: skills/lost_performatives
+      match: lost_performatives
+      suffix: _exercise
+    {scoring}: static from: skills/lost_performatives
+      match: lost_performatives
+      suffix: _scoring
+
+  docs do
+    Lost Performatives skill with page, learn, exercise, and scoring content.
+  end docs
+
+end init
+
+# Lost Performatives
+
+{page}
+
+# Learn Content
+
+{learn}
+
+# Practice Exercises
+
+{exercise}
+
+# Scoring Guide
+
+{scoring}

@@ -1,0 +1,45 @@
+init do
+  @version: 1.0
+  @major: 1
+
+  def:
+    mode: collection
+    description: Unspecified Referential Index skill collection
+
+  params:
+    @skill_slug: enum[unspecified_referential_index] = unspecified_referential_index
+
+  fragments:
+    {page}: static from: skills/unspecified_referential_index
+      match: unspecified_referential_index
+    {learn}: static from: skills/unspecified_referential_index
+      match: unspecified_referential_index
+      suffix: _learn
+    {exercise}: static from: skills/unspecified_referential_index
+      match: unspecified_referential_index
+      suffix: _exercise
+    {scoring}: static from: skills/unspecified_referential_index
+      match: unspecified_referential_index
+      suffix: _scoring
+
+  docs do
+    Unspecified Referential Index skill with page, learn, exercise, and scoring content.
+  end docs
+
+end init
+
+# Unspecified Referential Index
+
+{page}
+
+# Learn Content
+
+{learn}
+
+# Practice Exercises
+
+{exercise}
+
+# Scoring Guide
+
+{scoring}

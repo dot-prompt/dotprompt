@@ -1,0 +1,45 @@
+init do
+  @version: 1.0
+  @major: 1
+
+  def:
+    mode: collection
+    description: Mind Reading skill collection
+
+  params:
+    @skill_slug: enum[mind_reading] = mind_reading
+
+  fragments:
+    {page}: static from: skills/mind_reading
+      match: mind_reading
+    {learn}: static from: skills/mind_reading
+      match: mind_reading
+      suffix: _learn
+    {exercise}: static from: skills/mind_reading
+      match: mind_reading
+      suffix: _exercise
+    {scoring}: static from: skills/mind_reading
+      match: mind_reading
+      suffix: _scoring
+
+  docs do
+    Mind Reading skill with page, learn, exercise, and scoring content.
+  end docs
+
+end init
+
+# Mind Reading
+
+{page}
+
+# Learn Content
+
+{learn}
+
+# Practice Exercises
+
+{exercise}
+
+# Scoring Guide
+
+{scoring}

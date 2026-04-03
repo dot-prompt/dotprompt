@@ -1,0 +1,45 @@
+init do
+  @version: 1.0
+  @major: 1
+
+  def:
+    mode: collection
+    description: Sensory Pacing skill collection
+
+  params:
+    @skill_slug: enum[sensory_pacing] = sensory_pacing
+
+  fragments:
+    {page}: static from: skills/sensory_pacing
+      match: sensory_pacing
+    {learn}: static from: skills/sensory_pacing
+      match: sensory_pacing
+      suffix: _learn
+    {exercise}: static from: skills/sensory_pacing
+      match: sensory_pacing
+      suffix: _exercise
+    {scoring}: static from: skills/sensory_pacing
+      match: sensory_pacing
+      suffix: _scoring
+
+  docs do
+    Sensory Pacing skill with page, learn, exercise, and scoring content.
+  end docs
+
+end init
+
+# Sensory Pacing
+
+{page}
+
+# Learn Content
+
+{learn}
+
+# Practice Exercises
+
+{exercise}
+
+# Scoring Guide
+
+{scoring}

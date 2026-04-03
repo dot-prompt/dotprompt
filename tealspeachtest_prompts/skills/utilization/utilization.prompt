@@ -1,0 +1,8 @@
+init do
+  @version: 1.0
+  def:
+    mode: fragment
+    match: utilization
+end init
+
+Utilization is the practice of accepting and using whatever the client presents - resistance, objections, emotions, even silence - as material for the therapeutic process rather than fighting against it.

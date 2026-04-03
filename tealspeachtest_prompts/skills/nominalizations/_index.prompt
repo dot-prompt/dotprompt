@@ -1,0 +1,45 @@
+init do
+  @version: 1.0
+  @major: 1
+
+  def:
+    mode: collection
+    description: Nominalizations skill collection
+
+  params:
+    @skill_slug: enum[nominalizations] = nominalizations
+
+  fragments:
+    {page}: static from: skills/nominalizations
+      match: nominalizations
+    {learn}: static from: skills/nominalizations
+      match: nominalizations
+      suffix: _learn
+    {exercise}: static from: skills/nominalizations
+      match: nominalizations
+      suffix: _exercise
+    {scoring}: static from: skills/nominalizations
+      match: nominalizations
+      suffix: _scoring
+
+  docs do
+    Nominalizations skill with page, learn, exercise, and scoring content.
+  end docs
+
+end init
+
+# Nominalizations
+
+{page}
+
+# Learn Content
+
+{learn}
+
+# Practice Exercises
+
+{exercise}
+
+# Scoring Guide
+
+{scoring}

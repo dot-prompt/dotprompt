@@ -1,0 +1,28 @@
+init do
+  @version: 1.0
+
+  def:
+    mode: explanation
+    description: Generates a dynamic hint based on question and wrong answer
+
+  params:
+    @question: str -> the comprehension question
+    @wrong_answer: str -> the student's incorrect answer
+
+  docs do
+    Generates a short hint (1-2 sentences) that helps students think in the right direction
+    without revealing the answer.
+  end docs
+
+end init
+
+Student question:
+@question
+
+Student answer:
+@wrong_answer
+
+Give a SHORT hint (1 sentence) that helps them think in the right direction
+without revealing the answer.
+
+Hint:

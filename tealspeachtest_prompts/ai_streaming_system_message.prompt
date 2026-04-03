@@ -1,0 +1,40 @@
+init do
+  @version: 1.0
+  @major: 1
+
+  def:
+    mode: ai_streaming
+    description: AI streaming system message for practice mode
+
+  params:
+    @mode: enum[patient, teacher, qa, roleplay, leadership, practice]
+    @difficulty: enum[beginner, intermediate, advanced]
+    @current_turn: int
+
+  docs do
+    Generates AI assistant system message for NLP practice mode.
+  end docs
+
+end init
+
+# Task
+
+Generate AI assistant system message for NLP practice mode.
+
+# Context
+
+You are an AI assistant helping a user practice NLP techniques.
+
+## Session Context
+
+- Mode: @mode
+- Difficulty: @difficulty
+- Turn: @current_turn
+
+# Instructions
+
+Respond naturally and help the user practice their communication skills. Adapt your responses based on the current mode and difficulty level.
+
+# Output Format
+
+Natural conversational response that supports NLP skill practice

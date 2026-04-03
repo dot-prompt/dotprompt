@@ -1,0 +1,45 @@
+init do
+  @version: 1.0
+  @major: 1
+
+  def:
+    mode: collection
+    description: Embedded Commands skill collection
+
+  params:
+    @skill_slug: enum[embedded_commands] = embedded_commands
+
+  fragments:
+    {page}: static from: skills/embedded_commands
+      match: embedded_commands
+    {learn}: static from: skills/embedded_commands
+      match: embedded_commands
+      suffix: _learn
+    {exercise}: static from: skills/embedded_commands
+      match: embedded_commands
+      suffix: _exercise
+    {scoring}: static from: skills/embedded_commands
+      match: embedded_commands
+      suffix: _scoring
+
+  docs do
+    Embedded Commands skill with page, learn, exercise, and scoring content.
+  end docs
+
+end init
+
+# Embedded Commands
+
+{page}
+
+# Learn Content
+
+{learn}
+
+# Practice Exercises
+
+{exercise}
+
+# Scoring Guide
+
+{scoring}

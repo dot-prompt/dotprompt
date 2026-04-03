@@ -1,0 +1,27 @@
+init do
+  @version: 1.0
+
+  def:
+    mode: explanation
+    description: User-facing prompt for analysis agent
+
+  params:
+    @mastery_scores: str -> the student's mastery scores summary
+    @student_history: str -> recent conversation snippets or "No practice sessions yet."
+
+  docs do
+    Provides the user-facing prompt that asks the analysis agent to review practice history.
+  end docs
+
+end init
+
+Review this student's recent practice history and mastery levels and give analysis JSON:
+
+## Mastery Levels
+@mastery_scores
+
+## Recent Conversation Snippets
+@student_history
+
+Respond ONLY with this exact JSON format, no markdown:
+{"strengths": "your analysis...", "growth": "your analysis..."}

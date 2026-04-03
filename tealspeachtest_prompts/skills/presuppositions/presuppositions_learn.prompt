@@ -1,0 +1,16 @@
+init do
+  @version: 1.0
+  def:
+    mode: fragment
+    match: presuppositions
+    suffix: _learn
+end init
+
+## Understanding Presuppositions
+
+Presuppositions are linguistic structures that embed assumptions within sentences. Common types include:
+
+1. **Existential** - "The problem with your approach..." (presupposes there IS a problem)
+2. **Factive** - "I realize you're trying hard..." (presupposes they ARE trying hard)
+3. **Change of state** - "Have you stopped worrying?" (presupposes they WERE worrying)
+4. **Ordinal** - "The second thing to notice..." (presupposes there was a first)

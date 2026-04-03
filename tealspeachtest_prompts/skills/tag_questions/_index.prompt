@@ -1,0 +1,45 @@
+init do
+  @version: 1.0
+  @major: 1
+
+  def:
+    mode: collection
+    description: Tag Questions skill collection
+
+  params:
+    @skill_slug: enum[tag_questions] = tag_questions
+
+  fragments:
+    {page}: static from: skills/tag_questions
+      match: tag_questions
+    {learn}: static from: skills/tag_questions
+      match: tag_questions
+      suffix: _learn
+    {exercise}: static from: skills/tag_questions
+      match: tag_questions
+      suffix: _exercise
+    {scoring}: static from: skills/tag_questions
+      match: tag_questions
+      suffix: _scoring
+
+  docs do
+    Tag Questions skill with page, learn, exercise, and scoring content.
+  end docs
+
+end init
+
+# Tag Questions
+
+{page}
+
+# Learn Content
+
+{learn}
+
+# Practice Exercises
+
+{exercise}
+
+# Scoring Guide
+
+{scoring}

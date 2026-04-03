@@ -1,0 +1,18 @@
+init do
+  @version: 1.0
+  def:
+    mode: fragment
+    match: embedded_commands
+    suffix: _exercise
+end init
+
+## Practice Exercise: Embedded Commands
+
+**Exercise 1:** Convert this direct command into an embedded command:
+- Direct: "Relax your shoulders now."
+- Embedded: "And you might notice your shoulders beginning to relax..."
+
+**Exercise 2:** Identify the embedded command in this sentence:
+"I don't know if you'll decide to feel more confident today or tomorrow."
+
+**Exercise 3:** Create an embedded command for the suggestion "focus your attention."

@@ -1,0 +1,52 @@
+init do
+  @version: 1.0
+  @major: 1
+
+  def:
+    mode: user_context
+    description: User Context Fragment - Dynamic user history and profile
+
+  params:
+    @user_name: str = "Learner"
+    @skill_history: str = ""
+    @mastery_scores: str = ""
+    @recent_goals: str = ""
+    @learning_style: str = ""
+    @interaction_patterns: str = ""
+
+  docs do
+    Dynamic user context fragment for personalizing AI responses.
+    Inject this fragment into other prompts for user-aware responses.
+  end docs
+
+end init
+
+# User Context
+
+## User Profile
+
+**Name**: @user_name
+
+## Skill History
+
+@skill_history
+
+## Mastery Scores
+
+@mastery_scores
+
+## Learning Goals
+
+@recent_goals
+
+## Learning Style Preferences
+
+@learning_style
+
+## Interaction Patterns
+
+@interaction_patterns
+
+---
+
+This context should inform the AI's responses to be personalized and relevant to the user's learning journey.

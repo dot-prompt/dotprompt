@@ -1,0 +1,8 @@
+init do
+  @version: 1.0
+  def:
+    mode: fragment
+    match: embedded_commands
+end init
+
+Embedded Commands are suggestions hidden inside larger sentences so the listener's conscious mind doesn't notice them. They bypass resistance by appearing as casual remarks rather than direct instructions.

@@ -1,0 +1,50 @@
+init do
+  @version: 1.0
+
+  def:
+    mode: explanation
+    description: Generates AI-powered exercises for concept-based practice mode
+
+  params:
+    @skill_slug: str
+    @concept_context: str
+    @difficulty: str
+    @difficulty_label: str
+    @type: str
+    @type_description: str
+    @spice_section: str = ""
+    @spice_integration: str = ""
+
+  docs do
+    Generates a JSON object with exercise_text, task, answer, and hints.
+  end docs
+
+end init
+
+Generate a practice exercise for a coaching skills trainer.
+
+## Skill: @skill_slug
+## Concept: @concept_context
+## Difficulty: @difficulty (@difficulty_label)
+## Exercise Type: @type
+
+@type_description
+
+@spice_section
+
+Generate a JSON object with the following structure:
+{
+  "exercise_text": "The text/example to present to the user (must be at least 10 characters)",
+  "task": "The instruction/task for the user (must be at least 5 characters)",
+  "answer": "The expected correct answer",
+  "hints": ["hint1", "hint2"] (optional array of hints)
+}
+
+The exercise should:
+1. Be appropriate for @difficulty_label level (difficulty @difficulty)
+2. Test the user's understanding of the concept
+3. Be clear and unambiguous
+4. Have a single correct answer or a clear set of acceptable answers
+5. Include the scenario context naturally in the exercise@spice_integration
+
+Respond ONLY with the JSON object, no additional text.

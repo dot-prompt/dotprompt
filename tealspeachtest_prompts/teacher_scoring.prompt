@@ -1,0 +1,128 @@
+init do
+  @version: 1.0
+  @major: 1
+
+  def:
+    mode: teacher_scoring
+    description: Teacher Mode Scoring - Evaluate user responses in Practice mode
+
+  params:
+    @skill_name: str
+    @skill_definition: str
+    @scoring_guidance: str
+    @hidden_goal: str
+    @persona_current_state: str
+    @conversation_history: str
+    @user_message: str
+
+  response:
+    score: map
+    skills_used: list[str]
+    brief_reason: str
+
+  docs do
+    Scores user responses in therapeutic conversation practice.
+    Evaluates skill usage, appropriateness, goal progress, and conversational flow.
+  end docs
+
+end init
+
+# Task
+
+Score a user's response in a therapeutic conversation practice session.
+
+---
+
+# Context
+
+- **Skill being practiced**: @skill_name
+- **Skill definition**: @skill_definition
+- **Scoring guidance**: @scoring_guidance
+- **Hidden goal**: @hidden_goal
+- **Persona state**: @persona_current_state
+- **Conversation history**: @conversation_history
+- **User's response**: @user_message
+
+---
+
+# Instructions
+
+## Step 1: Evaluate Four Independent Metrics
+
+Score each metric separately using 0.0-1.0 scale (1.0 = best):
+
+1. **skill_usage** (0.0-1.0): How well did the user apply the target Milton Model skill?
+   - Use @scoring_guidance to evaluate specific indicators
+
+2. **appropriateness** (0.0-1.0): Did the response match the persona's emotional state?
+   - Does it feel natural for this character?
+
+3. **goal_progress** (0.0-1.0): Did the response move toward the hidden goal?
+
+4. **conversational_flow** (0.0-1.0): Is it natural, grammatically correct, and well-paced?
+
+## Step 2: Identify Skills Used
+
+List ALL NLP skills/techniques from Milton Model or Meta Model in the `skills_used` field.
+
+## Step 3: Generate Brief Reason
+
+Provide one sentence explaining the overall assessment.
+
+---
+
+# DO
+
+- Evaluate EACH metric independently (they CAN have different values)
+- Use @scoring_guidance to determine skill_usage score
+- Consider persona state for appropriateness
+- Factor conversation flow into goal_progress
+- Provide clear, concise reasoning
+
+---
+
+# DON'T
+
+- Don't give all metrics the same score
+- Don't ignore conversation history
+- Don't score based on unrelated criteria
+- Don't add extra fields beyond the required JSON
+
+---
+
+# Examples
+
+**Good Response**:
+```json
+{
+  "score": {
+    "overall": 0.75,
+    "skill_usage": 0.8,
+    "appropriateness": 0.7,
+    "goal_progress": 0.7,
+    "conversational_flow": 0.85
+  },
+  "skills_used": ["cause_effect", "embedded_commands"],
+  "brief_reason": "Good use of cause-effect pattern to progress toward goal."
+}
+```
+
+---
+
+# Response Format
+
+Return ONLY valid JSON:
+
+```
+{
+  "score": {
+    "overall": 0.0,
+    "skill_usage": 0.0,
+    "appropriateness": 0.0,
+    "goal_progress": 0.0,
+    "conversational_flow": 0.0
+  },
+  "skills_used": ["Skill A", "Skill B"],
+  "brief_reason": "one sentence explanation"
+}
+```

@@ -1,0 +1,18 @@
+init do
+  @version: 1.0
+  def:
+    mode: fragment
+    match: utilization
+    suffix: _exercise
+end init
+
+## Practice Exercise: Utilization
+
+**Exercise 1:** Utilize this client objection:
+"I don't think this will work for me."
+
+**Exercise 2:** Utilize this emotional response:
+*Client becomes visibly frustrated during a session*
+
+**Exercise 3:** Utilize this behavioral cue:
+*Client repeatedly checks their watch during the conversation*

@@ -1,0 +1,8 @@
+init do
+  @version: 1.0
+  def:
+    mode: fragment
+    match: presuppositions
+end init
+
+Presuppositions are assumptions embedded within language that must be accepted for the sentence to make sense. They are powerful because the listener accepts them automatically while processing the surface meaning.

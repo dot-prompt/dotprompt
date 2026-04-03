@@ -1,0 +1,45 @@
+init do
+  @version: 1.0
+  @major: 1
+
+  def:
+    mode: collection
+    description: Comparative Deletions skill collection
+
+  params:
+    @skill_slug: enum[comparative_deletions] = comparative_deletions
+
+  fragments:
+    {page}: static from: skills/comparative_deletions
+      match: comparative_deletions
+    {learn}: static from: skills/comparative_deletions
+      match: comparative_deletions
+      suffix: _learn
+    {exercise}: static from: skills/comparative_deletions
+      match: comparative_deletions
+      suffix: _exercise
+    {scoring}: static from: skills/comparative_deletions
+      match: comparative_deletions
+      suffix: _scoring
+
+  docs do
+    Comparative Deletions skill with page, learn, exercise, and scoring content.
+  end docs
+
+end init
+
+# Comparative Deletions
+
+{page}
+
+# Learn Content
+
+{learn}
+
+# Practice Exercises
+
+{exercise}
+
+# Scoring Guide
+
+{scoring}

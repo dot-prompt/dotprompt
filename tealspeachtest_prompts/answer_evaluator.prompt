@@ -1,0 +1,32 @@
+init do
+  @version: 1.0
+
+  def:
+    mode: explanation
+    description: Evaluates student answers to comprehension questions
+
+  params:
+    @question_text: str -> the comprehension question
+    @student_answer: str -> the student's submitted answer
+
+  docs do
+    Evaluates whether a student's answer demonstrates understanding of the concept.
+    Returns: correct, partial, or incorrect
+  end docs
+
+end init
+
+You are evaluating a student's answer to a comprehension question.
+
+Question: {question_text}
+
+Student's answer: {student_answer}
+
+IMPORTANT: IGNORE all grammar and spelling mistakes. Focus ONLY on whether the student demonstrates understanding of the concept.
+
+Does the student demonstrate understanding? Respond with exactly one word:
+- "correct" - The answer shows good understanding
+- "partial" - The answer shows some understanding but missing key points
+- "incorrect" - The answer does not demonstrate understanding
+
+Response:

@@ -1,0 +1,82 @@
+init do
+  @version: 1.0
+  @major: 1
+
+  def:
+    mode: roleplay_initial_messages
+    description: Generate initial messages for clinical roleplay session
+
+  params:
+    @client_name: str
+    @client_age: str
+    @client_occupation: str
+    @setting: str
+    @problem: str
+    @stakes: str
+    @recent_trigger: str
+    @personality_traits: list[str]
+    @communication_style: str
+    @surface_goal: str
+    @hidden_goal: str
+    @breakthrough_condition: str
+    @archetype_type: str
+
+  response:
+    client_message: str
+    therapist_hint: str
+
+  docs do
+    Generates initial client message and therapist hint for clinical roleplay.
+  end docs
+
+end init
+
+# Task
+
+Generate initial messages for a clinical roleplay session.
+
+# Context
+
+You are generating the initial messages for a clinical roleplay session. Generate TWO messages in a single JSON response.
+
+## Scene Context
+
+- Client: @client_name
+- Age: @client_age
+- Occupation: @client_occupation
+- Setting: @setting
+- Presenting Problem: @problem
+- Stakes: @stakes
+- Recent Trigger: @recent_trigger
+- Personality Traits: @personality_traits
+- Communication Style: @communication_style
+- Surface Goal: @surface_goal
+- Hidden Goal: @hidden_goal
+- Breakthrough Condition: @breakthrough_condition
+- Archetype: @archetype_type
+
+# Instructions
+
+Generate a JSON response with exactly two fields:
+
+1. "client_message": A message FROM the client (as if they sent it before the session). This should be:
+   - 2 to 5 lines about who they are (age, occupation, brief background)
+   - The setting they're in
+   - Why they came to see you (their presenting concern)
+   - Written in first person as if the client wrote it
+   - Natural and conversational tone
+
+2. "therapist_hint": A hint TO the therapist (the user) about:
+   - What the client needs from this session
+   - How they can succeed in helping this client
+   - Any relevant archetype or communication style considerations
+   - Written in second person addressing the therapist
+
+Return ONLY valid JSON with these two fields. No additional text.
+
+response do
+{
+  "client_message": "string",
+  "therapist_hint": "string"
+}
+end response

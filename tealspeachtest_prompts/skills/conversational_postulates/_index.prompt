@@ -1,0 +1,45 @@
+init do
+  @version: 1.0
+  @major: 1
+
+  def:
+    mode: collection
+    description: Conversational Postulates skill collection
+
+  params:
+    @skill_slug: enum[conversational_postulates] = conversational_postulates
+
+  fragments:
+    {page}: static from: skills/conversational_postulates
+      match: conversational_postulates
+    {learn}: static from: skills/conversational_postulates
+      match: conversational_postulates
+      suffix: _learn
+    {exercise}: static from: skills/conversational_postulates
+      match: conversational_postulates
+      suffix: _exercise
+    {scoring}: static from: skills/conversational_postulates
+      match: conversational_postulates
+      suffix: _scoring
+
+  docs do
+    Conversational Postulates skill with page, learn, exercise, and scoring content.
+  end docs
+
+end init
+
+# Conversational Postulates
+
+{page}
+
+# Learn Content
+
+{learn}
+
+# Practice Exercises
+
+{exercise}
+
+# Scoring Guide
+
+{scoring}
