@@ -5,6 +5,7 @@ init do
   def:
     mode: ai_streaming
     description: AI streaming system message for practice mode
+    role: assistant
 
   params:
     @mode: enum[patient, teacher, qa, roleplay, leadership, practice]
@@ -17,24 +18,17 @@ init do
 
 end init
 
-# Task
-
-Generate AI assistant system message for NLP practice mode.
-
-# Context
-
+system do
 You are an AI assistant helping a user practice NLP techniques.
+end system
 
-## Session Context
-
+context do
+Session Context:
 - Mode: @mode
 - Difficulty: @difficulty
 - Turn: @current_turn
+end context
 
-# Instructions
-
-Respond naturally and help the user practice their communication skills. Adapt your responses based on the current mode and difficulty level.
-
-# Output Format
-
-Natural conversational response that supports NLP skill practice
+user do
+[User input for practice mode]
+end user

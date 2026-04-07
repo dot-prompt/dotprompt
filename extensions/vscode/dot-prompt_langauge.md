@@ -448,6 +448,75 @@ fragments:
 
 ## Full Example
 
+
+## Message Sections (system, user, context)
+
+The prompt body can use `system`, `user`, and `context` blocks to structure content clearly:
+
+```
+system do
+You are an AI assistant. This is your identity and core behavior.
+end system
+
+context do
+Background information, context, or additional details.
+{skill_context}
+{{user_history}}
+end context
+
+user do
+@user_input
+end user
+```
+
+**Block types:**
+- `system` — defines the AI's identity, role, and behavior
+- `context` — provides background information and data
+- `user` — contains user input or message
+
+## Full Example with Message Sections
+
+```
+init do
+  @version: 1
+
+  def:
+    mode: explanation
+    description: Teacher mode with message sections
+    role: assistant
+
+  params:
+    @skill_names: list[Milton Model, Meta Model] = Milton Model
+      -> skills to load
+    @user_level: enum[beginner, intermediate, advanced] = intermediate
+    @user_input: str
+
+  fragments:
+    {skill_context}: static from: skills
+      match: @skill_names
+
+  docs do
+    Teaches NLP skills using message sections.
+  end docs
+
+end init
+
+system do
+You are Milton, an expert NLP trainer teaching @user_level students.
+Your job is to teach @skill_names efficiently using structured teaching patterns.
+end system
+
+context do
+Skill context information:
+{skill_context}
+end context
+
+user do
+@user_input
+end user
+
+```
+
 ```
 init do
   @version: 1

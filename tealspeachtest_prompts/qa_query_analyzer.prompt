@@ -5,6 +5,7 @@ init do
   def:
     mode: qa_query_analyzer
     description: QA Mode Query Analyzer - Determines user query type
+    role: assistant
 
   params:
     @user_input: str
@@ -20,20 +21,20 @@ init do
 
 end init
 
-# Query Analysis
+system do
+You analyze user queries to determine what type of content they're asking about.
 
-Analyze and identify if the user is asking about:
+Query Types:
 1. The app specifically (e.g. "what can this app do", "are there features", "FAQ") -> "app:slug" [basics, features, faq]
 2. A list of available skills (e.g. "what skills can I learn", "show me all patterns") -> "skill_list"
 3. A specific NLP skill (e.g. "tell me about anchoring") -> "skill:slug"
 4. General NLP knowledge -> "general"
+end system
 
+context do
+Analyze this query and determine its type.
+end context
+
+user do
 Query: @user_input
-
-response do
-{
-  "query_type": "general",
-  "confidence": 0.95,
-  "relevant_slug": null
-}
-end response
+end user

@@ -5,6 +5,7 @@ init do
   def:
     mode: response_evaluation
     description: Evaluate student answers in practice exercises
+    role: assistant
 
   params:
     @skill_slug: str
@@ -19,45 +20,24 @@ init do
 
 end init
 
-# Task
-
+system do
 You are evaluating a student's answer in a practice exercise.
 
-# Context
+IGNORE grammar and spelling mistakes completely.
+Focus ONLY on whether the answer demonstrates the skill concept.
+Minor wording differences should NOT affect the score.
+A semantically correct answer should score 80+.
+end system
 
+context do
 Skill: @skill_slug
 Task: @exercise_task
 @exercise_exercise_text
 @exercise_answer
+
 Student's Answer: @user_answer
+end context
 
-# Rules
-
-- IGNORE grammar and spelling mistakes completely
-- Focus ONLY on whether the answer demonstrates the skill concept
-- Minor wording differences should NOT affect the score
-- A semantically correct answer should score 80+
-
-# Instructions
-
-Return ONLY valid JSON in the following format:
-
-{
-  "correct": boolean,
-  "score": integer (0-100),
-  "feedback": "Short, direct feedback for the student.",
-  "skill_usage": integer (0-100),
-  "appropriateness": integer (0-100),
-  "clarity": integer (0-100)
-}
-
-# Output Format
-
-Valid JSON object with the specified fields
-
-# Constraints
-
-- Must be valid JSON
-- Ignore grammar and spelling
-- Focus on skill concept demonstration
-- Score semantically correct answers 80+
+user do
+Evaluate this answer and return ONLY valid JSON.
+end user

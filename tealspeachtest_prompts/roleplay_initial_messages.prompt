@@ -5,6 +5,7 @@ init do
   def:
     mode: roleplay_initial_messages
     description: Generate initial messages for clinical roleplay session
+    role: assistant
 
   params:
     @client_name: str
@@ -31,52 +32,29 @@ init do
 
 end init
 
-# Task
+system do
+Generate the initial messages for a clinical roleplay session.
+Return a JSON response with exactly two fields:
+1. "client_message": A message FROM the client (2-5 lines about who they are, setting, presenting concern, written in first person)
+2. "therapist_hint": A hint TO the therapist about what the client needs and how to succeed
+end system
 
-Generate initial messages for a clinical roleplay session.
+context do
+Client: @client_name
+Age: @client_age
+Occupation: @client_occupation
+Setting: @setting
+Presenting Problem: @problem
+Stakes: @stakes
+Recent Trigger: @recent_trigger
+Personality Traits: @personality_traits
+Communication Style: @communication_style
+Surface Goal: @surface_goal
+Hidden Goal: @hidden_goal
+Breakthrough Condition: @breakthrough_condition
+Archetype: @archetype_type
+end context
 
-# Context
-
-You are generating the initial messages for a clinical roleplay session. Generate TWO messages in a single JSON response.
-
-## Scene Context
-
-- Client: @client_name
-- Age: @client_age
-- Occupation: @client_occupation
-- Setting: @setting
-- Presenting Problem: @problem
-- Stakes: @stakes
-- Recent Trigger: @recent_trigger
-- Personality Traits: @personality_traits
-- Communication Style: @communication_style
-- Surface Goal: @surface_goal
-- Hidden Goal: @hidden_goal
-- Breakthrough Condition: @breakthrough_condition
-- Archetype: @archetype_type
-
-# Instructions
-
-Generate a JSON response with exactly two fields:
-
-1. "client_message": A message FROM the client (as if they sent it before the session). This should be:
-   - 2 to 5 lines about who they are (age, occupation, brief background)
-   - The setting they're in
-   - Why they came to see you (their presenting concern)
-   - Written in first person as if the client wrote it
-   - Natural and conversational tone
-
-2. "therapist_hint": A hint TO the therapist (the user) about:
-   - What the client needs from this session
-   - How they can succeed in helping this client
-   - Any relevant archetype or communication style considerations
-   - Written in second person addressing the therapist
-
-Return ONLY valid JSON with these two fields. No additional text.
-
-response do
-{
-  "client_message": "string",
-  "therapist_hint": "string"
-}
-end response
+user do
+Generate initial roleplay messages.
+end user

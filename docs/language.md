@@ -41,6 +41,7 @@ init do
 
   def:
     mode: explanation
+    role: assistant
     description: Teaches NLP skills using a structured multi-turn pattern.
 
   params:
@@ -74,11 +75,12 @@ Major must be ≥ 1. The first number in `@version` is used as the major version
 
 ### def:
 
-Two fields — `mode` and `description`. Both are informational. `description` surfaces in schema calls and the viewer.
+Three fields — `mode`, `description`, and `role`. All are informational. `description` surfaces in schema calls and the viewer. `role` specifies the message role (assistant, user, or system).
 
 ```
 def:
   mode: explanation
+    role: assistant
   description: Human readable description of this prompt.
 ```
 
@@ -634,6 +636,7 @@ init do
 
   def:
     mode: explanation
+    role: assistant
     description: Teacher mode — explanation phase with dynamic depth control.
 
   params:

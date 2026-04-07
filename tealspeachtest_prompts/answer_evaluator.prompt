@@ -1,32 +1,40 @@
 init do
   @version: 1.0
+  @major: 1
 
   def:
-    mode: explanation
-    description: Evaluates student answers to comprehension questions
+    mode: answer_evaluator
+    description: Answer Evaluator - Evaluate student answers in practice mode
+    role: assistant
 
   params:
-    @question_text: str -> the comprehension question
-    @student_answer: str -> the student's submitted answer
+    @skill_name: str
+    @skill_pattern: str
+    @user_answer: str
+    @correct_answer: str
+
+  response:
+    is_correct: bool
+    feedback: str
+    hints: list[str]
 
   docs do
-    Evaluates whether a student's answer demonstrates understanding of the concept.
-    Returns: correct, partial, or incorrect
+    Evaluates student answers in practice mode.
   end docs
 
 end init
 
-You are evaluating a student's answer to a comprehension question.
+system do
+You are evaluating student answers in practice mode.
+Check if the student's answer demonstrates understanding of the NLP skill.
+end system
 
-Question: {question_text}
+context do
+Skill: @skill_name
+Expected Pattern: @skill_pattern
+Correct Answer: @correct_answer
+end context
 
-Student's answer: {student_answer}
-
-IMPORTANT: IGNORE all grammar and spelling mistakes. Focus ONLY on whether the student demonstrates understanding of the concept.
-
-Does the student demonstrate understanding? Respond with exactly one word:
-- "correct" - The answer shows good understanding
-- "partial" - The answer shows some understanding but missing key points
-- "incorrect" - The answer does not demonstrate understanding
-
-Response:
+user do
+Student Answer: @user_answer
+end user
