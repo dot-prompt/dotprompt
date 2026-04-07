@@ -1,7 +1,7 @@
 # Dependencies
 deps/
 _build/
-
+tools/tests/ts-Demo/node_modules/
 # IDE
 .vscode/
 .idea/
