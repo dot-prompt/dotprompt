@@ -32,7 +32,7 @@ defmodule DotPrompt.Parser.Parser do
             if remaining == [token | rest] do
               # parse_nodes didn't consume anything, probably an unmatched end
               if token.type == :block_end do
-                if token.value in ["init", "docs", "response"] do
+                if token.value in ["init", "docs", "response", "system", "user", "context"] do
                   parse_top_level(rest, state)
                 else
                   {:error, "mismatched_end: unexpected end #{token.value} at top level"}

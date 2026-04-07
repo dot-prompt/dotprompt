@@ -103,6 +103,16 @@ defmodule DotPrompt.Parser.Lexer do
       String.starts_with?(trimmed, "response do") ->
         [%Token{type: :block_start, value: "response", line: line_no}]
 
+      # Message section blocks (system, user, context)
+      String.starts_with?(trimmed, "system do") ->
+        [%Token{type: :block_start, value: "system", line: line_no}]
+
+      String.starts_with?(trimmed, "user do") ->
+        [%Token{type: :block_start, value: "user", line: line_no}]
+
+      String.starts_with?(trimmed, "context do") ->
+        [%Token{type: :block_start, value: "context", line: line_no}]
+
       true ->
         nil
     end
