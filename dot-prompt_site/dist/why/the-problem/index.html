@@ -1,0 +1,140 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Primary Meta Tags --><title>The Problem - Why .prompt</title><meta name="title" content="The Problem - Why .prompt"><meta name="description" content="A compiled language for LLM prompts. Define structure, branching, and contracts in .prompt files — ship clean prompts to your LLM."><meta name="author"><meta name="robots" content="index, follow"><meta name="googlebot" content="index, follow"><link rel="canonical" href="https://prompt.so/why/the-problem/"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://prompt.so/why/the-problem/"><meta property="og:title" content="The Problem - Why .prompt"><meta property="og:description" content="A compiled language for LLM prompts. Define structure, branching, and contracts in .prompt files — ship clean prompts to your LLM."><meta property="og:image" content="https://prompt.so/og-image.png"><meta property="og:site_name" content="dot-prompt"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://prompt.so/why/the-problem/"><meta property="twitter:title" content="The Problem - Why .prompt"><meta property="twitter:description" content="A compiled language for LLM prompts. Define structure, branching, and contracts in .prompt files — ship clean prompts to your LLM."><meta property="twitter:image" content="https://prompt.so/og-image.png"><!-- JSON-LD Structured Data --><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"The Problem - Why .prompt","description":"A compiled language for LLM prompts. Define structure, branching, and contracts in .prompt files — ship clean prompts to your LLM.","url":"https://prompt.so/why/the-problem/","image":"https://prompt.so/og-image.png"}</script><link rel="stylesheet" href="/_astro/api-reference.3BCPy6R_.css">
+<style>.shiki,.astro-code{background-color:var(--shiki-light-bg)!important;color:var(--shiki-light)!important}.dark .shiki,.dark .astro-code{background-color:var(--shiki-dark-bg)!important;color:var(--shiki-dark)!important}.dark .shiki span,.dark .astro-code span{color:var(--shiki-dark)!important;font-style:var(--shiki-dark-font-style, inherit)!important;font-weight:var(--shiki-dark-font-weight, inherit)!important;-webkit-text-decoration:var(--shiki-dark-text-decoration, inherit)!important;text-decoration:var(--shiki-dark-text-decoration, inherit)!important}pre.shiki,pre.astro-code{white-space:pre!important;display:block!important;margin:0!important;padding:1.25rem 2rem!important}pre.astro-code>code{color:#24292e!important}.dark pre.astro-code>code{color:#e1e4e8!important}.token-variable{color:#7c3aed;font-weight:500}.token-boolean{color:#0891b2}.token-comment{color:#6b7280;font-style:italic}.token-interpolation{color:#dc2626;font-weight:500}.token-braces{color:#ea580c}html.dark .token-variable{color:#a78bfa!important}html.dark .token-boolean{color:#22d3ee!important}html.dark .token-comment{color:#9ca3af!important}html.dark .token-interpolation{color:#f87171!important}html.dark .token-braces{color:#fb923c!important}
+</style></head> <body class="min-h-screen flex flex-col"> <header class="sticky top-0 z-50 w-full border-b border-[var(--color-border)] bg-[var(--color-bg)]/80 backdrop-blur-md"> <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8"> <div class="flex items-center gap-8"> <a href="/" class="flex items-center gap-2"> <span class="text-xl font-bold text-gradient">.prompt</span> </a> <nav class="hidden md:flex items-center gap-6"> <a href="/why" class="text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"> Why </a><a href="/use-cases" class="text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"> Use Cases </a><a href="/docs" class="text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"> Docs </a> </nav> </div> <div class="flex items-center gap-4"> <div class="relative"> <button id="search-button" type="button" class="flex items-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-sm text-[var(--color-text-muted)] hover:border-primary-500 transition-colors"> <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path> </svg> <span class="hidden sm:inline">Search...</span> <kbd class="hidden sm:inline-flex items-center gap-0.5 rounded border border-[var(--color-border)] bg-[var(--color-bg)] px-1.5 py-0.5 text-xs font-mono"> <span class="text-xs">⌘</span>K
+</kbd> </button> <div id="search-modal" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-sm"> <div class="fixed left-1/2 top-1/4 w-full max-w-2xl -translate-x-1/2 px-4"> <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] shadow-2xl"> <div class="flex items-center gap-3 border-b border-[var(--color-border)] px-4"> <svg class="h-5 w-5 text-[var(--color-text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path> </svg> <input id="search-input" type="text" placeholder="Search documentation..." class="flex-1 bg-transparent py-4 text-[var(--color-text)] placeholder-[var(--color-text-muted)] focus:outline-none"> <kbd class="rounded border border-[var(--color-border)] bg-[var(--color-surface)] px-2 py-1 text-xs text-[var(--color-text-muted)]">
+ESC
+</kbd> </div> <div id="search-results" class="max-h-96 overflow-y-auto p-2"> <div class="text-center py-8 text-[var(--color-text-muted)]">
+Start typing to search...
+</div> </div> </div> </div> </div> </div> <script>(function(){const searchContent = [{"title":"Getting Started","url":"/docs/getting-started","description":"Learn how to set up and use .prompt"},{"title":"Language Reference","url":"/docs/language-reference","description":"Complete syntax and features"},{"title":"Types","url":"/docs/types","description":"Type system documentation"},{"title":"Control Flow","url":"/docs/control-flow","description":"if/elif/else, case, vary blocks"},{"title":"Fragments","url":"/docs/fragments","description":"Static and dynamic fragments"},{"title":"Response Contracts","url":"/docs/response-contracts","description":"Output schema definition"},{"title":"Versioning","url":"/docs/versioning","description":"Semantic versioning for prompts"},{"title":"Why .prompt","url":"/why","description":"Why use a compiled language for prompts"},{"title":"The Problem","url":"/why/the-problem","description":"Challenges with prompt management"},{"title":"The Solution","url":"/why/the-solution","description":"How .prompt solves these problems"},{"title":"Use Cases","url":"/use-cases","description":"Real-world use cases and examples"},{"title":"Educational Prompts","url":"/use-cases/educational-prompts","description":"Teaching and learning applications"}];
+
+  const searchButton = document.getElementById('search-button');
+  const searchModal = document.getElementById('search-modal');
+  const searchInput = document.getElementById('search-input');
+  const searchResults = document.getElementById('search-results');
+
+  function openSearch() {
+    searchModal.classList.remove('hidden');
+    searchInput.focus();
+  }
+
+  function closeSearch() {
+    searchModal.classList.add('hidden');
+    searchInput.value = '';
+    searchResults.innerHTML = '<div class="text-center py-8 text-[var(--color-text-muted)]">Start typing to search...</div>';
+  }
+
+  searchButton.addEventListener('click', openSearch);
+
+  searchModal.addEventListener('click', (e) => {
+    if (e.target === searchModal) {
+      closeSearch();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      openSearch();
+    }
+    if (e.key === 'Escape') {
+      closeSearch();
+    }
+  });
+
+  searchInput.addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase().trim();
+    
+    if (!query) {
+      searchResults.innerHTML = '<div class="text-center py-8 text-[var(--color-text-muted)]">Start typing to search...</div>';
+      return;
+    }
+
+    const results = searchContent.filter(item => 
+      item.title.toLowerCase().includes(query) || 
+      item.description.toLowerCase().includes(query)
+    );
+
+    if (results.length === 0) {
+      searchResults.innerHTML = '<div class="text-center py-8 text-[var(--color-text-muted)]">No results found</div>';
+      return;
+    }
+
+    searchResults.innerHTML = results.map(item => `
+      <a href="${item.url}" class="block rounded-lg p-3 hover:bg-[var(--color-surface)] transition-colors">
+        <div class="font-medium text-[var(--color-text)]">${item.title}</div>
+        <div class="text-sm text-[var(--color-text-muted)]">${item.description}</div>
+      </a>
+    `).join('');
+  });
+})();</script> <button id="theme-toggle" type="button" class="rounded-lg p-2 text-[var(--color-text-muted)] hover:bg-[var(--color-surface)] focus:outline-none focus:ring-2 focus:ring-primary-500 transition-colors" aria-label="Toggle theme"> <svg id="sun-icon" class="hidden h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path> </svg> <svg id="moon-icon" class="hidden h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path> </svg> </button> <script>
+  (() => {
+    const theme = (() => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+        return localStorage.getItem('theme');
+      }
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return 'dark';
+      }
+      return 'light';
+    })();
+
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+
+    window.localStorage.setItem('theme', theme);
+  })();
+</script> <script type="module">function o(){const e=document.documentElement.classList.contains("dark"),t=document.getElementById("sun-icon"),n=document.getElementById("moon-icon");t&&n&&(e?(t.classList.remove("hidden"),n.classList.add("hidden")):(t.classList.add("hidden"),n.classList.remove("hidden")))}const s=()=>{const e=document.documentElement;e.classList.toggle("dark");const t=e.classList.contains("dark");localStorage.setItem("theme",t?"dark":"light"),o()},c=()=>{o();const e=document.getElementById("theme-toggle");e&&(e.removeEventListener("click",s),e.addEventListener("click",s))};c();document.addEventListener("astro:page-load",c);</script> <a href="https://github.com/dot-prompt/dot-prompt" target="_blank" rel="noopener noreferrer" class="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors" aria-label="GitHub"> <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"> <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path> </svg> </a> </div> </div> </header> <!-- Mobile Navigation --> <div class="md:hidden border-b border-[var(--color-border)] bg-[var(--color-bg)]"> <nav class="flex items-center gap-4 px-4 py-3 overflow-x-auto"> <a href="/why" class="text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text)] whitespace-nowrap transition-colors"> Why </a><a href="/use-cases" class="text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text)] whitespace-nowrap transition-colors"> Use Cases </a><a href="/docs" class="text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text)] whitespace-nowrap transition-colors"> Docs </a> </nav> </div> <main class="flex-1">  <section class="py-20"> <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"> <div class="mx-auto max-w-3xl"> <nav class="mb-8"> <a href="/why" class="text-primary-600 hover:underline">&larr; Back to Why</a> </nav> <h1 class="text-4xl font-bold">The Problem</h1> <p class="mt-4 text-xl text-[var(--color-text-muted)]">
+Every team building with LLMs ends up in the same place.
+</p> </div> </div> </section> <section class="py-12"> <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"> <div class="mx-auto max-w-3xl"> <h2 class="text-2xl font-bold mb-6">1. Prompts scattered everywhere</h2> <p class="text-[var(--color-text-muted)] mb-6">
+Without a dedicated format, prompts end up as f-strings in Python, template literals in JS, or markdown files scattered across the repo. There's no single source of truth.
+</p> <div class="group relative my-8 mx-4 sm:mx-10"> <div class="rounded-t-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-8 py-3 text-sm font-mono text-[var(--color-text-muted)]"> The typical project structure </div> <div class="relative"> <div class="overflow-x-auto rounded-lg border border-[var(--color-border)] [&#38;>pre]:m-0 [&#38;>pre]:overflow-x-auto [&#38;>pre]:text-sm [&#38;>pre]:font-mono [&#38;>div]:rounded-t-none [&#38;>div]:border-t-0"> <div><pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">project</span><span style="color:#D73A49;--shiki-dark:#F97583">/</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">├── app</span><span style="color:#D73A49;--shiki-dark:#F97583">/</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">│   ├── services</span><span style="color:#D73A49;--shiki-dark:#F97583">/</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">│   │   ├── teacher.py      </span><span style="color:#6A737D;--shiki-dark:#6A737D"># f-strings scattered</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">│   │   ├── grader.py</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">│   │   └── chatbot.py</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">│   └── utils</span><span style="color:#D73A49;--shiki-dark:#F97583">/</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">│       └── prompt_builder.py</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">├── prompts</span><span style="color:#D73A49;--shiki-dark:#F97583">/</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">│   ├── teacher_v1.txt      </span><span style="color:#6A737D;--shiki-dark:#6A737D"># Version confusion</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">│   ├── teacher_v2.txt</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">│   ├── teacher_final.txt</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">│   └── teacher_final_v2.txt</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">└── config</span><span style="color:#D73A49;--shiki-dark:#F97583">/</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    └── prompts.yaml        </span><span style="color:#6A737D;--shiki-dark:#6A737D"># Yet another format</span></span>
+<span class="line"></span></code></pre></div> </div> <button class="copy-button absolute right-2 top-2 rounded bg-[var(--color-surface)] px-2 py-1 text-xs text-[var(--color-text-muted)] opacity-0 transition-opacity hover:bg-[var(--color-border)] group-hover:opacity-100" aria-label="Copy code">
+Copy
+</button> </div> </div> <script type="module">document.querySelectorAll(".copy-button").forEach(e=>{e.addEventListener("click",async()=>{const t=e.closest(".group")?.querySelector("pre code");t&&(await navigator.clipboard.writeText(t.textContent||""),e.textContent="Copied!",setTimeout(()=>{e.textContent="Copy"},2e3))})});</script>  </div> </div> </section> <section class="py-12 bg-[var(--color-surface)]"> <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"> <div class="mx-auto max-w-3xl"> <h2 class="text-2xl font-bold mb-6">2. Branching tangled in code</h2> <p class="text-[var(--color-text-muted)] mb-6">
+Conditional logic lives in your application code, not your prompt. Change a prompt, and you need a developer to update the code. Non-technical team members can't iterate.
+</p> <div class="group relative my-8 mx-4 sm:mx-10"> <div class="rounded-t-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-8 py-3 text-sm font-mono text-[var(--color-text-muted)]"> prompts.py </div> <div class="relative"> <div class="overflow-x-auto rounded-lg border border-[var(--color-border)] [&#38;>pre]:m-0 [&#38;>pre]:overflow-x-auto [&#38;>pre]:text-sm [&#38;>pre]:font-mono [&#38;>div]:rounded-t-none [&#38;>div]:border-t-0"> <div><pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># What most teams end up with</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">prompt </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> f</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"""</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">You are a {role}.</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">{"Answer the question directly." if is_question else "Continue the lesson."}</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">{"Give a short answer." if depth == "shallow" else "Give a detailed answer."}</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">Here is the context: {context}</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">The user said: {user_message}</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">"""</span></span>
+<span class="line"></span></code></pre></div> </div> <button class="copy-button absolute right-2 top-2 rounded bg-[var(--color-surface)] px-2 py-1 text-xs text-[var(--color-text-muted)] opacity-0 transition-opacity hover:bg-[var(--color-border)] group-hover:opacity-100" aria-label="Copy code">
+Copy
+</button> </div> </div>   </div> </div> </section> <section class="py-12"> <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"> <div class="mx-auto max-w-3xl"> <h2 class="text-2xl font-bold mb-6">3. No versioning</h2> <p class="text-[var(--color-text-muted)] mb-6">
+When you update a prompt, there's no way to know what changed. No diff. No history. No way to roll back. And if you have multiple consumers, they all get the new version—whether they're ready or not.
+</p> </div> </div> </section> <section class="py-12 bg-[var(--color-surface)]"> <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"> <div class="mx-auto max-w-3xl"> <h2 class="text-2xl font-bold mb-6">4. No contracts</h2> <p class="text-[var(--color-text-muted)] mb-6">
+What parameters does this prompt expect? What shape should the response be? There's no schema. You find out at runtime—usually in production—when the LLM returns something unexpected.
+</p> </div> </div> </section> <section class="py-12"> <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"> <div class="mx-auto max-w-3xl"> <h2 class="text-2xl font-bold mb-6">5. Token waste invisible</h2> <p class="text-[var(--color-text-muted)] mb-6">
+Every if/else branch, every conditional block gets sent to the LLM—even though only one branch is relevant. You're paying for tokens that never affect the output. And there's no way to measure or optimize.
+</p> </div> </div> </section> <section class="py-16"> <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"> <div class="mx-auto max-w-3xl text-center"> <p class="text-lg text-[var(--color-text-muted)]">
+This works until it doesn't. Then it's very hard to fix.
+</p> <div class="mt-8"> <a href="/why/the-solution" class="btn btn-primary">
+See the Solution
+</a> </div> </div> </div> </section>  </main> <footer class="border-t border-[var(--color-border)] bg-[var(--color-surface)]"> <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8"> <div class="grid grid-cols-2 gap-8 md:grid-cols-4"> <div> <h3 class="text-sm font-semibold text-[var(--color-text)]">Product</h3> <ul class="mt-4 space-y-3"> <li> <a href="/why" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"> Why .prompt </a> </li><li> <a href="/use-cases" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"> Use Cases </a> </li><li> <a href="/docs" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"> Documentation </a> </li> </ul> </div> <div> <h3 class="text-sm font-semibold text-[var(--color-text)]">Community</h3> <ul class="mt-4 space-y-3"> <li> <a href="https://github.com/dot-prompt/dot-prompt" target="_blank" rel="noopener noreferrer" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"> GitHub </a> </li><li> <a href="https://discord.gg/dot-prompt" target="_blank" rel="noopener noreferrer" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"> Discord </a> </li> </ul> </div> <div> <h3 class="text-sm font-semibold text-[var(--color-text)]">Resources</h3> <ul class="mt-4 space-y-3"> <li> <a href="/docs/getting-started" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"> Getting Started </a> </li><li> <a href="/docs/language-reference" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"> Language Reference </a> </li><li> <a href="/docs/api-reference" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"> API Reference </a> </li> </ul> </div> <div> <h3 class="text-sm font-semibold text-[var(--color-text)]">Connect</h3> <ul class="mt-4 space-y-3"> <li> <a href="mailto:hello@prompt.so" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">
+hello@prompt.so
+</a> </li> </ul> </div> </div> <div class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-[var(--color-border)] pt-8 md:flex-row"> <p class="text-sm text-[var(--color-text-muted)]">
+&copy; 2026 dot-prompt. All rights reserved.
+</p> <div class="flex items-center gap-6"> <a href="/privacy" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">
+Privacy
+</a> <a href="/terms" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">
+Terms
+</a> </div> </div> </div> </footer> </body></html>

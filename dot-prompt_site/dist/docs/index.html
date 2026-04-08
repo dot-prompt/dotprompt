@@ -1,0 +1,112 @@
+<!DOCTYPE html><html lang="en" class="scroll-smooth"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Primary Meta Tags --><title>Documentation | dot-prompt</title><meta name="title" content="Documentation | dot-prompt"><meta name="description" content="Complete documentation for the .prompt language"><meta name="author"><meta name="robots" content="index, follow"><meta name="googlebot" content="index, follow"><link rel="canonical" href="https://prompt.so/docs/"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://prompt.so/docs/"><meta property="og:title" content="Documentation | dot-prompt"><meta property="og:description" content="Complete documentation for the .prompt language"><meta property="og:image" content="https://prompt.so/og-image.png"><meta property="og:site_name" content="dot-prompt"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://prompt.so/docs/"><meta property="twitter:title" content="Documentation | dot-prompt"><meta property="twitter:description" content="Complete documentation for the .prompt language"><meta property="twitter:image" content="https://prompt.so/og-image.png"><!-- JSON-LD Structured Data --><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Documentation | dot-prompt","description":"Complete documentation for the .prompt language","url":"https://prompt.so/docs/","image":"https://prompt.so/og-image.png"}</script><link rel="stylesheet" href="/_astro/api-reference.3BCPy6R_.css"></head> <body class="min-h-screen flex flex-col"> <header class="sticky top-0 z-50 w-full border-b border-[var(--color-border)] bg-[var(--color-bg)]/80 backdrop-blur-md"> <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8"> <div class="flex items-center gap-8"> <a href="/" class="flex items-center gap-2"> <span class="text-xl font-bold text-gradient">.prompt</span> </a> <nav class="hidden md:flex items-center gap-6"> <a href="/why" class="text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"> Why </a><a href="/use-cases" class="text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"> Use Cases </a><a href="/docs" class="text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"> Docs </a> </nav> </div> <div class="flex items-center gap-4"> <div class="relative"> <button id="search-button" type="button" class="flex items-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-sm text-[var(--color-text-muted)] hover:border-primary-500 transition-colors"> <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path> </svg> <span class="hidden sm:inline">Search...</span> <kbd class="hidden sm:inline-flex items-center gap-0.5 rounded border border-[var(--color-border)] bg-[var(--color-bg)] px-1.5 py-0.5 text-xs font-mono"> <span class="text-xs">⌘</span>K
+</kbd> </button> <div id="search-modal" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-sm"> <div class="fixed left-1/2 top-1/4 w-full max-w-2xl -translate-x-1/2 px-4"> <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] shadow-2xl"> <div class="flex items-center gap-3 border-b border-[var(--color-border)] px-4"> <svg class="h-5 w-5 text-[var(--color-text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path> </svg> <input id="search-input" type="text" placeholder="Search documentation..." class="flex-1 bg-transparent py-4 text-[var(--color-text)] placeholder-[var(--color-text-muted)] focus:outline-none"> <kbd class="rounded border border-[var(--color-border)] bg-[var(--color-surface)] px-2 py-1 text-xs text-[var(--color-text-muted)]">
+ESC
+</kbd> </div> <div id="search-results" class="max-h-96 overflow-y-auto p-2"> <div class="text-center py-8 text-[var(--color-text-muted)]">
+Start typing to search...
+</div> </div> </div> </div> </div> </div> <script>(function(){const searchContent = [{"title":"Getting Started","url":"/docs/getting-started","description":"Learn how to set up and use .prompt"},{"title":"Language Reference","url":"/docs/language-reference","description":"Complete syntax and features"},{"title":"Types","url":"/docs/types","description":"Type system documentation"},{"title":"Control Flow","url":"/docs/control-flow","description":"if/elif/else, case, vary blocks"},{"title":"Fragments","url":"/docs/fragments","description":"Static and dynamic fragments"},{"title":"Response Contracts","url":"/docs/response-contracts","description":"Output schema definition"},{"title":"Versioning","url":"/docs/versioning","description":"Semantic versioning for prompts"},{"title":"Why .prompt","url":"/why","description":"Why use a compiled language for prompts"},{"title":"The Problem","url":"/why/the-problem","description":"Challenges with prompt management"},{"title":"The Solution","url":"/why/the-solution","description":"How .prompt solves these problems"},{"title":"Use Cases","url":"/use-cases","description":"Real-world use cases and examples"},{"title":"Educational Prompts","url":"/use-cases/educational-prompts","description":"Teaching and learning applications"}];
+
+  const searchButton = document.getElementById('search-button');
+  const searchModal = document.getElementById('search-modal');
+  const searchInput = document.getElementById('search-input');
+  const searchResults = document.getElementById('search-results');
+
+  function openSearch() {
+    searchModal.classList.remove('hidden');
+    searchInput.focus();
+  }
+
+  function closeSearch() {
+    searchModal.classList.add('hidden');
+    searchInput.value = '';
+    searchResults.innerHTML = '<div class="text-center py-8 text-[var(--color-text-muted)]">Start typing to search...</div>';
+  }
+
+  searchButton.addEventListener('click', openSearch);
+
+  searchModal.addEventListener('click', (e) => {
+    if (e.target === searchModal) {
+      closeSearch();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      openSearch();
+    }
+    if (e.key === 'Escape') {
+      closeSearch();
+    }
+  });
+
+  searchInput.addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase().trim();
+    
+    if (!query) {
+      searchResults.innerHTML = '<div class="text-center py-8 text-[var(--color-text-muted)]">Start typing to search...</div>';
+      return;
+    }
+
+    const results = searchContent.filter(item => 
+      item.title.toLowerCase().includes(query) || 
+      item.description.toLowerCase().includes(query)
+    );
+
+    if (results.length === 0) {
+      searchResults.innerHTML = '<div class="text-center py-8 text-[var(--color-text-muted)]">No results found</div>';
+      return;
+    }
+
+    searchResults.innerHTML = results.map(item => `
+      <a href="${item.url}" class="block rounded-lg p-3 hover:bg-[var(--color-surface)] transition-colors">
+        <div class="font-medium text-[var(--color-text)]">${item.title}</div>
+        <div class="text-sm text-[var(--color-text-muted)]">${item.description}</div>
+      </a>
+    `).join('');
+  });
+})();</script> <button id="theme-toggle" type="button" class="rounded-lg p-2 text-[var(--color-text-muted)] hover:bg-[var(--color-surface)] focus:outline-none focus:ring-2 focus:ring-primary-500 transition-colors" aria-label="Toggle theme"> <svg id="sun-icon" class="hidden h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path> </svg> <svg id="moon-icon" class="hidden h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path> </svg> </button> <script>
+  (() => {
+    const theme = (() => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+        return localStorage.getItem('theme');
+      }
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return 'dark';
+      }
+      return 'light';
+    })();
+
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+
+    window.localStorage.setItem('theme', theme);
+  })();
+</script> <script type="module">function o(){const e=document.documentElement.classList.contains("dark"),t=document.getElementById("sun-icon"),n=document.getElementById("moon-icon");t&&n&&(e?(t.classList.remove("hidden"),n.classList.add("hidden")):(t.classList.add("hidden"),n.classList.remove("hidden")))}const s=()=>{const e=document.documentElement;e.classList.toggle("dark");const t=e.classList.contains("dark");localStorage.setItem("theme",t?"dark":"light"),o()},c=()=>{o();const e=document.getElementById("theme-toggle");e&&(e.removeEventListener("click",s),e.addEventListener("click",s))};c();document.addEventListener("astro:page-load",c);</script> <a href="https://github.com/dot-prompt/dot-prompt" target="_blank" rel="noopener noreferrer" class="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors" aria-label="GitHub"> <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"> <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path> </svg> </a> </div> </div> </header> <!-- Mobile Navigation --> <div class="md:hidden border-b border-[var(--color-border)] bg-[var(--color-bg)]"> <nav class="flex items-center gap-4 px-4 py-3 overflow-x-auto"> <a href="/why" class="text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text)] whitespace-nowrap transition-colors"> Why </a><a href="/use-cases" class="text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text)] whitespace-nowrap transition-colors"> Use Cases </a><a href="/docs" class="text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text)] whitespace-nowrap transition-colors"> Docs </a> </nav> </div> <div class="flex-1 mx-auto w-full max-w-7xl"> <div class="flex"> <aside class="hidden lg:block w-64 shrink-0 border-r border-[var(--color-border)]"> <nav class="sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto p-6"> <div class="mb-6"> <h3 class="mb-2 text-sm font-semibold text-[var(--color-text)]"> Getting Started </h3> <ul class="space-y-1"> <li> <a href="/docs" class="block rounded-lg px-3 py-2 text-sm transition-colors bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 font-medium"> Introduction </a> </li><li> <a href="/docs/getting-started" class="block rounded-lg px-3 py-2 text-sm transition-colors text-[var(--color-text-muted)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text)]"> Getting Started </a> </li> </ul> </div><div class="mb-6"> <h3 class="mb-2 text-sm font-semibold text-[var(--color-text)]"> Language </h3> <ul class="space-y-1"> <li> <a href="/docs/language-reference" class="block rounded-lg px-3 py-2 text-sm transition-colors text-[var(--color-text-muted)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text)]"> Language Reference </a> </li><li> <a href="/docs/types" class="block rounded-lg px-3 py-2 text-sm transition-colors text-[var(--color-text-muted)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text)]"> Types </a> </li><li> <a href="/docs/control-flow" class="block rounded-lg px-3 py-2 text-sm transition-colors text-[var(--color-text-muted)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text)]"> Control Flow </a> </li><li> <a href="/docs/fragments" class="block rounded-lg px-3 py-2 text-sm transition-colors text-[var(--color-text-muted)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text)]"> Fragments </a> </li><li> <a href="/docs/response-contracts" class="block rounded-lg px-3 py-2 text-sm transition-colors text-[var(--color-text-muted)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text)]"> Response Contracts </a> </li> </ul> </div><div class="mb-6"> <h3 class="mb-2 text-sm font-semibold text-[var(--color-text)]"> Advanced </h3> <ul class="space-y-1"> <li> <a href="/docs/versioning" class="block rounded-lg px-3 py-2 text-sm transition-colors text-[var(--color-text-muted)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text)]"> Versioning </a> </li><li> <a href="/docs/api-reference" class="block rounded-lg px-3 py-2 text-sm transition-colors text-[var(--color-text-muted)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text)]"> API Reference </a> </li> </ul> </div> </nav> </aside> <main class="flex-1 px-4 py-8 sm:px-6 lg:px-8"> <article class="prose dark:prose-invert max-w-4xl">  <h1>Documentation</h1> <p>
+Welcome to the .prompt documentation. Here you'll find everything you need to get started and master the language.
+</p> <h2>Quick Links</h2> <ul> <li><a href="/docs/getting-started">Getting Started</a> - Set up and write your first .prompt file</li> <li><a href="/docs/language-reference">Language Reference</a> - Complete syntax guide</li> <li><a href="/docs/types">Types</a> - Type system documentation</li> <li><a href="/docs/control-flow">Control Flow</a> - if/elif/else, case, vary</li> <li><a href="/docs/fragments">Fragments</a> - Static and dynamic composition</li> <li><a href="/docs/response-contracts">Response Contracts</a> - Output schema definition</li> <li><a href="/docs/versioning">Versioning</a> - Semantic versioning for prompts</li> <li><a href="/docs/api-reference">API Reference</a> - HTTP API endpoints</li> </ul> <h2>The One Rule</h2> <p> <code>@</code> means variable. Always. Only. Everywhere.
+</p> <p>
+Structural keywords (like <code>init</code>, <code>if</code>, <code>case</code>, <code>end</code>) never use <code>@</code>.
+</p> <h2>Example</h2> <pre><code>init do
+  @version: 1.0
+  @major: 1
+
+  params:
+    @name: str
+    @age: int
+
+end init
+
+Hello, @name! You are @age years old.</code></pre> <p>
+This compiles to a simple greeting with the variables replaced at runtime.
+</p>  </article> </main> </div> </div> <footer class="border-t border-[var(--color-border)] bg-[var(--color-surface)]"> <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8"> <div class="grid grid-cols-2 gap-8 md:grid-cols-4"> <div> <h3 class="text-sm font-semibold text-[var(--color-text)]">Product</h3> <ul class="mt-4 space-y-3"> <li> <a href="/why" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"> Why .prompt </a> </li><li> <a href="/use-cases" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"> Use Cases </a> </li><li> <a href="/docs" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"> Documentation </a> </li> </ul> </div> <div> <h3 class="text-sm font-semibold text-[var(--color-text)]">Community</h3> <ul class="mt-4 space-y-3"> <li> <a href="https://github.com/dot-prompt/dot-prompt" target="_blank" rel="noopener noreferrer" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"> GitHub </a> </li><li> <a href="https://discord.gg/dot-prompt" target="_blank" rel="noopener noreferrer" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"> Discord </a> </li> </ul> </div> <div> <h3 class="text-sm font-semibold text-[var(--color-text)]">Resources</h3> <ul class="mt-4 space-y-3"> <li> <a href="/docs/getting-started" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"> Getting Started </a> </li><li> <a href="/docs/language-reference" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"> Language Reference </a> </li><li> <a href="/docs/api-reference" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"> API Reference </a> </li> </ul> </div> <div> <h3 class="text-sm font-semibold text-[var(--color-text)]">Connect</h3> <ul class="mt-4 space-y-3"> <li> <a href="mailto:hello@prompt.so" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">
+hello@prompt.so
+</a> </li> </ul> </div> </div> <div class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-[var(--color-border)] pt-8 md:flex-row"> <p class="text-sm text-[var(--color-text-muted)]">
+&copy; 2026 dot-prompt. All rights reserved.
+</p> <div class="flex items-center gap-6"> <a href="/privacy" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">
+Privacy
+</a> <a href="/terms" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">
+Terms
+</a> </div> </div> </div> </footer> </body></html>
