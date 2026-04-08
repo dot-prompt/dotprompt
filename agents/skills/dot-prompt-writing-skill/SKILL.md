@@ -1,108 +1,135 @@
 # Dot Prompt Writing Skill
 
 ## Purpose
-Provides specialized knowledge and workflows for writing effective dot prompts, covering prompt engineering principles, structure, and best practices for creating clear, actionable instructions.
+Writing effective dot-prompt files (.prompt) for agentic workflows.
 
 ## When to Use
-Use this skill when:
-- Creating new dot prompts
-- Improving existing prompts
-- Structuring complex instructions
-- Writing clear and concise prompts
-- Optimizing prompt clarity and effectiveness
-- Debugging prompt issues
+- Creating new .prompt files
+- Building prompts with system/user role outputs
+- Adding fragments or response contracts
 
-## Key Capabilities
-- Prompt structure and organization
-- Clear instruction writing
-- Context and background provision
-- Output format specification
-- Constraint and limitation definition
-- Tone and style guidance
-- Example integration
+## ⚠️ Common Mistakes
 
-## Available Tools
-- Prompt analysis and evaluation
-- Structure templates and frameworks
-- Clarity improvement suggestions
-- Context enhancement techniques
-- Format specification guidance
-- Example integration methods
+### Use role Instead of Custom Modes
+```prompt
+# WRONG
+def:
+  mode: execution_plan
 
-## Examples
-
-### Basic prompt structure
-```
-# Task: [Clear description]
-
-## Context:
-[Background information]
-
-## Instructions:
-[Step-by-step guidance]
-
-## Output Format:
-[Expected format and structure]
-
-## Constraints:
-[Limitations and requirements]
+# CORRECT
+def:
+  role: assistant
 ```
 
-### Enhanced prompt with examples
-```
-# Task: Write a product description
+**Valid roles:** system, user, tool, fragment, collection
 
-## Context:
-We're launching a new eco-friendly water bottle. Target audience is environmentally conscious consumers aged 25-40.
+### strict: true requires response block
+```prompt
+def:
+  role: assistant
+  strict: true
 
-## Instructions:
-1. Highlight sustainability features
-2. Mention durability and design
-3. Include key specifications
-4. Use engaging, positive tone
-
-## Output Format:
-- Headline (max 10 words)
-- 3-4 paragraph description
-- Bullet points for key features
-- Call-to-action ending
-
-## Constraints:
-- Word count: 200-250 words
-- Avoid technical jargon
-- Include emotional appeal
-- Maintain brand voice
-
-## Example:
-[Sample product description for reference]
+response do
+  {"intent": "WORKFLOW_CREATE", "data": {}}
+end response
 ```
 
-## Best Practices
-- Start with a clear task statement
-- Provide sufficient context
-- Break instructions into numbered steps
-- Specify output format explicitly
-- Define constraints and limitations
-- Include relevant examples when helpful
-- Use clear, concise language
-- Avoid ambiguity and assumptions
+## Role Field
+The `role` field in the `def:` section specifies the message role for the compiled prompt. Valid values:
+- `assistant` — AI assistant message (default if not specified)
+- `user` — user message
+- `system` — system message
 
-## Common Issues
-- Vague instructions: Be specific about what you want
-- Missing context: Provide background information
-- Unclear output format: Specify exactly what you need
-- Too many constraints: Balance requirements with flexibility
-- Poor examples: Use relevant, high-quality examples
+```
+def:
+  role: assistant
+  description: A helpful assistant for answering questions.
+```
+
+## Message Sections
+Message sections organize prompt content into role-specific blocks using `do...end` syntax:
+
+```
+system do
+  You are a helpful AI assistant.
+  Provide clear, accurate responses.
+end system
+
+context do
+  Background information:
+  {skill_context}
+end context
+
+user do
+  @user_message
+end user
+```
+
+**Block types:**
+- `system` — defines the AI's identity, role, and behavior
+- `context` — provides background information and data  
+- `user` — contains user input or message
+
+## Context Merge Pattern
+When combining multiple prompts, content merges by role:
+- **System**: Joins with blank lines between content
+- **Context**: Concatenates with blank line separators
+- **User**: Uses the most recent value
+
+```
+# Base prompt
+system do
+  You are a helpful assistant.
+end system
+
+context do
+  User preferences loaded.
+end context
+
+# Include skill
+{skill_prompt}
+
+# Merged result combines all context blocks
+```
+
+## Agentic Workflow Pattern
+
+```prompt
+init do
+  @version: 1.0
+  def:
+    role: assistant
+
+  params:
+    @task: str
+    @context: str
+
+end init
+
+system do
+  You are a skilled programmer.
+  Always explain your reasoning.
+end system
+
+user do
+  Task: @task
+end user
+
+context do
+  Retrieved files:
+  @file_list
+end context
+```
+
+**Output:**
+```elixir
+%{system: "You are a skilled programmer...", user: "=== CONTEXT ===
+Retrieved files:
+...
+
+=== TASK ===
+Task: ..."}
+```
 
 ## Related Skills
-- Prompt engineering
-- Technical writing
-- Content creation
-- Instruction design
-- User experience writing
-
-## Learning Resources
-- [Prompt engineering best practices](https://example.com/prompt-engineering)
-- [Clear writing guidelines](https://example.com/clear-writing)
-- [Instruction design principles](https://example.com/instruction-design)
-- [User experience writing tips](https://example.com/ux-writing)
+- `dot-prompt` — Full language reference (agents/skills/dotprompt_language.md)

@@ -26,6 +26,7 @@ const (
 	TokenParamDef
 	TokenFragmentDef
 	TokenRole
+	TokenSeparator
 )
 
 type Token struct {
@@ -50,7 +51,8 @@ var (
 	reFragmentDef      = regexp.MustCompile(`^(\{{1,2}[\w\-\.\/]+\}{1,2}):\s*(.*)$`)
 	reInitLabel       = regexp.MustCompile(`^(def|params|fragments|role):\s*(.*)$`)
 	reGenericInitItem  = regexp.MustCompile(`^([a-zA-Z0-9_\-\.]+):\s*(.*)$`)
-	reRoleSection      = regexp.MustCompile(`^#\s*(system|user|context)\s*$`)
+	reRoleSection     = regexp.MustCompile(`^#\s*(system|user|context)\s*$`)
+	reSeparator        = regexp.MustCompile(`^---+$`)
 )
 
 func Tokenize(content string) []Token {
@@ -132,6 +134,8 @@ func tokenizeLine(line string, lineNo int) []Token {
 	} else if reGenericInitItem.MatchString(trimmed) {
 		match := reGenericInitItem.FindStringSubmatch(trimmed)
 		tokens = append(tokens, Token{Type: TokenInitItem, Value: match[1], Meta: match[2], Line: lineNo, Indent: indent})
+	} else if reSeparator.MatchString(trimmed) {
+		tokens = append(tokens, Token{Type: TokenSeparator, Value: trimmed, Line: lineNo, Indent: indent})
 	} else if reFragmentStatic.MatchString(trimmed) && trimmed != "{response_contract}" {
 		tokens = append(tokens, Token{Type: TokenFragmentStatic, Value: trimmed, Line: lineNo, Indent: indent})
 	} else if reSeparator.MatchString(trimmed) {
