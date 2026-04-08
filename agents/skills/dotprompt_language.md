@@ -262,6 +262,7 @@ end init
 
 ### Sections
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 - `@version: major.minor` — required, semantic versioning
 - `def:` — `mode`, `description`, and `role` fields. For fragments, `mode: fragment` and `match: value`
 - `params:` — all variables used in the prompt
@@ -347,6 +348,21 @@ Individual fragment files declare `mode: fragment` and a `match` value:
 - `role: collection` — Fragment collection
 >>>>>>> Stashed changes
 
+=======
+- `@version: major.minor` — required
+- `def:` — role and description
+- `params:` — variables
+- `fragments:` — external files to include
+- `docs do...end docs` — documentation
+
+### Role Values
+- `role: system` — System prompt
+- `role: user` — User message
+- `role: tool` — Tool definition
+- `role: fragment` — Reusable fragment
+- `role: collection` — Fragment collection
+
+>>>>>>> Stashed changes
 ---
 
 ## Message Sections

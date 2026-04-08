@@ -48,7 +48,7 @@ end user
 
 **Block types:**
 - `system` — defines the AI's identity, role, and behavior
-- `context` — provides background information and data  
+- `context` — provides background information and data
 - `user` — contains user input or message
 
 ## Context Merge Pattern

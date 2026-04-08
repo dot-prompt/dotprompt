@@ -67,7 +67,7 @@ end user
 
 **Block types:**
 - `system` — defines the AI's identity, role, and behavior
-- `context` — provides background information and data  
+- `context` — provides background information and data
 - `user` — contains user input or message
 
 ## Context Merge Pattern
@@ -123,12 +123,7 @@ end context
 
 **Output:**
 ```elixir
-%{system: "You are a skilled programmer...", user: "=== CONTEXT ===
-Retrieved files:
-...
-
-=== TASK ===
-Task: ..."}
+%{system: "You are a skilled programmer...", user: "=== CONTEXT ===\nRetrieved files:\n...\n\n=== TASK ===\nTask: ..."}
 ```
 
 ## Related Skills
