@@ -5,21 +5,21 @@
         "v1": {
           "archive_path": "/home/nahar/Documents/code/dot-prompt/compilers/elixir/test/fixtures/prompts/skills/archive/skill1_v1.prompt",
           "branch": "main",
-          "last_accessed": "2026-04-03T12:16:59.647981Z"
+          "last_accessed": "2026-04-08T09:28:37.710090Z"
         }
       },
       "skill2": {
         "v1": {
           "archive_path": "/home/nahar/Documents/code/dot-prompt/compilers/elixir/test/fixtures/prompts/skills/archive/skill2_v1.prompt",
           "branch": "main",
-          "last_accessed": "2026-04-03T12:16:59.648721Z"
+          "last_accessed": "2026-04-08T09:28:37.712317Z"
         }
       },
       "test_skill": {
         "v1": {
           "archive_path": "/home/nahar/Documents/code/dot-prompt/compilers/elixir/test/fixtures/prompts/skills/archive/test_skill_v1.prompt",
           "branch": "main",
-          "last_accessed": "2026-04-03T12:16:59.649897Z"
+          "last_accessed": "2026-04-08T09:28:37.729098Z"
         }
       }
     }

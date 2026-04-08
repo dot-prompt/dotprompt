@@ -1,5 +1,6 @@
 """Private HTTP transport layer for dot-prompt client."""
 
+import contextlib
 import logging
 from typing import Any, AsyncIterator
 
@@ -112,8 +113,6 @@ class _Transport:
 
         error_class = error_mapping.get(status, APIClientError)
         raise error_class(message)
-
-    import contextlib
 
     @contextlib.asynccontextmanager
     async def stream(self, method: str, path: str, **kwargs: Any) -> AsyncIterator[httpx.Response]:

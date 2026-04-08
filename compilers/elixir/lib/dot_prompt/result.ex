@@ -2,7 +2,6 @@ defmodule DotPrompt.Result do
   @moduledoc """
   Result struct returned from compile/render operations.
   """
-
   defstruct prompt: nil,
             response_contract: nil,
             vary_selections: %{},
@@ -11,7 +10,9 @@ defmodule DotPrompt.Result do
             cache_hit: false,
             major: nil,
             version: nil,
-            metadata: %{}
+            metadata: %{},
+            system: nil,
+            user: nil
 
   @type t :: %DotPrompt.Result{
           prompt: String.t() | nil,
@@ -22,6 +23,8 @@ defmodule DotPrompt.Result do
           cache_hit: boolean(),
           major: integer() | nil,
           version: String.t() | integer() | nil,
-          metadata: map() | nil
+          metadata: map() | nil,
+          system: String.t() | nil,
+          user: String.t() | nil
         }
 end
