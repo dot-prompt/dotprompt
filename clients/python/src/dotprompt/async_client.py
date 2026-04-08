@@ -14,7 +14,7 @@ from dotprompt.exceptions import (
     TimeoutError,
     ValidationError,
 )
-from dotprompt.models import CompileResult, PromptSchema
+from dotprompt.models import CompileResult, PromptSchema, StructuredResult
 
 
 class DotPromptAsyncClient:
@@ -67,6 +67,39 @@ class DotPromptAsyncClient:
 
         data = await self._transport.post("/api/compile", body)
         return CompileResult(**data)
+
+    async def compile_structured(
+        self,
+        prompt: str,
+        params: dict[str, Any],
+        options: dict[str, Any] | None = None,
+    ) -> StructuredResult:
+        """Compile a prompt with structured output (system and user messages).
+
+        The prompt is split at the --- separator:
+        - Content before --- goes to 'system' field
+        - Content after --- goes to 'user' field
+
+        Args:
+            prompt: The prompt content to compile.
+            params: The parameters for compilation.
+            options: Optional seed and version filters.
+
+        Returns:
+            StructuredResult with system and user fields.
+        """
+        options = options or {}
+        body = {
+            "prompt": prompt,
+            "params": params,
+        }
+        if "seed" in options:
+            body["seed"] = options["seed"]
+        if "version" in options:
+            body["version"] = options["version"]
+
+        data = await self._transport.post("/api/compile/structured", body)
+        return StructuredResult(**data)
 
     async def render(
         self,

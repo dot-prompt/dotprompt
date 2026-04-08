@@ -122,6 +122,33 @@ func (c *AsyncClient) Compile(ctx context.Context, prompt string, params map[str
 	return &result, nil
 }
 
+func (c *AsyncClient) CompileStructured(ctx context.Context, prompt string, params map[string]any, opts ...CompileOptions) (*StructuredResult, error) {
+	body := map[string]any{
+		"prompt": prompt,
+		"params": params,
+	}
+
+	for _, o := range opts {
+		if o.Seed != nil {
+			body["seed"] = *o.Seed
+		}
+		if o.Major != nil {
+			body["major"] = *o.Major
+		}
+	}
+
+	resp, err := c.transport.request(ctx, "POST", "/api/compile/structured", body)
+	if err != nil {
+		return nil, err
+	}
+
+	var result StructuredResult
+	if err := mapToStruct(resp, &result); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
 type CompileOptions struct {
 	Seed  *int
 	Major *int

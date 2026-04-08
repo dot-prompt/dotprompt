@@ -5,7 +5,8 @@ import {
   RenderResult, 
   InjectResult, 
   type DotPromptEvent,
-  ResponseContract
+  ResponseContract,
+  StructuredResult
 } from "./models.js";
 import { validateResponse as _validateResponse } from "./utils.js";
 import { createEventStream } from "./events.js";
@@ -94,6 +95,32 @@ export class DotPromptAsyncClient {
       },
     });
     return CompileResult.parse(data);
+  }
+
+  /**
+   * Compiles a prompt and returns structured output with system and user fields.
+   * Content before "---" goes to system, content after goes to user.
+   * 
+   * @param prompt - The name of the prompt.
+   * @param params - The input data for compilation.
+   * @param options - Optional seed and major version filters.
+   * @returns Promise<StructuredResult> - The structured compilation result.
+   */
+  public async compileStructured(
+    prompt: string,
+    params: Record<string, any>,
+    options: { seed?: number; major?: number } = {}
+  ): Promise<StructuredResult> {
+    const data = await this.transport.request("/api/compile/structured", {
+      method: "POST",
+      body: { 
+        prompt: prompt, 
+        params, 
+        seed: options.seed, 
+        major: options.major 
+      },
+    });
+    return StructuredResult.parse(data);
   }
 
   /**

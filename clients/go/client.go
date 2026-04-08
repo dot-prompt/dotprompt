@@ -51,6 +51,11 @@ func (c *Client) ValidateResponse(response map[string]any, contract *ResponseCon
 	return c.asyncClient.ValidateResponse(response, contract)
 }
 
+func (c *Client) CompileStructured(ctx context.Context, prompt string, params map[string]any, opts ...CompileOptions) (*StructuredResult, error) {
+	return c.asyncClient.CompileStructured(ctx, prompt, params, opts...)
+}
+
+
 func (c *Client) Events(ctx context.Context) <-chan DotPromptEvent {
 	return c.asyncClient.Events(ctx)
 }

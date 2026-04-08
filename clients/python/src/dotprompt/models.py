@@ -81,3 +81,15 @@ class InjectResult(BaseModel):
 
     prompt: str
     injected_tokens: int
+
+
+class StructuredResult(BaseModel):
+    """Result from compiling a prompt with structured output (system and user messages).
+
+    The prompt is split at the --- separator:
+    - Content before --- goes to 'system' field
+    - Content after --- goes to 'user' field with === CONTEXT === and === TASK === separators
+    """
+
+    system: str = ""
+    user: str = ""

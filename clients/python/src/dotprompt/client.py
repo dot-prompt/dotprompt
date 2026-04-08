@@ -11,6 +11,7 @@ from dotprompt.models import (
     InjectResult,
     PromptSchema,
     RenderResult,
+    StructuredResult,
 )
 
 
@@ -77,6 +78,38 @@ class DotPromptClient:
         if version is not None:
             options["version"] = version
         result = self._loop.run_until_complete(self._async_client.compile(prompt, params, options))
+        return result
+
+    def compile_structured(
+        self,
+        prompt: str,
+        params: dict[str, Any],
+        seed: int | None = None,
+        version: int | None = None,
+    ) -> StructuredResult:
+        """Compile a prompt with structured output (system and user messages).
+
+        The prompt is split at the --- separator:
+        - Content before --- goes to 'system' field
+        - Content after --- goes to 'user' field
+
+        Args:
+            prompt: The prompt content to compile.
+            params: The parameters for compilation.
+            seed: Optional seed for reproducible vary.
+            version: Optional specific version to use.
+
+        Returns:
+            StructuredResult with system and user fields.
+        """
+        options = {}
+        if seed is not None:
+            options["seed"] = seed
+        if version is not None:
+            options["version"] = version
+        result = self._loop.run_until_complete(
+            self._async_client.compile_structured(prompt, params, options)
+        )
         return result
 
     def render(

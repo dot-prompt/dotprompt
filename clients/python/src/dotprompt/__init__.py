@@ -22,6 +22,7 @@ from dotprompt.models import (
     PromptSchema,
     RenderResult,
     ResponseContract,
+    StructuredResult,
 )
 
 __version__ = "0.1.0"
@@ -46,4 +47,5 @@ __all__ = [
     "PromptSchema",
     "RenderResult",
     "ResponseContract",
+    "StructuredResult",
 ]

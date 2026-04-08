@@ -66,6 +66,14 @@ type InjectResult struct {
 	InjectedTokens int    `json:"injected_tokens"`
 }
 
+
+// StructuredResult represents compiled output split into system and user fields.
+// Context is merged into user with === CONTEXT === and === TASK === separators.
+type StructuredResult struct {
+	System string `json:"system"`
+	User   string `json:"user"`
+}
+
 type DotPromptEvent struct {
 	Type      string `json:"type"`
 	Timestamp int64  `json:"timestamp,omitempty"`

@@ -5,7 +5,8 @@ import {
   RenderResult, 
   InjectResult, 
   type DotPromptEvent,
-  ResponseContract
+  ResponseContract,
+  StructuredResult
 } from "./models.js";
 
 /**
@@ -38,6 +39,14 @@ export class DotPromptClient {
     options: { seed?: number; version?: number } = {}
   ): Promise<CompileResult> {
     return this.asyncClient.compile(prompt, params, options);
+  }
+
+  public async compileStructured(
+    prompt: string,
+    params: Record<string, any>,
+    options: { seed?: number; major?: number } = {}
+  ): Promise<StructuredResult> {
+    return this.asyncClient.compileStructured(prompt, params, options);
   }
 
   public async render(

@@ -77,6 +77,16 @@ export const InjectResult = z.object({
 export type InjectResult = z.infer<typeof InjectResult>;
 
 /**
+ * Zod schema for structured output result.
+ * Contains system and user message fields, separated by --- in the prompt.
+ */
+export const StructuredResult = z.object({
+  system: z.string().default(""),
+  user: z.string().default(""),
+});
+export type StructuredResult = z.infer<typeof StructuredResult>;
+
+/**
  * Event types for SSE stream.
  */
 export const DotPromptEvent = z.discriminatedUnion("type", [
